@@ -20,8 +20,7 @@ const InputBox: React.FC<InputBoxProps> = ({ label, value, error, errorMessage, 
         value={value} 
         onChange={onChange} 
         placeholder={placeholder}
-        className={`bg-blue border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 px-2 py-1 cursor-pointer ${error ? 'border-red-500' : ''} mr-4`}
-        style={{ fontSize: "16px", width: "449px", height: "40px" }}
+        className={`bg-blue border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500 text-base px-2 py-1 cursor-pointer ${error ? 'border-red-500' : ''} mr-4 w-[440px] h-10`}
       />
       {error && <span className="text-red">{errorMessage || '필수 항목입니다.'}</span>}
     </div>

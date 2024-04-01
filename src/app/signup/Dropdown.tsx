@@ -62,20 +62,16 @@ const Dropdown: React.FC<DropdownProps> = ({ label, options, onSelect, placehold
           readOnly
           value={selectedOption || ''}
           placeholder={placeholder}
-          className={`bg-blue w-full border-gray rounded-md px-2 py-1 cursor-pointer ${error ? 'border-red-500' : ''}`}
+          className={`bg-blue w-full border-gray text-base rounded-md px-2 py-1 cursor-pointer ${error ? 'border-red-500' : ''} w-[440px] h-10 {isOpen ? 'z-10' : 'z-1'}`}
           onClick={handleInputClick}
-          style={{ zIndex: isOpen ? 10 : 1, fontSize: '16px', width: '449px', height: '40px' }}
         />
         {error && <span className="text-red ml-4">{label}를 선택해주세요.</span>}
       </div>
       {isOpen && (
         <div
-          className="absolute border border-gray bg-blue rounded-md shadow-md"
+          className="absolute border border-gray text-base bg-blue rounded-md shadow-md w-[440px] z-10 "
           style={{
             ...dropdownStyle,
-            zIndex: 10,
-            width: '451px',
-            fontSize: '16px',
           }}
           ref={dropdownRef}
         >
