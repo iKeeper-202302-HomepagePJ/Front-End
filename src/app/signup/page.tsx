@@ -1,3 +1,4 @@
+
 // SignupPage.tsx
 "use client";
 import React, { useState } from 'react';
@@ -35,7 +36,8 @@ const SignupPage: React.FC = () => {
     password: { isError: false, message: '' },
     passwordConfirm: { isError: false, message: '' },
     studentId: { isError: false, message: '' },
-    department: { isError: false, message: '' }
+    department: { isError: false, message: '' },
+    global: { isError: false, message: '' }
     // 나머지 필수 입력 항목 추가
   });
 
@@ -52,6 +54,7 @@ const SignupPage: React.FC = () => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     let formErrors = { ...errors };
+    let isFormValid = true;
 
     // 필수 입력 항목 검사
     if (!formData.name.trim()) {
@@ -78,11 +81,25 @@ const SignupPage: React.FC = () => {
     if (!formData.studentId.trim()) {
       formErrors.studentId = { isError: true, message: '학번을 입력해주세요.' };
     }
-    // 나머지 필수 입력 항목에 대한 검사 추가
 
     // Dropdown 컴포넌트의 유효성 검사를 수행합니다.
     const dropdownErrors = validateDropdowns();
     formErrors = { ...formErrors, ...dropdownErrors };
+
+    // 필수 입력 항목 또는 드롭다운 항목 중 하나라도 오류가 있는지 확인합니다.
+    Object.keys(formErrors).forEach((key) => {
+      if (formErrors[key as keyof typeof formErrors].isError) {
+        isFormValid = false;
+      }
+      
+    });
+
+    if (!isFormValid) {
+      formErrors.global = { isError: true, message: '필수 입력 항목 중 누락된 항목이 있습니다. 다시 확인해주세요.' };
+    } else {
+      formErrors.global = { isError: false, message: '' };
+      // 여기에 회원가입 처리 로직을 추가합니다.
+    }
 
     setErrors(formErrors);
 
@@ -108,11 +125,11 @@ const SignupPage: React.FC = () => {
 
     return dropdownErrors;
   };
-
+ 
   return (
-    <div className="min-h-screen flex items-start justify-left bg-black">
-      <div className="text-white font-bold" style={{ marginLeft: "249px", fontSize: "20px" }}>
-        <h2 className="text-bold mb-6" style={{ marginTop: "239px", fontSize: "26px" }}>회원가입</h2>
+    <div className="min-h-screen flex bg-black">
+      <div className="text-white font-bold text-xl ml-60 mr-60 mb-20">
+        <h2 className="text-bold text-[26px] mb-6 mt-60">회원가입</h2>
         <form onSubmit={handleSubmit}>
           <InputBox
             label="이름"
@@ -132,7 +149,6 @@ const SignupPage: React.FC = () => {
             placeholder="010-XXXX-YYYY 형식으로 입력해주세요."
             required
           />
-          {/* 나머지 필수 입력 항목 추가 */}
           <InputBox
             label="e-mail"
             value={formData.email}
@@ -241,8 +257,29 @@ const SignupPage: React.FC = () => {
             placeholder="없으면 비워주세요."
           />
 
-          <button type="submit" className="text-bold bg-green text-black py-2 px-4 rounded hover:bg-green-600" style={{ fontSize: "16px", width: "120px", height: "40px" }}>제출하기</button>
+          <div className="flex items-center">
+            <div>
+              <div className='mt-12 text-base'>
+                ID는 자신의 학번으로 지정됩니다.
+              </div>
+              <div className='mt-4 text-base'>
+                전화번호, e-mail 등의 정보는 제출 후 변경할 수 없으니 신중하게 작성해주세요.
+              </div>
+            </div>
+            <div className="flex justify-end mt-8 ml-[300px]">
+              {errors.global.isError && (
+                <div className="text-red text-base mt-2 mr-4">{errors.global.message}</div>
+              )}
+              
+              <button className="bg-green hover:bg-green text-black font-bold text-base py-2 px-4 rounded w-30 h-10">
+                제출하기
+              </button>
+            </div>
+          </div>
+
         </form>
+
+        
       </div>
     </div>
   );
