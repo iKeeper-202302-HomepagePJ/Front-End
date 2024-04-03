@@ -127,8 +127,8 @@ const SignupPage: React.FC = () => {
   };
  
   return (
-    <div className="min-h-screen flex bg-black">
-      <div className="text-white font-bold text-xl ml-60 mr-60 mb-20">
+    <div className="min-h-screen flex bg-black justify-between px-20">
+      <div className="text-white font-bold text-xl mb-20">
         <h2 className="text-bold text-[26px] mb-6 mt-60">회원가입</h2>
         <form onSubmit={handleSubmit}>
           <InputBox
@@ -266,7 +266,7 @@ const SignupPage: React.FC = () => {
                 전화번호, e-mail 등의 정보는 제출 후 변경할 수 없으니 신중하게 작성해주세요.
               </div>
             </div>
-            <div className="flex justify-end mt-8 ml-[300px]">
+            <div className="flex mt-8 ml-[300px] items-center">
               {errors.global.isError && (
                 <div className="text-red text-base mt-2 mr-4">{errors.global.message}</div>
               )}
