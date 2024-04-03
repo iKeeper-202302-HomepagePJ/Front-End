@@ -62,7 +62,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, options, onSelect, placehold
           readOnly
           value={selectedOption || ''}
           placeholder={placeholder}
-          className={`bg-blue w-full border-gray text-base rounded-md px-2 py-1 cursor-pointer ${error ? 'border-red-500' : ''} w-[440px] h-10 {isOpen ? 'z-10' : 'z-1'}`}
+          className={`bg-blue border-gray text-base rounded-md px-2 py-1 cursor-pointer ${error ? 'border-red-500' : ''} w-[440px] h-10 {isOpen ? 'z-10' : 'z-1'}`}
           onClick={handleInputClick}
         />
         {error && <span className="text-red ml-4">{label}를 선택해주세요.</span>}
