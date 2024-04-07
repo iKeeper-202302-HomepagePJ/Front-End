@@ -1,31 +1,41 @@
+// Dropdown.tsx
+
 import React, { useState, useRef, useEffect } from 'react';
+import axios from 'axios'; // Axios를 사용하여 서버 API 호출
 
 interface DropdownProps {
   label: string;
-  options: string[];
+  options: string[]; // options 속성 추가
   onSelect: (selectedOption: string) => void;
   placeholder: string;
   required?: boolean;
-  error?: boolean; // 오류 상태를 추가합니다.
+  error?: boolean;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ label, options, onSelect, placeholder, required, error }) => {
+const Dropdown: React.FC<DropdownProps> = ({ label, onSelect, placeholder, required, error }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
+  const [options, setOptions] = useState<string[]>([]); // 서버에서 받아온 옵션 데이터
+
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const fetchOptions = async (endpoint : string) => {
+    try {
+      // 서버 API 호출하여 데이터 가져오기
+      const response = await axios.get(endpoint); // 예시: '/api/options'는 서버의 API 엔드포인트 경로
+      setOptions(response.data); // 가져온 데이터를 상태에 설정
+    } catch (error) {
+      console.error('Failed to fetch options:', error);
+    }
+  };
+  
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    fetchOptions('/api/majors'); // 주전공 데이터 가져오기
+  }, []);
+  
+  useEffect(() => {
+    fetchOptions('/api/status'); // 재적 상태 데이터 가져오기
   }, []);
 
   const handleOptionClick = (option: string) => {
@@ -42,10 +52,10 @@ const Dropdown: React.FC<DropdownProps> = ({ label, options, onSelect, placehold
   let dropdownStyle: React.CSSProperties = {};
 
   if (inputRect) {
-    const dropdownWidth = 449; // 드롭다운의 예상 폭
+    const dropdownWidth = 449;
     dropdownStyle = {
-        top: 40, // 입력 상자 바로 아래에 위치
-        left: dropdownWidth / 2 - 18, // 입력 상자 중앙에 드롭다운 배치
+      top: 40,
+      left: dropdownWidth / 2 - 18,
     };
   }
 
