@@ -1,3 +1,4 @@
+// InputBox.tsx
 import React from 'react';
 
 interface InputBoxProps {
@@ -8,14 +9,15 @@ interface InputBoxProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
   required?: boolean;
+  type?: string; // 추가: input 타입을 설정하기 위한 prop
 }
 
-const InputBox: React.FC<InputBoxProps> = ({ label, value, error, errorMessage, onChange, placeholder, required }) => {
+const InputBox: React.FC<InputBoxProps> = ({ label, value, error, errorMessage, onChange, placeholder, required, type = 'text' }) => {
   return (
     <div className="flex items-center mb-4">
       <label htmlFor={label} className="mr-4 w-48">{label}{required && <span className="text-red"> *</span>}</label>
       <input 
-        type="text" 
+        type={type} // input 타입을 설정합니다.
         id={label} 
         value={value} 
         onChange={onChange} 
