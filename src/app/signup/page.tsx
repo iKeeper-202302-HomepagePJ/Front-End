@@ -1,9 +1,9 @@
-
 // SignupPage.tsx
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import InputBox from './InputBox';
 import Dropdown from './Dropdown';
+import axios from 'axios'; // Axios를 사용하여 서버 API 호출
 
 const SignupPage: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -40,6 +40,26 @@ const SignupPage: React.FC = () => {
     global: { isError: false, message: '' }
     // 나머지 필수 입력 항목 추가
   });
+
+  useEffect(() => {
+    fetchDropdownOptions(); // 드롭다운 옵션 데이터를 서버에서 가져오는 함수 호출
+  }, []);
+
+  const fetchDropdownOptions = async () => {
+    try {
+      const response = await axios.get('/api/options'); // 서버 API 호출하여 드롭다운 옵션 데이터 가져오기
+      const { fieldOptions, statusOptions, gradeOptions, departmentOptions } = response.data; // 예시: 서버에서 필요한 드롭다운 옵션 데이터를 받아와서 분리
+      setFormData({
+        ...formData,
+        field: fieldOptions[0], // 예시: 첫 번째 항목을 기본값으로 설정
+        status: statusOptions[0],
+        grade: gradeOptions[0],
+        department: departmentOptions[0]
+      });
+    } catch (error) {
+      console.error('Failed to fetch dropdown options:', error);
+    }
+  };
 
   const handleDropdownChange = (key: string, value: string) => {
     setFormData({ ...formData, [key]: value });
@@ -94,6 +114,10 @@ const SignupPage: React.FC = () => {
       
     });
 
+    if (formData.password !== formData.passwordConfirm) {
+      formErrors.passwordConfirm = { isError: true, message: '비밀번호가 같지 않습니다.' };
+    }
+
     if (!isFormValid) {
       formErrors.global = { isError: true, message: '필수 입력 항목 중 누락된 항목이 있습니다. 다시 확인해주세요.' };
     } else {
@@ -128,7 +152,7 @@ const SignupPage: React.FC = () => {
  
   return (
     <div className="min-h-screen flex bg-black justify-between px-20">
-      <div className="text-white font-bold text-xl mb-20">
+      <div className="text-white font-bold text-xl mb-20 ml-40">
         <h2 className="text-bold text-[26px] mb-6 mt-60">회원가입</h2>
         <form onSubmit={handleSubmit}>
           <InputBox
@@ -179,28 +203,29 @@ const SignupPage: React.FC = () => {
 
           <Dropdown
             label="분야"
-            options={['개발', 'CERT']}
+            options={formData.field ? [formData.field] : []} // formData에 있는 field를 옵션으로 설정
             onSelect={(value) => handleDropdownChange('field', value)}
             placeholder="분야를 선택해주세요."
             required
-            error={errors.field.isError} // 오류 상태를 전달합니다.
+            error={errors.field.isError}
           />
           <Dropdown
             label="재적 상태"
-            options={['재학', '휴학', '졸업']}
+            options={formData.status ? [formData.status] : []}
             onSelect={(value) => handleDropdownChange('status', value)}
             placeholder="재학 상태를 선택해주세요."
             required
-            error={errors.status.isError} // 오류 상태를 전달합니다.
+            error={errors.status.isError}
           />
           <Dropdown
             label="학년 및 학차"
-            options={['1학년 / 1학차', '1학년 / 2학차', '2학년 / 3학차', '2학년 / 4학차', '3학년 / 5학차', '3학년 / 6학차', '4학년 / 7학차', '4학년 / 8학차']}
+            options={formData.grade ? [formData.grade] : []}
             onSelect={(value) => handleDropdownChange('grade', value)}
             placeholder="학년/학차를 선택해주세요."
             required
-            error={errors.grade.isError} // 오류 상태를 전달합니다.
+            error={errors.grade.isError}
           />
+
 
           <InputBox
             label="비밀번호"
@@ -210,6 +235,7 @@ const SignupPage: React.FC = () => {
             onChange={(e) => handleChange('password', e.target.value)}
             placeholder="비밀번호를 입력하세요."
             required
+            type="password"
           />
           <InputBox
             label="비밀번호 확인"
@@ -219,6 +245,7 @@ const SignupPage: React.FC = () => {
             onChange={(e) => handleChange('passwordConfirm', e.target.value)}
             placeholder="비밀번호를 다시 한 번 입력하세요."
             required
+            type="password"
           />
           <InputBox
             label="학번"
@@ -232,27 +259,27 @@ const SignupPage: React.FC = () => {
 
           <Dropdown
             label="학부/학과(전공)"
-            options={['123', '12']}
+            options={formData.department ? [formData.department] : []}
             onSelect={(value) => handleDropdownChange('department', value)}
             placeholder="주전공을 선택해주세요."
             required
-            error={errors.department.isError} // 오류 상태를 전달합니다.
+            error={errors.department.isError}
           />
           <Dropdown
             label="부전공"
-            options={['123', '12']}
+            options={formData.department ? [formData.department] : []}
             onSelect={(value) => handleDropdownChange('minor', value)}
             placeholder="없으면 비워주세요."
           />
           <Dropdown
             label="복수전공1"
-            options={['123', '12']}
+            options={formData.department ? [formData.department] : []}
             onSelect={(value) => handleDropdownChange('doubleMajor1', value)}
             placeholder="없으면 비워주세요."
           />
           <Dropdown
             label="복수전공2"
-            options={['123', '12']}
+            options={formData.department ? [formData.department] : []}
             onSelect={(value) => handleDropdownChange('doubleMajor2', value)}
             placeholder="없으면 비워주세요."
           />
@@ -268,10 +295,10 @@ const SignupPage: React.FC = () => {
             </div>
             <div className="flex mt-8 ml-[300px] items-center">
               {errors.global.isError && (
-                <div className="text-red text-base mt-2 mr-4">{errors.global.message}</div>
+                <div className="absolute text-red text-base mt-2 right-0 mr-[360px]">{errors.global.message}</div>
               )}
               
-              <button className="bg-green hover:bg-green text-black font-bold text-base py-2 px-4 rounded w-30 h-10">
+              <button className="absolute bg-green hover:bg-green text-black font-bold text-base py-2 px-4 rounded w-30 h-10 right-0 mr-60">
                 제출하기
               </button>
             </div>
