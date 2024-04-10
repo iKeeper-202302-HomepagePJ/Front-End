@@ -19,7 +19,8 @@ const config: Config = {
         pink: "#FF79C6",
         red: "#FF4E59",
         yellow: "#F0DB6D",
-        deepYellow: "#444444"
+        deepYellow: "#444444",
+        gray: "#363A54"
       },
       tonFamily:{
         koreanFont:"Pretendard-Regular",
