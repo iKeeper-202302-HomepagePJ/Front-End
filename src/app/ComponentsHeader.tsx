@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import "../../css/todo.css";
 
 const header = "w-full h-[165px] mt-[20px] flex flex-row items-end"
 export default function Header() {
