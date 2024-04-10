@@ -148,10 +148,10 @@ const SignupPage: React.FC = () => {
   
     try {
       // 회원가입 정보를 서버로 전송합니다.
-      const response = await axios.post('https://f8595853-a026-42f2-a444-0fcbd28602b0.mock.pstmn.io/api/signup', formData);
+      const response = await axios.post('https://f8595853-a026-42f2-a444-0fcbd28602b0.mock.pstmn.io/', formData);
       console.log('회원가입 성공:', response.data);
       // 회원가입 성공 시에만 라우팅 수행
-      router.push('/main');
+      router.push('/');
     } catch (error) {
       console.error('회원가입 실패:', error);
       // 여기에 회원가입 실패 처리 로직을 추가합니다.
@@ -279,7 +279,7 @@ const SignupPage: React.FC = () => {
 
           <Dropdown
             label="학부/학과(전공)"
-            options={formData.major ? [formData.major] : []}
+            options={formData.major ? [formData.major] : ["없음"]}
             onSelect={(value) => handleDropdownChange('major', value)}
             placeholder="주전공을 선택해주세요."
             required
