@@ -1,7 +1,6 @@
 // Dropdown.tsx
 
 import React, { useState, useRef, useEffect } from 'react';
-import axios from 'axios'; // Axios를 사용하여 서버 API 호출
 
 interface DropdownProps {
   label: string;
@@ -12,31 +11,12 @@ interface DropdownProps {
   error?: boolean;
 }
 
-const Dropdown: React.FC<DropdownProps> = ({ label, onSelect, placeholder, required, error }) => {
+const Dropdown: React.FC<DropdownProps> = ({ label, options, onSelect, placeholder, required, error }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
-  const [options, setOptions] = useState<string[]>([]); // 서버에서 받아온 옵션 데이터
 
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-
-  const fetchOptions = async (endpoint : string) => {
-    try {
-      // 서버 API 호출하여 데이터 가져오기
-      const response = await axios.get(endpoint); // 예시: '/api/options'는 서버의 API 엔드포인트 경로
-      setOptions(response.data); // 가져온 데이터를 상태에 설정
-    } catch (error) {
-      console.error('Failed to fetch options:', error);
-    }
-  };
-  
-  useEffect(() => {
-    fetchOptions('/api/majors'); // 주전공 데이터 가져오기
-  }, []);
-  
-  useEffect(() => {
-    fetchOptions('/api/status'); // 재적 상태 데이터 가져오기
-  }, []);
 
   const handleOptionClick = (option: string) => {
     onSelect(option);
@@ -44,9 +24,28 @@ const Dropdown: React.FC<DropdownProps> = ({ label, onSelect, placeholder, requi
     setIsOpen(false);
   };
 
+  const handleClearClick = () => {
+    onSelect(''); // 선택 취소
+    setSelectedOption('');
+    setIsOpen(false);
+  };
+
   const handleInputClick = () => {
     setIsOpen(!isOpen);
   };
+
+  const handleClickOutside = (event: MouseEvent) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      setIsOpen(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const inputRect = inputRef.current ? inputRef.current.getBoundingClientRect() : null;
   let dropdownStyle: React.CSSProperties = {};
@@ -66,15 +65,26 @@ const Dropdown: React.FC<DropdownProps> = ({ label, onSelect, placeholder, requi
           {label}
           {required && <span className="text-red"> *</span>}
         </label>
-        <input
-          ref={inputRef}
-          type="text"
-          readOnly
-          value={selectedOption || ''}
-          placeholder={placeholder}
-          className={`bg-blue border-gray text-base rounded-md px-2 py-1 cursor-pointer ${error ? 'border-red-500' : ''} w-[440px] h-10 {isOpen ? 'z-10' : 'z-1'}`}
-          onClick={handleInputClick}
-        />
+        <div className="relative">
+          <input
+            ref={inputRef}
+            type="text"
+            readOnly
+            value={(required) ? (selectedOption || '') : '없음'}
+            placeholder={placeholder}
+            className={`bg-blue border-gray text-base rounded-md px-2 py-1 cursor-pointer ${error ? 'border-red-500' : ''} w-[440px] h-10 {isOpen ? 'z-10' : 'z-1'}`}
+            onClick={handleInputClick}
+          />
+          {selectedOption && ( // 선택된 옵션이 있을 때만 Clear 버튼 표시
+            <button
+              type="button"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-red"
+              onClick={handleClearClick}
+            >
+              X
+            </button>
+          )}
+        </div>
         {error && <span className="text-red ml-4">{label}를 선택해주세요.</span>}
       </div>
       {isOpen && (
@@ -91,7 +101,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, onSelect, placeholder, requi
               className="px-4 py-2 cursor-pointer hover:bg-gray-200"
               onClick={() => handleOptionClick(option)}
             >
-              {option}
+              {option === '' ? '없음' : option}
             </div>
           ))}
         </div>
