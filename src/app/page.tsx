@@ -4,6 +4,7 @@ import palette from "../../css/StylesPalette";
 import Header from "./ComponentsHeader";
 import CalData from "./test.json";
 import Footer from "./ComponentFooter"
+import SideBar from './ComponentSideBar';
 import Link from 'next/link';
 import axios from 'axios'; //로컬 json **수정**
 interface calObject {                // json으로 받는 객체 타입 정의
@@ -37,11 +38,8 @@ async function getCalenderData() {
 }*/
 export default async function Page() {
   return (
-    <main className="flex min-h-screen bg-black flex-col items-center justify-between">
-      <div className="w-3/4 h-auto mr-100/4">
-        {<Header />}
-        {<Footer />}
-      </div>
+    <main className="flex">
+          {<SideBar />}
     </main>
   );
 };
