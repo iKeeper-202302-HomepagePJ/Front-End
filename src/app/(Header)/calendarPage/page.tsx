@@ -1,12 +1,11 @@
 import Image from 'next/image';
-import "../../css/todo.css";
-import palette from "../../css/StylesPalette";
-import Header from "./ComponentsHeader";
-import CalData from "./test.json";
-import Footer from "./ComponentFooter"
-import SideBar from './ComponentSideBar';
+import Header from "../ComponentsHeader";
+import {Calendar} from './ComponentsCalendar';
+import CalData from "../test.json";
+import Footer from "../ComponentFooter"
 import Link from 'next/link';
-import axios from 'axios'; //로컬 json **수정**
+import axios from 'axios';
+export const calendarData = JSON.parse(JSON.stringify(CalData)); // 로컬 json **수정**
 interface calObject {                // json으로 받는 객체 타입 정의
   id: number;
   field: fieldInterface;
@@ -16,7 +15,8 @@ interface calObject {                // json으로 받는 객체 타입 정의
   time: string;
   check: boolean;
 }
-interface fieldInterface {
+interface fieldInterface 
+{
   id: number;
   name: string;
 }
@@ -31,15 +31,22 @@ async function getCalenderData() {
     throw error; // 에러를 다시 throw하여 에러 처리 가능하도록 함
 }
 }*/
-//export const calendarData = getCalenderData();
+//export const calendarData = getCalenderData();    
+export const adminPower = true;           //***************************관리자 권한용 나중에 수정************************* */
 //let c = calenderData[0];
 /*export async function getCalenderData() {
   return await axios.get();
 }*/
 export default async function Page() {
   return (
-    <main className="flex">
-          {<SideBar />}
+    <main className="flex min-h-screen bg-black flex-col items-center justify-between">
+      <div className="w-3/4 h-auto mr-100/4">
+        {<Header />}
+        <div className="w-full flex mt-10 justify-normal">
+          {<Calendar/>}
+        </div>
+        {<Footer />}
+      </div>
     </main>
   );
 };
