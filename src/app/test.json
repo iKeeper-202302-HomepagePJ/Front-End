@@ -1,0 +1,139 @@
+[
+    {
+        "id": 1,
+        "field": {"id":1,
+    "name" : "sdf"
+},
+        "title": "개발세미나토글",
+        "place": "557호",
+        "day": "2023-10-24",
+        "time": "18:00:00",
+        "check": false
+    },
+    {
+        "id": 2,
+        "field": 3,
+        "title": "써트세미나",
+        "place": "505호",
+        "day": "2023-10-31",
+        "time": "18:00:00",
+        "check": false
+    },
+    {
+        "id": 3,
+        "field": 1,
+        "title": "점검세미나",
+        "place": "505호",
+        "day": "2023-11-29",
+        "time": "18:00:00",
+        "check": false
+    },
+    {
+        "id": 4,
+        "field": 1,
+        "title": "시작세미나",
+        "place": "505호",
+        "day": "2023-11-29",
+        "time": "18:00:00",
+        "check": true
+    },
+    {
+        "id": 5,
+        "field": 3,
+        "title": "해킹페스티벌",
+        "place": "505호",
+        "day": "2023-12-30",
+        "time": "18:00:00",
+        "check": false
+    },
+    {
+        "id": 6,
+        "field": 1,
+        "title": "연말파티",
+        "place": "505호",
+        "day": "2023-12-29",
+        "time": "18:00:00",
+        "check": false
+    },
+    {
+        "id": 7,
+        "field": 1,
+        "title": "연말파티",
+        "place": "505호",
+        "day": "2023-12-30",
+        "time": "18:00:00",
+        "check": true
+    },
+    {
+        "id": 8,
+        "field":8,
+        "title": "연말파티",
+        "place": "505호",
+        "day": "2023-12-30",
+        "time": "18:00:00",
+        "check": false
+    },
+    {
+        "id": 9,
+        "field": 2,
+        "title": "신년개발모임",
+        "place": "557호",
+        "day": "2024-01-01",
+        "time": "18:00:00",
+        "check": false
+    },
+    {
+        "id": 10,
+        "field": 3,
+        "title": "cert",
+        "place": "557호",
+        "day": "2024-02-03",
+        "time": "18:00:00",
+        "check": false
+    },
+    {
+        "id": 11,
+        "field": 2,
+        "title": "dev",
+        "place": "557호",
+        "day": "2024-02-02",
+        "time": "18:00:00",
+        "check": false
+    },
+    {
+        "id": 12,
+        "field": 1,
+        "title": "all",
+        "place": "557호",
+        "day": "2024-02-01",
+        "time": "18:00:00",
+        "check": true
+    },
+    {
+        "id": 13,
+        "field": 2,
+        "title": "dev",
+        "place": "557호",
+        "day": "2024-02-13",
+        "time": "18:00:00",
+        "check": true
+    },
+    {
+        "id": 14,
+        "field": 3,
+        "title": "cert",
+        "place": "557호",
+        "day": "2024-02-13",
+        "time": "00:00:01",
+        "check": true
+    },
+    {
+        "id": 15,
+        "field": 1,
+        "title": "cert두번째 ",
+        "place": "557호",
+        "day": "2024-02-13",
+        "time": "17:01:00",
+        "check": true
+    }
+]
