@@ -20,12 +20,10 @@ interface post {
     },
     "title": string
   }
-export default async function Page() {
+export default async function Page({ params }: { params: { category: string[] } }) {
     return (
-        <main className="min-h-screen">
-            <WritePost />
+        <main className="min-h-screen w-full">
+          <WritePost urlInCategory={(params.category) ? params.category : ['0']} />
         </main >
     );
 };
-
-export {category, categoryList, headline, headlineList}

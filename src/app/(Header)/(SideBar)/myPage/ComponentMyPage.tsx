@@ -1,5 +1,5 @@
 'use client';
-import { IconWarining } from '../../../svgtest'
+import { IconWarining } from '../../../SvgIcons'
 import { use, useEffect, useState } from "react"
 import { RootState } from '../../../redux/store';
 import axios from "axios";
@@ -12,12 +12,12 @@ const toggleBox = "w-[250px] h-full max-w-[250px] min-w-[150px] flex justify-bet
 
 const SetUserField = (userFieldID: number) => {
     switch (userFieldID) {
-        case 2:
-            return ["CERT", "text-skyblue"]
         case 3:
+            return ["CERT", "text-skyblue"]
+        case 2:
             return ["개발", "text-green"]
         case 1:
-            return ["ㅋ", "text-orange"]
+            return ["와! 아이키퍼!", "text-orange"]
     }
 }
 
@@ -66,6 +66,7 @@ export default function MyPage() {
     const [majorList, setMajorList] = useState<any[]>([])
     const [statusList, setStatusList] = useState<any[]>([])
     const [gradeList, setGradeList] = useState<any[]>([])
+    console.log("저장잘되냐?", useSelector((state: RootState) => state.user))
     const getUserData = async () => {
         try {
             const respon = await axios.get('http://3.35.239.36:8080/api/members/mypage', {

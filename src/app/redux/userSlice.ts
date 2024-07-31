@@ -18,6 +18,8 @@ export const userSlice = createSlice(
             clearToken: (state) => {
                 state.token = null;
                 state.isLogining = false;
+                state.studentId = null;
+                state.auth = null
             },
             setInfo: (state, action) => {
                 state.auth = action.payload.auth;

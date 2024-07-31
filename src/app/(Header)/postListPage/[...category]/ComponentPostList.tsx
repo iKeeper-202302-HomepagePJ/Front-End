@@ -1,13 +1,14 @@
 "use client"
 import { useEffect, useState } from "react";
-import { PostListHeading, PostItem } from "../../../../ComponentPostList";
-import { postHeadingList, postData, lastPostListPage, userWritingToday, adminPower } from './page';
-import { IconStar } from "../../../../svgtest";
-import { PageMove } from "../../../../ComponentPageMove";
-import { iconPencil } from "../../../../svgtest";
+import { PostListHeading, PostItem } from "../../../ComponentPostList";
+import { IconStar } from "../../../SvgIcons";
+import { PageMove } from "../../../ComponentPageMove";
+import { iconPencil } from "../../../SvgIcons";
 import { useRouter } from 'next/navigation';
-import { Modal } from "../../../../ComponentModal";
-import { CheckBox, HeadCheckBox } from "../../../../ComponentCheckBox";
+import { Modal } from "../../../ComponentModal";
+import { CheckBox, HeadCheckBox } from "../../../ComponentCheckBox";
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../redux/store';
 
 interface postDataObject {                     // json으로 받는 객체 타입 정의
     id: number;
@@ -45,6 +46,7 @@ interface postObject {                     // json으로 받는 객체 타입 �
     postStudentId:string;
     updateCheck:boolean;
     content:string;
+    bookmark:boolean
 }
 interface postList {
     "paging": {
@@ -76,10 +78,11 @@ interface postList {
       "empty": boolean
     }
 }
-export default function PostList({ page, baseUrl, postListData }: { page: number, baseUrl: string, postListData : postObject[] }) {
+export default function PostList({ page, baseUrl, postListData }: { page: {lastPostListPage:number, page:number}, baseUrl: string, postListData : postObject[] }) {
     const [bookMarkList, setBookMark] = useState<number[]>([]);
     const [checkList, setCheck] = useState(Array(15).fill(0));
     const [openModal, setOpenModal] = useState(false)
+    const adminPower = useSelector((state: RootState) => state.user.token)=="USER_ADMIN" ? true : false;
     const route = useRouter();
     const setBookMarkHandle = (id: number) => {
         if (bookMarkList.includes(id)) {
@@ -93,7 +96,7 @@ export default function PostList({ page, baseUrl, postListData }: { page: number
         
     }
     const allPostBookMarkList = () => {
-        const bookMark: number[] = postData.filter((key: { bookmark: boolean; }) => (!key.bookmark)).map((key: postDataObject) => ((key.id)));
+        const bookMark: number[] = postListData.filter((key: { bookmark: boolean; }) => (!key.bookmark)).map((key) => ((key.id)));
         setBookMark(bookMark);
     }
     const canNotWriting = () => {
@@ -125,30 +128,31 @@ export default function PostList({ page, baseUrl, postListData }: { page: number
     }
     return (
         <div className="flex-col w-full">
-            <div className='w-full h-auto bg-deepBlue rounded-lg p-[20px] mt-[20px]'>
+            {page.lastPostListPage == 0 ? <div className="w-full h-[50px] bg-deepBlue content-center">게시글이 존재하지 않습니다.</div>:<div><div className='w-full h-auto bg-deepBlue rounded-lg p-[20px] mt-[20px]'>
                 <div className='flex items-center'>
                     {adminPower && HeadCheckBox('PostListCheckBox', setAllCheckHandle)}
                     <button onClick={() => (allPostBookMarkList())}>{IconStar("w-[20px] h-[20px] mx-[20px]", "deepYellow")}</button>
-                    {PostListHeading(true, true, postHeadingList)}
+                    {PostListHeading(true, true)}
                 </div>
                 <hr className="h-1 bg-blue border-0 mt-[5px]"></hr>
                 <div className="flex flex-col-reverse">
                 {postListData.map((key: postObject, index: number) => (<div><a href={`http://localhost:3000/postPage/${key.id}`} className='flex items-center' id={`postListItemComponent${key.id}`}>{PostItem(true, true, key, addPostListComponent, index, false)}</a><hr className="h-[3px] bg-blue border-0 mt-[5px]"></hr></div>))}
                 </div>
             </div>
-            <div className="w-full h-[30px] flex justify-between mt-[20px]"><div></div>{PageMove(page, lastPostListPage, `/postListPage/${baseUrl}`)}
+            {openModal && Modal("w-fit h-fit", canNotWriting, setOpenModal)}</div>}
+            <div className="w-full h-[30px] flex justify-between mt-[20px]"><div></div>{/*PageMove(page.page, page.lastPostListPage, `/postListPage/${baseUrl}`)*/}
                 <div className="flex h-[30px] justify-self-end">
                     {adminPower &&
                         <div>
                             <button className="w-[30px] h-[30px]"><img src="/IconMove.svg" /></button>
                             <button className="w-[30px] h-[30px] ml-[10px]"><img src="/IconDelete.svg" /></button>
                         </div>}
-                    <button className="w-[30px] h-[30px] rounded-lg bg-green ml-[10px]" onClick={() => { userWritingToday >= 3 ? setOpenModal(true) : route.push("http://localhost:3000/writePostPage") }}>
-                        {iconPencil("w-[30px] h-[30px] fill-none mt-[6px] ml-[6px]", "deepBlue")}
-                    </button>
+                    {/*<button className="w-[30px] h-[30px] rounded-lg bg-green ml-[10px]" onClick={() => { route.push("http://localhost:3000/writePostPage") }}>
+                        {/*iconPencil("w-[30px] h-[30px] fill-none mt-[6px] ml-[6px]", "deepBlue")}
+                    </button>*/}
                 </div>
             </div>
-            {openModal && Modal("w-fit h-fit", canNotWriting, setOpenModal)}
+            
         </div>
     )
 }

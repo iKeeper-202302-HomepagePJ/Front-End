@@ -40,28 +40,8 @@ interface categoryDataObject {
     id: number;
     name: string;
 }
-let postData: postDataObject;
-let test;
-const commnetData: any[] = [
-    {
-        user: {
-            name: "김철수",
-            id: "22113966"
-        },
-        timestamp: "2024-02-13T13:00:00+09:00",
-        comment: "유용하네요."
-    },
-    {
-        user: {
-            name: "김철수",
-            id: "22113966"
-        },
-        timestamp: "2024-02-13T13:00:00+09:00",
-        comment: "관련 자료는 ~에서 찾을 수 있습니다."
-    }
-]
 export default function ({ params }: { params: { postID: Number } }) {         // 수정 : string에서 number로. 경로를 카테고리 번호로 변경
-    const [postData, setTest] = useState<postDataObject | null>();
+    const [postData, setPostData] = useState<postDataObject | null>();
     const userToken = useSelector((state: RootState) => state.user.token);
     const getPostData = async () => {
         try {
@@ -70,7 +50,7 @@ export default function ({ params }: { params: { postID: Number } }) {         /
                     Authorization: `Bearer ${userToken}`
                 }
             }).then(res => {
-                setTest(res.data.data);
+                setPostData(res.data.data);
                 console.log("게시글 정보 불러오기 성공", res.data.data);
             });
         } catch (error) {
@@ -82,11 +62,10 @@ export default function ({ params }: { params: { postID: Number } }) {         /
         getPostData();
     }, []);
     return (
-        <div className="w-full flex flex-row">
+        <div className="w-full flex flex-row mt-[50px]">
             <div className="grow">
-                {postData!=null && <Post postData={postData}/>}
+                {postData!=null && <Post post={postData}/>}
             </div>
         </div>
     );
 };
-export { postData, commnetData };

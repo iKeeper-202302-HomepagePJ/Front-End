@@ -28,7 +28,6 @@ const LoginPage: React.FC = () => {
         try {
             // 서버로 로그인 요청 보내기
             const response = await axios.post('http://3.35.239.36:8080/api/auths/login', { studentId:id, password:password }).then(res => {
-                console.log('로그인 성공:', res.data.data.accessToken);
                 dispatch(setToken(res.data.data.accessToken));
                 const payload = (res.data.data?.accessToken || "").split('.')[1];
                 dispatch(setInfo(JSON.parse(decode(payload))));

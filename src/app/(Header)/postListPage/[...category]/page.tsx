@@ -1,14 +1,15 @@
 "use client"
 
-import Header from "../../../../ComponentsHeader";
-import SideBar from "../../../../ComponentSideBar";
-import Footer from "../../../../ComponentFooter";
+import Header from "../../../ComponentsHeader";
+import SideBar from "../../../ComponentSideBar";
+import Footer from "../../../ComponentFooter";
 import PostList from "./ComponentPostList";
 import { useRouter } from 'next/navigation'
 import { useSelector } from "react-redux";
-import { RootState } from '../../../../redux/store';
+import { RootState } from '../../../redux/store';
 import { useState, useEffect } from "react";
 import axios from "axios";
+import {GetCategoryListAndSideBar} from "../../../ComponentSideBarCategoryList";
 interface postDataObject {                     // json으로 받는 객체 타입 정의
     id: number;
     user: string;
@@ -69,25 +70,26 @@ const postData: postDataObject[] = [
         bookmark: false
     }
 ]
-const userWritingToday = 1;     /*****이거 유저 당일 게시물 작성 횟수 수정***** */
-const lastPostListPage = 1; /*********이거 최대 페이지 수정****** */
 const postHeadingList = ['1회차', '2회차', '최대이십글자더라가나다라마바다사아다바마'];
 const adminPower = false;
 export default function ({ params }: { params: { category: string[] } }) {         // 수정 : string에서 number로. 경로를 카테고리 번호로 변경
-    const [postListData, setPostList] = useState<any>();
+    const [postListData, setPostList] = useState<any>([]);
+    const [page, setPage] = useState<{lastPostListPage:number, page:number}>({lastPostListPage:0, page:0});
+    const [categoryList, getCategoryList] = useState<any[]>([])
     const userToken = useSelector((state: RootState) => state.user.token);
-    
-    const apiUrl = Number(params.category[params.category.length-1])-1;
-    console.log(apiUrl)
+    let baseUrl = params.category;
+    const urlpage = Number(params.category[params.category.length-1]);
     const getPostListData = async () => {
         try {
-            const response = await axios.get(`http://3.35.239.36:8080/api/posts/?page=${apiUrl}`, {
-                headers: {
-                    Authorization: `Bearer ${userToken}`
-                }
-            }).then(res => {
-                setPostList(res.data.data.paging.content);
+            console.log("나대체뭘보낸거야", urlpage-1)
+            const response = await axios.get(`http://3.35.239.36:8080/api/posts/?page=${urlpage}`).then(res => {
+                setPostList(res.data.data.content);
                 console.log("게시글 목록 정보 불러오기 성공", res.data.data);
+                console.log("나대체뭘보낸거야", urlpage-1)
+                setPage({
+                    lastPostListPage : res.data.data.totalPages,
+                    page : urlpage > res.data.data.totalPages ? res.data.data.totalPages : urlpage<1 ? 1 : urlpage
+                })
             });
         } catch (error) {
             console.error('게시글 목록 정보 실패:', error);
@@ -97,17 +99,16 @@ export default function ({ params }: { params: { category: string[] } }) {      
     useEffect(() => {
         getPostListData();
     }, []);
-    let baseUrl = params.category;
-    let page = Number(params.category[params.category.length-1]);
-    page = page > lastPostListPage ? lastPostListPage : page;
     if (postListData == null) return null;
     return (
-        <main className="flex min-h-screen bg-black flex-col items-center w-full">
-            {`${console.log("나야", postListData)}`}
-                <div className="flex text-[20px] text-pink font-bold items-center w-full">
-                    <img src="/IconFile.svg" className="mr-[5px]" />{params.category[1] ? <div>{decodeURI(params.category[0])} {params.category[2] && `> ${decodeURI(params.category[2])}`}</div> : "전체 게시물"}
+        <main className="flex min-h-screen bg-black w-full">
+            <div className="w-full h-[30px] mt-[50px]">
+                <div className="flex text-[20px] text-pink font-bold items-center w-full h-[30px]">
+                    <img src="/IconFile.svg" className="mr-[5px]" />{params.category[1] ? <div>{decodeURI(params.category[0])} {Boolean(params.category[2]) && `> ${decodeURI(params.category[2])}`}</div> : "전체 게시물"}
                 </div>
                 <PostList page={page} baseUrl={baseUrl.join('/')} postListData={postListData} />
+                </div>
+                {GetCategoryListAndSideBar(getCategoryList)}
         </main>
     );
 };
@@ -127,4 +128,3 @@ export default function ({ params }: { params: { category?: number[] } }) {
     );
 };
 */
-export { postHeadingList, postData, lastPostListPage, userWritingToday, adminPower };

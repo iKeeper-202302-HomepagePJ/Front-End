@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 
 interface DropdownProps {
   label: string;
-  options: string[]; // options 속성 추가
+  options: any[]; // options 속성 추가
   onSelect: (selectedOption: number) => void;
   placeholder: string;
   required?: boolean;
@@ -18,9 +18,9 @@ const Dropdown: React.FC<DropdownProps> = ({ label, options, onSelect, placehold
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleOptionClick = (option: number) => {
-    onSelect(option);
-    setSelectedOption(options[option]);
+  const handleOptionClick = (option: {id:number, name:string}) => {
+    onSelect(option.id);
+    setSelectedOption(option.name);
     setIsOpen(false);
   };
 
@@ -56,7 +56,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, options, onSelect, placehold
       left: dropdownWidth / 2 - 18,
     };
   }
-
+console.log(options)
   return (
     <div className="relative mb-4 text-[16px]">
       <div className="flex items-center relative">
@@ -74,7 +74,7 @@ const Dropdown: React.FC<DropdownProps> = ({ label, options, onSelect, placehold
             className={`bg-blue border-gray text-base rounded-md px-2 py-1 cursor-pointer ${error ? 'border-red-500' : ''} w-[550px] h-10 {isOpen ? 'z-10' : 'z-1'}`}
             onClick={handleInputClick}
           />
-          {!selectedOption && ( // 선택된 옵션이 있을 때만 Clear 버튼 표시
+          {!selectedOption && required &&( // 선택된 옵션이 있을 때만 Clear 버튼 표시
             <button
               type="button"
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-red"
@@ -94,13 +94,13 @@ const Dropdown: React.FC<DropdownProps> = ({ label, options, onSelect, placehold
           }}
           ref={dropdownRef}
         >
-          {options.map((option, index) => (
+          {options.map((option:{id:number, name:string}) => (
             <div
-              key={index}
+              key={`${option.id}`}
               className="px-4 py-2 cursor-pointer hover:bg-gray-200"
-              onClick={() => handleOptionClick(index)}
+              onClick={() => handleOptionClick(option)}
             >
-              {option === '' ? '없음' : option}
+              {option.name}
             </div>
           ))}
         </div>

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from "react";
-import { IconLoudSpeaker } from "./svgtest"
+import { IconLoudSpeaker } from "./SvgIcons"
 //import { majorList } from "./(Header)/(SideBar)/myPage/page";
 
 interface postObject {                     // json으로 받는 객체 타입 정의
@@ -32,7 +32,7 @@ interface postObject {                     // json으로 받는 객체 타입 �
     updateCheck:boolean;
     content:string;
 }
-const PostItem = (showHeadline:boolean, showWriter:boolean, postData : postObject, addPostListComponent : Function, index?:number, iconBoolean?:boolean) => {
+const PostItem = (showHeadline:boolean, showWriter:boolean, postData : any, addPostListComponent : Function, index?:number, iconBoolean?:boolean) => {
     return (
         <div className="w-full text-[16px] font-bold flex text-center mt-[5px] items-center h-[40px]">
             {addPostListComponent.length ==2 ? addPostListComponent(postData.category.categoryLarge.name, postData.category.categorySmall.name):addPostListComponent(postData.id, index, iconBoolean)}

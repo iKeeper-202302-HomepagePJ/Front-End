@@ -6,7 +6,7 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import ReactDOM from 'react-dom';
 import { moveMonth } from './ComponentsCalendar'
-import { iconIKeeper, iconDev, iconCert } from '../../svgtest'
+import { iconIKeeper, iconDev, iconCert } from '../../SvgIcons'
 import Link from 'next/link'
 
 const todoListContainer = "w-[450px] h-auto";
@@ -65,14 +65,14 @@ export function setFieldDesign(field: number, clear?: boolean) {
         return (
           <div className='flex items-center'>
             {iconCert("mr-[10px]", "gray")}
-            <div className={`w-[65px] text-gray-500 font-semibold text-[26px] ml-[5px]`}>CERT</div>
+            <div className={`w-[65px] text-gray-500 font-bold text-[26px] ml-[5px]`}>CERT</div>
           </div>
         );
       }
       return (
         <div className='flex items-center'>
           {iconCert("mr-[10px]", "skyblue")}
-          <div className={`w-[65px] text-skyblue font-semibold  text-[26px] ml-[5px]`}>CERT</div>
+          <div className={`w-[65px] text-skyblue font-bold  text-[26px] ml-[5px]`}>CERT</div>
         </div>
       );
     case 3:
@@ -80,14 +80,14 @@ export function setFieldDesign(field: number, clear?: boolean) {
         return (
           <div className='flex items-center'>
             {iconDev("mr-[10px]", "gray")}
-            <div className={`w-[65px] text-gray-500 font-semibold  text-[26px] ml-[5px]`}>DEV</div>
+            <div className={`w-[65px] text-gray-500 font-bold  text-[26px] ml-[5px]`}>DEV</div>
           </div>
         );
       }
       return (
         <div className='flex items-center'>
           {iconDev("mr-[10px]", "green")}
-          <div className={`w-[65px] text-green font-semibold  text-[26px] ml-[5px]`}>DEV</div>
+          <div className={`w-[65px] text-green font-bold  text-[26px] ml-[5px]`}>DEV</div>
         </div>
       );
     default:
@@ -95,14 +95,14 @@ export function setFieldDesign(field: number, clear?: boolean) {
         return (
           <div className='flex items-center'>
             {iconIKeeper("mr-[10px]", "gray")}
-            <div className={`w-[65px] text-gray-500 font-semibold  text-[26px] ml-[5px]`}>ALL</div>
+            <div className={`w-[65px] text-gray-500 font-bold  text-[26px] ml-[5px]`}>ALL</div>
           </div>
         );
       }
       return (
         <div className='flex items-center'>
           {iconIKeeper("mr-[10px]", "orange")}
-          <div className={`w-[65px] text-orange font-semibold  text-[26px] ml-[5px]`}>ALL</div>
+          <div className={`w-[65px] text-orange font-bold  text-[26px] ml-[5px]`}>ALL</div>
         </div>
       );
   }
@@ -156,7 +156,7 @@ function Todo({ calData, clear, checkedFunction }: { calData: calObject, clear: 
   )
 }
 
-function TodoList(calData: calObject[], setDay: number, todoCheckList:Function) {
+function TodoList(calData: calObject[], setDay?: number, todoCheckList?:Function) {
   const [isModify, setIsModify] = useState(false);
   const [checkTodoList, setCheckTodoList] = useState([]);
   let modifying = () => {
@@ -201,9 +201,9 @@ export function ComponentTodoList(year: number, month: number, day: number, cale
   //let createTodo = writeTodoBox("" + year, "" + month, "" + day);
   let count = (calendarData.length);                // 일정 개수 확인
   return (
-    <div className={`${todoListContainer} koreanFont`}>
+    <div className={`w-[200px] ${todoListContainer} koreanFont`}>
       <div className="flex justify-normal">
-        <div className="flex text-[26px] text-orange w-[250px]">
+        <div className="flex text-[26px] text-orange w-[200px] font-semibold">
           <div className="mr-[10px]">
             <Image width={40} height={40} src="/IconCalendar.svg" alt="image description" className='w-auto h-full'></Image>
           </div>
@@ -224,7 +224,45 @@ export function ComponentTodoList(year: number, month: number, day: number, cale
       </div>
       {/*showNewTodo && createTodo*/}
       {TodoList(calendarData, day, setCheckTodoList)}
-      {(count == 0) && !showNewTodo && <div className={`${todoListContainer} flex koreanFont`}>
+      {(count == 0) && !showNewTodo && <div className={`w-[200px] ${todoListContainer} flex koreanFont`}>
+        <div className="mt-[100px] text-center text-[26px] text-center">일정이 없습니다.</div>
+      </div>}
+    </div>
+  );
+}
+
+export function TodayComponentTodoList(calendarData: calObject[]) {
+  const [showNewTodo, setVisible] = useState(false);
+  const [checkTodoList, setCheckTodoList] = useState<Number[]>([]);
+  const setCheckTodoListHandler = (id:number) => {
+    !checkTodoList.includes(id) && setCheckTodoList(checkTodoList.concat([id]))
+  }
+  const changeShowNewTodoHandler = () => {
+    setVisible(!showNewTodo);
+  }
+  const setClearTodo = () => {
+    console.log(checkTodoList)
+    setCheckTodoList([])
+  }
+  const setDeleteTodo = () => {
+    console.log(checkTodoList)
+    setCheckTodoList([])
+  }
+  //let createTodo = writeTodoBox("" + year, "" + month, "" + day);
+  let count = (calendarData.length);                // 일정 개수 확인
+  return (
+    <div className={`w-[200px] ${todoListContainer} koreanFont`}>
+      <div className="flex justify-normal">
+        <div className="flex text-[26px] text-orange w-[250px] font-semibold">
+          <div className="mr-[10px]">
+            <Image width={40} height={40} src="/IconCalendar.svg" alt="image description" className='w-auto h-full'></Image>
+          </div>
+          {`오늘의 일정`}
+        </div>
+      </div>
+      {/*showNewTodo && createTodo*/}
+      {TodoList(calendarData)}
+      {(count == 0) && !showNewTodo && <div className={`w-[200px] ${todoListContainer} flex koreanFont`}>
         <div className="mt-[100px] text-center text-[26px] text-center">일정이 없습니다.</div>
       </div>}
     </div>

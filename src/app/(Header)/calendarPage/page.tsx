@@ -36,7 +36,10 @@ async function getCalenderData() {
     console.error(error);
     throw error; // 에러를 다시 throw하여 에러 처리 가능하도록 함
 }
-}/*
+}
+
+/*
+
 const response = (await axios.post('https://4a26c935-10b4-4195-a293-2e78b6965b48.mock.pstmn.io/api/calendars')).data;
     calendarData = response.data.map
 let test;

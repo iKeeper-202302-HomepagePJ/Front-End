@@ -57,19 +57,19 @@ const SignupPage: React.FC = () => {
     passwordConfirm: '',
     studentId: '',
     major1: {
-      id:0
+      id:1
     },
     minor: {
-      id:0
+      id:1
     },
     major2: {
-      id:0
+      id:1
     },
     major3: {
-      id:0
+      id:1
     },
   });
-
+  const [isFormValid, setValid] = useState(true);
   const [errors, setErrors] = useState({
     name: { isError: false, message: '' },
     pnumber: { isError: false, message: '' },
@@ -96,12 +96,10 @@ const SignupPage: React.FC = () => {
       const response = (await axios.get('http://3.35.239.36:8080/api/members/major')).data.data;
       console.log('응답 데이터:', response);
       if (Array.isArray(response)) {
-        const names = response.map((item: any) => item.name); // "name" 값을 추출하여 새로운 배열 생성
-        console.log('전공 목록:', names);
-        setMajorList(names); // 추출된 "name" 값을 전공 목록으로 설정
+        setMajorList(response);
         setFormData(prevFormData => ({
           ...prevFormData,
-          major1: names[0] || '' // 첫 번째 전공을 선택
+          major1: response[0].id || '' // 첫 번째 전공을 선택
         }));
         setmajorListFetched(true); // 전공 목록을 받아왔음을 표시
       } else {
@@ -116,9 +114,7 @@ const SignupPage: React.FC = () => {
       const response = (await axios.get('http://3.35.239.36:8080/api/members/status')).data.data;
       console.log('응답 데이터:', response);
       if (Array.isArray(response)) {
-        const names = response.map((item: any) => item.name); // "name" 값을 추출하여 새로운 배열 생성
-        console.log('재적 상태 목록:', names);
-        setStatusList(names); // 추출된 "name" 값을 전공 목록으로 설정
+        setStatusList(response); // 추출된 "name" 값을 전공 목록으로 설정
       } else {
         console.error('Failed to fetch dropdown options: Response data is not an array');
       }
@@ -131,9 +127,7 @@ const SignupPage: React.FC = () => {
       const response = (await axios.get('http://3.35.239.36:8080/api/members/grade')).data.data;
       console.log('응답 데이터:', response);
       if (Array.isArray(response)) {
-        const names = response.map((item: any) => item.name); // "name" 값을 추출하여 새로운 배열 생성
-        console.log('학년 및 학차 목록:', names);
-        setGradeList(names); // 추출된 "name" 값을 전공 목록으로 설정
+        setGradeList(response); // 추출된 "name" 값을 전공 목록으로 설정
       } else {
         console.error('Failed to fetch dropdown options: Response data is not an array');
       }
@@ -166,36 +160,35 @@ const SignupPage: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     let formErrors = { ...errors };
-    let isFormValid = true;
 
     // 필수 입력 항목 검사
     if (!formData.name.trim()) {
       formErrors.name = { isError: true, message: '이름을 입력해주세요.' };
-      isFormValid = false; // 필수 입력 항목이 비어 있음을 표시
+      setValid(false); // 필수 입력 항목이 비어 있음을 표시
     }
     if (!formData.pnumber.trim()) {
       formErrors.pnumber = { isError: true, message: '연락처를 입력해주세요.' };
-      isFormValid = false;
+      setValid(false);
     }
     if (!formData.email.trim()) {
       formErrors.email = { isError: true, message: '이메일을 입력해주세요.' };
-      isFormValid = false;
+      setValid(false);
     }
     if (!formData.birth.trim()) {
       formErrors.birth = { isError: true, message: '생일을 입력해주세요.' };
-      isFormValid = false;
+      setValid(false);
     }
     if (!formData.password.trim()) {
       formErrors.password = { isError: true, message: '비밀번호를 입력해주세요.' };
-      isFormValid = false;
+      setValid(false);
     }
     if (formData.passwordConfirm == undefined || !formData.passwordConfirm.trim()) {
       formErrors.passwordConfirm = { isError: true, message: '비밀번호 확인을 입력해주세요.' };
-      isFormValid = false;
+      setValid(false);
     }
     if (!formData.studentId.trim()) {
       formErrors.studentId = { isError: true, message: '학번을 입력해주세요.' };
-      isFormValid = false;
+      setValid(false);
     }
 
     // Dropdown 컴포넌트의 유효성 검사를 수행합니다.
@@ -205,24 +198,24 @@ const SignupPage: React.FC = () => {
     // 필수 입력 항목 또는 드롭다운 항목 중 하나라도 오류가 있는지 확인합니다.
     Object.keys(formErrors).forEach((key) => {
       if (formErrors[key as keyof typeof formErrors].isError) {
-        isFormValid = false;
+        setValid(false);
       }
     });
 
     if (formData.password !== formData.passwordConfirm && formData.passwordConfirm !== '') {
       formErrors.passwordConfirm = { isError: true, message: '비밀번호가 같지 않습니다.' };
-      isFormValid = false;
+      setValid(false);
     }
 
     if (!isFormValid) {
       formErrors.global = { isError: true, message: '필수 입력 항목 중 누락된 항목이 있습니다. 다시 확인해주세요.' };
       setErrors(formErrors); // 오류 메시지 표시 또는 초기화
-      isFormValid = true;
+      setValid(true);
       return; // 폼 제출 중지
     } else {
       formErrors.global = { isError: false, message: '' }; // 필수 입력 항목이 모두 입력되었으므로 오류 메시지 초기화
       setErrors(formErrors); // 오류 메시지 표시 또는 초기화
-      isFormValid = true;
+      setValid(true);
     }
 
     try {
@@ -230,43 +223,8 @@ const SignupPage: React.FC = () => {
       console.log(formData);
       let signupUserData = formData;
       delete signupUserData.passwordConfirm;
-      signupUserData.field.id = signupUserData.field.id+2;
-      signupUserData.status.id++
-      signupUserData.grade.id++
-      signupUserData.major1.id++
-      signupUserData.major2.id++
-      signupUserData.major3.id++
-      signupUserData.minor.id++
-      console.log(formData);
-      const response = await axios.post('http://3.35.239.36:8080/api/auths/join', {
-        "studentId": "22113466",
-        "name": "명재우",
-        "pnumber": "010-5525-5468",
-        "birth": "200030204",
-        "email": "wodn@gmail.com",
-        "password": "qwerQWER1!",
-        "status": {
-            "id": 1
-        },
-        "field": {
-            "id": "2"
-        },
-        "grade": {
-            "id": "3"
-        },
-        "major1": {
-            "id": "3"
-        },
-        "major2": {
-            "id": "1"
-        },
-        "major3": {
-            "id": "1"
-        },
-        "minor": {
-            "id": "1"
-        }
-    });
+      console.log("어.... 이게 전송될꺼야 아마...? ",{formData});
+      const response = await axios.post('http://3.35.239.36:8080/api/auths/join', formData);
       console.log('회원가입 성공:', response.data);
       // 회원가입 성공 시에만 라우팅 수행
       router.push('/');
@@ -281,7 +239,7 @@ const SignupPage: React.FC = () => {
   const validateDropdowns = () => {
     const dropdownErrors: { [key: string]: { isError: boolean; message: string } } = {};
 
-    if (formData.field.id) {
+    if (!formData.field.id) {
       dropdownErrors.field = { isError: true, message: '분야를 선택해주세요.' };
     }
     if (!formData.status.id) {
@@ -342,7 +300,7 @@ const SignupPage: React.FC = () => {
 
           <Dropdown
             label="분야"
-            options={["개발", "CERT"]}
+            options={[{name:"개발", id:2}, {name:"CERT", id:3}]}
             onSelect={(value) => handleDropdownChange('field', value)}
             placeholder="분야를 선택해주세요."
             required

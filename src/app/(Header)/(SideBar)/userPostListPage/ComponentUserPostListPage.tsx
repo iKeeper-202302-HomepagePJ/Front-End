@@ -14,7 +14,7 @@ interface postDataObject {                     // json으로 받는 객체 타�
     subCategory ?: string;
 }
 
-export default function UserPostList() {
+export default function UserPostList(postData : {postData:postDataObject[]}) {
     
     return (
         <div className="flex-col rounded-lg w-auto h-auto bg-deepBlue mt-[20px] p-[20px]">

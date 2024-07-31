@@ -77,6 +77,7 @@ export function writeTodoBox(year: string, month: string, day: string, calData: 
           }
         }).then(res => {
           console.log('캘린더 수정 성공', res.data);
+          window.close();  
         }) 
       } catch (error) {
         console.error('캘린더 수정 실패:', error);
@@ -92,6 +93,7 @@ export function writeTodoBox(year: string, month: string, day: string, calData: 
         }
       }).then(res => {
         console.log('캘린더 추가 성공', res.data);
+        window.close();  
       })
     } catch (error) {
       console.error('캘린더 추가 실패:', error);

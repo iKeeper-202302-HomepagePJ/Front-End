@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { PostListHeading, PostItem } from "../../../../ComponentPostList";
 import { postHeadingList, postData, lastPostListPage, userWritingToday, adminPower } from './page';
-import { IconLoudSpeaker, iconPencil } from "../../../../svgtest";
+import { IconLoudSpeaker, iconPencil } from "../../../../SvgIcons";
 import { PageMove } from "../../../../ComponentPageMove";
 import { useRouter } from 'next/navigation';
 import { Modal } from "../../../../ComponentModal";

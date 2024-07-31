@@ -1,10 +1,14 @@
 "use client"
-import { useRef, useState } from "react";
-import { commnetData, postData } from "./page"
-import { iconPencil } from "@/app/svgtest"
+import { useRef, useState, useEffect } from "react";
+import { iconPencil } from "@/app/SvgIcons"
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from '../../../../redux/store';
+import { EditorProvider, useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import { useRouter } from 'next/navigation';
+import { postHeadingList } from "../../noticeListPage/[...page]/page";
+
 const TextAreaComponent = () => {
     const [text, setText] = useState('');
     const [height, setHeight] = useState('auto'); // 초기 높이를 'auto'로 설정
@@ -49,13 +53,18 @@ interface postDataObject {                     // json으로 받는 객체 타�
     fix:boolean;
     postStudentId:string;
     updateCheck:boolean;
-    content:string;
+    content:any;
 }
-export default function Post({postData}:{postData:postDataObject}) {
+export default function Post({post}:{post:postDataObject}) {
     const [comment, setComment] = useState("");
     const [commentLength, setCommentLength] = useState(0);
     const textRef = useRef<HTMLTextAreaElement | null>(null)
+    const router = useRouter();
+    const [postData, setPostData] = useState<postDataObject>(post);
     const userToken = useSelector((state: RootState) => state.user.token);
+    const getPostData = async () => {
+        
+    }
     const uploadComment = async() =>{
         console.log(postData.id, comment);
         try {
@@ -65,6 +74,20 @@ export default function Post({postData}:{postData:postDataObject}) {
                 }
             }).then(res => {
                 console.log("댓글 업로드 성공", res.data.data);
+                setComment("");
+                try {
+                    const response = axios.get(`http://3.35.239.36:8080/api/posts/${postData.id}`, {
+                        headers: {
+                            Authorization: `Bearer ${userToken}`
+                        }
+                    }).then(res => {
+                        setPostData(res.data.data);
+                        console.log("게시글 정보 불러오기 성공", res.data.data);
+                    });
+                } catch (error) {
+                    console.error('게시글 정보 실패:', error);
+                    throw error;
+                }
             });
         } catch (error) {
             console.error('댓글 업로드 실패', error);
@@ -72,6 +95,30 @@ export default function Post({postData}:{postData:postDataObject}) {
         }
 
     }
+    const editor = useEditor({
+        extensions: [
+            StarterKit,
+        ],
+        content: postData.content ? JSON.parse(postData.content) : '',
+        editable: false,
+        
+    })
+    const extensions = [
+        StarterKit.configure({
+            bulletList: {
+                keepMarks: true,
+                keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+            },
+            orderedList: {
+                keepMarks: true,
+                keepAttributes: false, // TODO : Making this as `false` becase marks are not preserved when I try to preserve attrs, awaiting a bit of help
+            },
+        }),
+    ]
+    /*if (editor){
+        const htmlContent = editor.getHTML();
+        if (htmlContent)document.querySelector('#output').innerHTML = htmlContent;
+    } */ 
     return (
         <div className="w-auto h-auto flex flex-col">
             <div className="bg-deepBlue w-full h-auto rounded-lg flex-col p-[30px] font-bold">
@@ -94,12 +141,14 @@ export default function Post({postData}:{postData:postDataObject}) {
                 </div>
                 <hr className="h-[1px] bg-blue border-0 my-[20px]"></hr>
                 {postData.content != null && postData.content}
+                {editor != null && <EditorContent editor={editor}/>}
+
             </div>
             <div className="relative bg-deepBlue w-full h-auto min-h-[50px] rounded-lg py-[10px] px-[20px] flex items-center mt-[20px]">
-                <textarea placeholder="댓글을 입력하세요." rows={1} maxLength={750} ref={textRef} className={`resize-none bg-deepBlue text-white w-full h-auto px min-h-[24px] max-h-[500px] text-[16px] `} onChange={(e) => { setComment(e.target.value); if (textRef.current) { textRef.current.style.height = "0px"; textRef.current.style.height = `${textRef.current.scrollHeight}px` }; setCommentLength(e.target.textLength) }} />
+                <textarea placeholder="댓글을 입력하세요." value={comment} rows={1} maxLength={750} ref={textRef} className={`resize-none bg-deepBlue text-white w-full h-auto px min-h-[24px] max-h-[500px] text-[16px] `} onChange={(e) => { setComment(e.target.value); if (textRef.current) { textRef.current.style.height = "0px"; textRef.current.style.height = `${textRef.current.scrollHeight}px` }; setCommentLength(e.target.textLength) }} />
                 <div className="text-gray-400 text-[16px] text-center w-[120px] ml-[10px]">{`${commentLength} / 750 자`}</div>
                 <div>
-                    <button className="w-[40px] h-[40px] rounded-lg bg-green mt-[5px] ml-[10px] flex" onClick={() => uploadComment()}>
+                    <button className="w-[40px] h-[40px] rounded-lg bg-green mt-[5px] ml-[10px] flex" onClick={() => {uploadComment(); getPostData(); setCommentLength(0); if (textRef.current) { textRef.current.style.height = "0px"; textRef.current.style.height = `${textRef.current.scrollHeight}px` }}}>
                         <img src="/IconWrite.svg"></img>
                     </button>
                 </div>

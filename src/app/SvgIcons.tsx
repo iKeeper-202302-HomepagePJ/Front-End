@@ -86,9 +86,32 @@ export const IconLoudSpeaker = (className: string, strokeColor: string) => {
 }
 
 export const IconStar = (className: string, strokeColor: string) => {
-    return(
+    return (
         <svg className={className} width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M11.0682 16.3303L4.35653 21.1776L7.00213 13.294L0.272727 8.42898H8.51136L11.0682 0.545453L13.625 8.42898H21.8636L15.1342 13.294L17.7798 21.1776L11.0682 16.3303Z" fill={cssColor[strokeColor]}/>
+            <path d="M11.0682 16.3303L4.35653 21.1776L7.00213 13.294L0.272727 8.42898H8.51136L11.0682 0.545453L13.625 8.42898H21.8636L15.1342 13.294L17.7798 21.1776L11.0682 16.3303Z" fill={cssColor[strokeColor]} />
         </svg>
+    )
+}
+
+export const IconCheck = (className: string, strokeColor: string) => {
+    return (
+        <svg className={className} width="26" height="21" viewBox="0 0 26 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 10.5L9.25 16.75L23 3" stroke={cssColor[strokeColor]} stroke-width="5" stroke-linecap="round" />
+        </svg>
+    )
+}
+
+export const IconBook = (className: string, strokeColor: string) => {
+    return (
+        <svg className={className} width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g id="notebook">
+                <path id="Path 2" d="M12 10.6668H18.6667" stroke="#43486B" stroke-width="2" stroke-linecap="round" />
+                <g id="Group 83">
+                    <path id="Rectangle 2" fill-rule="evenodd" clip-rule="evenodd" d="M24.0003 4V28H7.66699C7.11471 28 6.66699 27.5523 6.66699 27V5C6.66699 4.44772 7.11471 4 7.66699 4H24.0003Z" stroke={cssColor[strokeColor]} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </g>
+                <path id="Path 45" d="M6.66699 25.3332V23.6665C6.66699 23.1142 7.11471 22.6665 7.66699 22.6665H24.0003" stroke={cssColor[strokeColor]}stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </g>
+        </svg>
+
     )
 }

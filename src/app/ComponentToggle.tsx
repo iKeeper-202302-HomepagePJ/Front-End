@@ -13,7 +13,7 @@ export function toggleItemBox (toggleItemList: string[], toggleValue: string, se
 export function toggleMoveBox (toggleItemList:any, className: string){
     return (
         <div className={className + "fixed absolute w-full h-auto rounded-lg"}>
-            {toggleItemList.map((key: string[]) => (<a> id={`setPage${key[0]}`} h></a>))}
+            {toggleItemList.map((key: string[]) => (<a id={`setPage${key[0]}`}></a>))}
         </div>
     )
 }

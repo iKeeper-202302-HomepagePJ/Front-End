@@ -4,7 +4,7 @@ export default function HeaderLayout({
     children,
 }: {children: React.ReactNode}) {
     return (
-        <main className="w-full h-auto">
+        <main className="w-auto min-w-full h-auto">
             <Header/>
             {children}
         </main>
