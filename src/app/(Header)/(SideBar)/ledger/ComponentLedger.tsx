@@ -82,7 +82,7 @@ export default function BookList() {
           }
     }
     useEffect(() => {
-        getBookListData();
+        //getBookListData();
     }, []);
     return (
         <div className="w-full">
@@ -92,10 +92,12 @@ export default function BookList() {
             </div>
             <div className="bg-deepBlue min-w-[500px] w-full h-auto p-[20px] rounded-lg">
                 <div className="flex items-ceter text-orange text-[16px] font-bold space-x-[15px]">
-                <div className="min-w-[400px] w-full text-ceter mb-[10px] text-center">책 이름</div>
-                <div className="w-[200px] text-ceter mb-[10px] text-center">대여 여부</div>
-                <div className="w-[150px] text-ceter mb-[10px] text-center">대여인</div>
-                <div className="w-[200px] text-ceter mb-[10px] text-center">대여 날짜</div>
+                <div className="min-w-[200px] w-full text-ceter mb-[10px] text-center">내용</div>
+                <div className="w-[200px] text-ceter mb-[10px] text-center">날짜</div>
+                <div className="w-[150px] text-ceter mb-[10px] text-center">지출</div>
+                <div className="w-[150px] text-ceter mb-[10px] text-center">수입</div>
+                <div className="w-[150px] text-ceter mb-[10px] text-center">총액</div>
+                <div className="w-[200px] text-ceter mb-[10px] text-center">증빙자료</div>
                 </div>
                 <div className="h-1 w-full bg-blue"/>
                 {bookList.length ? bookList.map((key: bookObject) => (<div className="my-[10px]"><div className="flex items-ceter my-[5px] space-x-[15px]">

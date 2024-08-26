@@ -55,7 +55,7 @@ interface postDataObject {                     // json으로 받는 객체 타�
     updateCheck:boolean;
     content:any;
 }
-export default function Post({post}:{post:postDataObject}) {
+export default function Suggestion({post}:{post:postDataObject}) {
     const [comment, setComment] = useState("");
     const [commentLength, setCommentLength] = useState(0);
     const textRef = useRef<HTMLTextAreaElement | null>(null)
@@ -130,7 +130,6 @@ export default function Post({post}:{post:postDataObject}) {
                 </div>
                 <div className="mt-[10px] flex justify-between">
                     <div>
-                        <p className="text-pink text-[16px]">{postData.postUser}</p>
                         <div className="text-[14px] flex text-gray-400 font-semibold">
                             {`${postData.postTime.slice(0, 4)}.${postData.postTime.slice(5, 7)}.${postData.postTime.slice(8, 10)} ${postData.postTime.slice(11, 16)}`}
                             {Boolean(postData.comments.length) && <div className="ml-[10px] text-orange flex items-center"><img src="/IconChat.svg" className="w-[20px]" />{postData.comments.length}</div>}

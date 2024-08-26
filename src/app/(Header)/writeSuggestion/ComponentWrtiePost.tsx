@@ -2,22 +2,23 @@
 
 import dynamic from 'next/dynamic'
 import { useState, useRef, useEffect } from 'react'
-import { toggleItemBox, toggleIdItemBox } from '../../../ComponentToggle'
-import { getCategoryData } from '../../../ComponentSideBarCategoryList'
-import { TextEditor } from '../../../ComponentTextEditor'
+import { toggleItemBox, toggleIdItemBox } from '../../ComponentToggle'
+import { getCategoryData } from '../../ComponentSideBarCategoryList'
+import { TextEditor } from '../../ComponentTextEditor'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../../redux/store';
+import { RootState } from '../../redux/store';
+import FormData from 'form-data';
 import axios from 'axios'
 interface categoryDataObject {
-    id : number;
-    name : string;
-    categories : smallCategoryObject[]
+    id: number;
+    name: string;
+    categories: smallCategoryObject[]
 }
 interface smallCategoryObject {
-    id : number;
-    name : string
+    id: number;
+    name: string
 }
-export default function WritePost(urlInCategory : {urlInCategory:string[]}) {
+export default function WritePost(urlInCategory: { urlInCategory: string[] }) {
     const [disclosure, setdisclosure] = useState(false);
     const [commentWhether, setCommentWhether] = useState(true);
     const [showToggle, setShowToggle] = useState("")
@@ -37,74 +38,80 @@ export default function WritePost(urlInCategory : {urlInCategory:string[]}) {
     const [categoryList, setCategoryList] = useState<categoryDataObject[]>([]);
     const [headlineList, setHeadlineList] = useState<any[]>([]);
     const [post, setPost] = useState("");
-    useEffect(() => {
-        if(categoryList.length){ 
-        if (isNaN(Number(urlInCategory.urlInCategory[0])) || Number(urlInCategory.urlInCategory[0])==0){
-            let category = categoryList.find(element => element.categories.length);
-            console.log("난 카테고리. setShow의 친구가 될 운명이지",categoryList, category)
-            setShowSelectCategory(category!.categories[0].name);
-            setLargeCategory(category!.id)
+    const getToggleData = async () => {
+        try {
+            const respon = await axios.get('http://3.35.239.36:8080/api/posts/headline').then(res => {
+                console.log('헤드라인 목록 성공:', res.data.data);
+                setHeadlineList(res.data.data)
+            })
+        } catch (error) {
+            console.error('헤드라인 목록 호출 실패:', error);
         }
-        else {
-            let category = categoryList.find(element => element.categories.some(category => category.id == Number(urlInCategory.urlInCategory[0])));
-            if (category){
-                for (const smallcateory of category.categories){
-                    if (smallcateory.id == Number(urlInCategory.urlInCategory[1])){
-                        setShowSelectCategory(smallcateory.name)
-                        setLargeCategory(Number(urlInCategory.urlInCategory[0]));
-                        setSmallCategory(smallcateory.id);
-                    }
-                };
-            }
-            
-        }
+        await getCategoryData(setCategoryList);
+
     }
+    useEffect(() => {
+        getToggleData();
+    }, []);
+    useEffect(() => {
+        if (categoryList.length) {
+            if (isNaN(Number(urlInCategory.urlInCategory[0])) || Number(urlInCategory.urlInCategory[0]) == 0) {
+                let category = categoryList.find(element => element.categories.length);
+                console.log("난 카테고리. setShow의 친구가 될 운명이지", categoryList, category)
+                setShowSelectCategory(category!.categories[0].name);
+                setLargeCategory(category!.id)
+            }
+            else {
+                let category = categoryList.find(element => element.categories.some(category => category.id == Number(urlInCategory.urlInCategory[0])));
+                if (category) {
+                    for (const smallcateory of category.categories) {
+                        if (smallcateory.id == Number(urlInCategory.urlInCategory[1])) {
+                            setShowSelectCategory(smallcateory.name)
+                            setLargeCategory(Number(urlInCategory.urlInCategory[0]));
+                            setSmallCategory(smallcateory.id);
+                        }
+                    };
+                }
+
+            }
+        }
     }, [categoryList]);
     const savePost = async (post: string) => {
-        setPost(post);
-        const formData = new FormData();
-    formData.append('files', file);
-    formData.append('post', JSON.stringify(post));
-        const uploadPostData = {
-            post : {
-                category: {
-                    id: selectSmallCategory
-                }
-            ,
-            commentWhether: commentWhether,
-            content: post,
-            disclosure: disclosure,
-            headline: {
-                id: 1
-            },
-            title: title
-            },
-            files:null
-        }
-        if (titleLength == 0) {
-            return (<div className='w-full h-[50px] bg-red'> 야 이 이거 나오냐??</div>)
-        }
-        else {
-            try {
-                // 서버로 로그인 요청 보내기
-                const response = await fetch('http://3.35.239.36:8080//api/posts', {
-                    method: 'POST',
-                    headers: {
-                      'Authorization': `Bearer ${userToken}`,
-                      "Content-Type": "multipart/form-data"
+        try {
+            // 서버로 로그인 요청 보내기
+            
+            const uploadPostData = {
+                post: {
+                    category: {
+                        id: 1
+                    }
+                    ,
+                    commentWhether: commentWhether,
+                    content: post,
+                    disclosure: disclosure,
+                    headline: {
+                        id: 1
                     },
-                    data: uploadPostData,
-                  })
-                  axios({
-                    method:'post',
-                    url:'http://3.35.239.36:8080//api/posts',
-                    data: formData,
-                  }).then(res => {
+                    title: title
+                }
+            }
+            const formData = new FormData();
+            formData.append('files', new File([new Blob([], { type: 'application/octet-stream' })], 'empty.txt', { type: 'text/plain' }));
+            formData.append('post', JSON.stringify(uploadPostData));
+            const response = await axios.post(`http://3.35.239.36:8080/api/posts`, 
+            formData
+            ,
+                {
+                    headers:
+                    {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ${userToken}`
+                    }
+                }).then(res => {
                     console.log("게시물 등록 완료", res)
                 })
-            } catch (error) {
-                console.error('게시물 등록 실패:', error);
-            }
+        } catch (error) {
+            console.error('게시물 등록 실패:', error);
         }
     }
     const textEditor =

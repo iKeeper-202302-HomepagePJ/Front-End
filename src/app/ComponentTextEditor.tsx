@@ -10,9 +10,10 @@ export const TextEditor = (setPost:Function) => {
         extensions: [
             StarterKit,
         ],
-        content: '',
+        content: ``,
         
     })
+    
     if (!editor) return null;
     return (
         <div className='flex flex-col w-full grow overflow-auto bg-black-500 h-fit'>
@@ -58,7 +59,6 @@ export const TextEditor = (setPost:Function) => {
                 </button>
             </div>
             <div className='bg-black-200 w-full h-fit'>
-                <EditorContent editor={editor} className='mt-[20px] w-full h-auto bg-black min-h-[1000px]' />
                 <EditorContent editor={editor} className='mt-[20px] w-full h-auto bg-black min-h-[1000px]' />
             </div>
             <button className='text-black bg-green w-[100px] h-[50px] rounded-lg mt-[20px] justify-self-end font-bold' onClick={() => {if (editor) setPost(JSON.stringify(editor.getJSON().content));}}>제출하기</button>

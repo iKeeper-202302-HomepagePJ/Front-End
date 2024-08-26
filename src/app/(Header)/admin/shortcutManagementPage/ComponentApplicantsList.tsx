@@ -2,21 +2,53 @@
 import Image from 'next/image';
 import { useEffect, useState } from "react";
 import axios from 'axios';
+import { IconCheck, iconPencil } from '@/app/SvgIcons';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/store';
 
 export default function ApplicantsList() {
     const [shortcutData, setShortcutData] = useState<any[]>([])
     const [shortcutLength, setShortcutLength] = useState(0)
-    const [test, setT] = useState<any>("asdf")
+    const [name, setName] = useState<string>("")
+    const [link, setLink] = useState<string>("")
+    const userToken = useSelector((state:RootState) => state.user.token);
     const getShortcutList = async () => {
-        /*try {
-          const response = (await axios.get('http://3.35.239.36:8080/api/members/major')).data.data;
+        try {
+          const response = (await axios.get('http://3.35.239.36:8080/api/introduces/hyperlink')).data.data;
           console.log('응답 데이터:', response);
-          setApplicatsData(response);
+          setShortcutData(response);
+          setShortcutLength(response.length)
         } catch (error) {
           console.error('Failed to fetch dropdown options:', error);
-        }*/
-        setShortcutData([{ src: "/test.png", href: "https://www.facebook.com/cu.ikeeper?locale=ko_KR" }])
+        }
     };
+    const postShortcutList = async () => {
+        try {
+            // 서버로 로그인 요청 보내기
+            const response = await axios.post(`http://3.35.239.36:8080/api/introduces/hyperlink`, {name:name, url:link, img:"adsfasdf"},
+            { headers: 
+              { 
+                Authorization: `Bearer ${userToken}`
+              }
+            }).then(res => {
+              console.log('하이퍼링크 추가 성공', res.data);
+              getShortcutList();
+            })
+          } catch (error) {
+            console.error('하이퍼링크 추가 실패:', error);
+          }
+    };
+    const deleteShortcut = async (id:number) => {
+      try {
+        const response = await axios.delete(`http://3.35.239.36:8080/api/introduces/hyperlink/${id}`,).then(res => {
+            console.log('하이퍼링크 삭제 성공', res.data);
+            getShortcutList(); 
+          })
+        } catch (error) {
+          console.error('하이퍼링크 삭제 실패:', error);
+        }
+      
+  };
     useEffect(() => {
         getShortcutList();
     }, []);
@@ -27,16 +59,15 @@ export default function ApplicantsList() {
         console.log(f.target.value);
       };
     const shortcutBox = (Array.from({ length: 6 }, (_, i) => (
-        <div className={`w-full h-[120px] bg-deepBlue rounded-lg py-[20px] px-[30px] flex font-bold text-[16px] content-center items-center ${shortcutLength <= i && `opacity-30`}`}>
-            <div className='relative w-auto h-auto'>
-                <input type="file" accept="image/*" id="UploadUseIamge" className='hidden' onChange={()=>handleImageUpload(e.target.value)}></input>
-                <img className='object-cover w-[80px] h-[80px] rounded-lg mr-[30px]' src={shortcutLength <= i ? `/noImage.png` : shortcutData[i].src && shortcutData[i].src} />
-            <img className='absolute left-[50px] top-[50px] w-[40px] h-[40px] rounded-lg z-20' src="/IconUpload.svg" onClick={() => { console.log("ㅋ") }} />
-            <label   htmlFor="UploadUseIamge" className='opacity-0 absolute top-[60px] left-[10px] w-[60px] h-[30px] bg-blue rounded-md text-[14px] font-semibold text-white flex items-center justify-center'>
-                    </label>
-            </div>
+        <div className={`w-full h-[120px] bg-deepBlue rounded-lg py-[20px] px-[30px] flex font-bold text-[16px] content-center items-center ${shortcutLength < i && `opacity-30`}`}>
+            
+            {`Name`}
+            <input disabled={shortcutLength >= i ? false : true}  defaultValue={Boolean(shortcutData.length) ? shortcutLength > i ? shortcutData[i].name : "" : ""} className='bg-blue ml-[10px] mr-[15px] rounded-lg h-[50px] w-[100px] px-[10px]' onChange={(e) => { setName(e.target.value) }}/>
+  
             {`Link`}
-            <input disabled={shortcutLength > i ? false : true}  className='bg-blue ml-[10px] rounded-lg h-[50px] w-full px-[10px]' />
+            <input disabled={shortcutLength >= i ? false : true}  defaultValue={Boolean(shortcutData.length) ? shortcutLength > i ? shortcutData[i].url : "" : ""} className='bg-blue mx-[10px] rounded-lg h-[50px] w-full px-[10px]' onChange={(e) => { setLink(e.target.value) }}/>
+            <button onClick={()=>postShortcutList()}>{iconPencil('w-[20px]', `green`)}</button>
+            <button className="ml-[8px]" onClick={()=>deleteShortcut(Boolean(shortcutData.length) ? shortcutLength > i ? shortcutData[i].id : 0 : 0)}><img className="w-[40px]" src="/BTNDelete.svg" /></button>
         </div>
     )))
     return (

@@ -1,8 +1,8 @@
-import BookList from "./ComponentSuggestion";
+import BookList from "./ComponentLedger";
 
 export default function Page () {
     return(
-        <div>
+        <div className="w-full">
             <BookList/>
         </div>
     )

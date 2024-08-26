@@ -8,13 +8,13 @@ import { RootState } from '../../../../redux/store';
 import { iconPencil, IconStar } from "@/app/SvgIcons";
 import { CheckBox, HeadCheckBox } from "../../../../ComponentCheckBox";
 import { PageMove } from "@/app/ComponentPageMove";
-
+import { useRouter } from 'next/navigation';
 interface suggestionDataObject {
     id: number;
     user: string;
     title: string;
-    timestamp: string;
-    postComment: number;
+    postTime: string;
+    comments: any[];
     bookmark: boolean
 }
 
@@ -25,7 +25,7 @@ export default function Suggestion({ page }: { page: number }) {
     const [checkList, setCheck] = useState(Array(15).fill(false));
     const userAuth = useSelector((state: RootState) => state.user.auth) === "UER_ADMIN";
     const [bookMarkList, setBookMark] = useState<number[]>([]);
-
+    const route = useRouter();
     const getSuggestionData = useCallback(async () => {
         try {
             const response = await axios.get(`http://3.35.239.36:8080/api/posts/category/2?page=${realPage}`);
@@ -41,6 +41,7 @@ export default function Suggestion({ page }: { page: number }) {
             } else {
                 setSuggestions(response.data.data);
             }
+            
             console.log("게시글 정보 불러오기 성공", response.data.data);
         } catch (error) {
             console.error('게시글 정보 실패:', error);
@@ -48,7 +49,7 @@ export default function Suggestion({ page }: { page: number }) {
     }, [realPage]);
 
     useEffect(() => {
-        getSuggestionData();
+        setSuggestions([{id:13, user:"22113455", title:"건의", postTime:"2024-08-11T11:26:24", comments:[1],bookmark:false}])
     }, [getSuggestionData]);
 
     const setBookMarkHandle = (id: number) => {
@@ -110,9 +111,9 @@ export default function Suggestion({ page }: { page: number }) {
                             </div>
                             <hr className="h-1 bg-blue border-0 mt-[5px]"></hr>
                             <div className="flex flex-col-reverse">
-                                {suggestions.map((key, index) => (
+                                {Boolean(suggestions.length) && suggestions.map((key, index) => (
                                     <div key={key.id}>
-                                        <a href={`/postPage/${key.id}`} className='flex items-center' id={`postListItemComponent${key.id}`}>
+                                        <a href={`/suggestion/13`} className='flex items-center' id={`postListItemComponent${key.id}`}>
                                             {PostItem(false, false, key, addPostListComponent, index, false)}
                                         </a>
                                         <hr className="h-[3px] bg-blue border-0 mt-[5px]"></hr>
@@ -132,9 +133,9 @@ export default function Suggestion({ page }: { page: number }) {
                                 <button className="w-[30px] h-[30px] ml-[10px]"><img src="/IconDelete.svg" alt="delete icon" /></button>
                             </div>
                         )}
-                        <button className="w-[30px] h-[30px] rounded-lg bg-green ml-[10px]" onClick={() => { }}>
-                            {iconPencil("w-[30px] h-[30px] fill-none mt-[6px] ml-[6px]", "deepBlue")}
-                        </button>
+                        <button className="w-[30px] h-[30px] rounded-lg bg-green ml-[10px] flex items-center" onClick={() => { route.push("/writeSuggestion") }}>
+                        {iconPencil("w-[20px] fill-none ml-[6px]", "deepBlue")}
+                    </button>
                     </div>
                 </div>
             </div>

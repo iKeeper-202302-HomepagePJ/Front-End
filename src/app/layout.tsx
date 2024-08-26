@@ -22,7 +22,7 @@ export default function RootLayout({
         <main className='bg-black w-screen w- h-auto flex justify-center'>
           <ReduxProvider>
             <div className='w-3/4 max-w-[1450px] h-auto flex-col space-y-[70px]'>
-              <div className='min-h-screen w-full'>{children}</div>
+              <div className='min-h-screen w-full '>{children}</div>
               <Footer />
             </div>
           </ReduxProvider>

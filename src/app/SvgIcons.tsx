@@ -25,7 +25,7 @@ export const iconPencil = (className: string, strokeColor: string) => {
     return (
         <svg
             className={`${className}`}
-            width='current' height='current' fill='currentColor' stroke='currentColor' viewBox="12 11 31 32" xmlns="http://www.w3.org/2000/svg">
+            width='current' height='current' fill='none' stroke='currentColor' viewBox="12 11 18 18" xmlns="http://www.w3.org/2000/svg">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M24.8773 13.2892C25.6583 12.5082 26.9247 12.5082 27.7057 13.2892L28.7106 14.2941C29.4917 15.0752 29.4917 16.3415 28.7106 17.1225L18.2523 27.5809C17.8772 27.956 17.3685 28.1667 16.8381 28.1667L13.8332 28.1667L13.8332 25.1618C13.8332 24.6313 14.0439 24.1226 14.419 23.7475L24.8773 13.2892Z" stroke={cssColor[strokeColor]} stroke-width="2" />
             <path d="M23.4165 14.75L27.2498 18.5833" stroke={cssColor[strokeColor]} stroke-width="2" />
         </svg>

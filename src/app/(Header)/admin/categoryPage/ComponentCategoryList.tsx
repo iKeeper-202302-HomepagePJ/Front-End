@@ -1,7 +1,7 @@
 "use client"
 
 import PathMovement from "@/app/ComponentPathMovement"
-import { IconCheck } from "@/app/SvgIcons";
+import { IconCheck, iconPencil } from "@/app/SvgIcons";
 import axios from "axios";
 import { useState, useEffect } from "react";
 interface smallCategoryDataObject {
@@ -29,6 +29,29 @@ export default function CategoryList() {
           console.error('Failed to fetch dropdown options:', error);
         }
     };
+    const postCategory = async (parentId : number) => {
+        try {
+          const response = await axios.post(`http://3.35.239.36:8080/api/posts/category`, {name:categoryName, parent : parentId}).then(res => {
+              console.log('카테고리 추가 성공', res.data);
+              getCategoryList();
+              setShowAdd(0)
+            })
+          } catch (error) {
+            console.error('카테고리 추가 실패:', error);
+          }
+        
+    };
+    const deleteCategory = async (id:number) => {
+        try {
+          const response = await axios.delete(`http://3.35.239.36:8080/api/posts/category/${id}`,).then(res => {
+              console.log('카테고리 삭제 성공', res.data);
+              getCategoryList(); 
+            })
+          } catch (error) {
+            console.error('카테고리 삭제 실패:', error);
+          }
+        
+    };
     useEffect(() => {
         getCategoryList();
     }, []);
@@ -47,7 +70,7 @@ export default function CategoryList() {
                             <div key={subKey.id} className="relative rounded-lg px-[20px] ml-[70px] w-[calc(100%-70px)] text-green h-[50px] bg-blue mt-[10px] flex items-center justify-between">{subKey.name}
                                 <div className="h-[30px]">
                                     <button className="h-[30px] mr-[5px]" onClick={() => { setShowModify(subKey.id); setShowAdd(0); setCategoryName(subKey.name); setCategoryNameLength(subKey.name.length) }}><img className="h-full" src="/BTNRewrite.svg" /></button>
-                                    <button className="h-[28px]"><img className="h-full" src="/BTNDelete.svg" /></button>
+                                    <button className="h-[28px]" onClick={() => deleteCategory(subKey.id)}><img className="h-full" src="/BTNDelete.svg" /></button>
                                 </div>
                                 {showModify == subKey.id && <div className="absolute rounded-lg px-[20px] w-full text-green h-[50px] bg-blue flex items-center left-0">
                                     <textarea key={`${subKey.id}ModiName`} value={categoryName} className="bg-blue resize-none w-[calc(100%-110px)]" rows={1} maxLength={20} onChange={(e) => { setCategoryName(e.target.value); setCategoryNameLength(e.target.textLength) }} />
@@ -59,10 +82,10 @@ export default function CategoryList() {
                         ))}
                         {showAdd == key.id &&
                             <div key={`${key.id}New`} className="rounded-lg px-[20px] ml-[70px] w-[calc(100%-70px)] text-green h-[50px] bg-blue mt-[10px] flex items-center">
-                                <textarea key={`${key.id}Name`} value={categoryName} className="bg-blue resize-none w-[calc(100%-110px)]" rows={1} maxLength={20} onChange={(e) => { setCategoryName(e.target.value); setCategoryNameLength(e.target.textLength) }} />
+                                <textarea key={`${key.id}Name`} value={categoryName} className="bg-blue resize-none w-[calc(100%-100px)]" rows={1} maxLength={20} onChange={(e) => { setCategoryName(e.target.value); setCategoryNameLength(e.target.textLength) }} />
                                 {`${categoryNameLength} / 20`}
                                 <div className="w-[20px]" />
-                                {IconCheck("w-[15px]", "green")}
+                                <button className="flex items-center w-auto" onClick={() => postCategory(key.id)}>{iconPencil("w-[20px]", "green")}</button>
                             </div>
                         }
                         <button key={`${key.id}Add`} className="rounded-lg px-[20px] ml-[70px] w-[calc(100%-70px)] text-green h-[50px] bg-blue mt-[10px] flex items-center opacity-50"

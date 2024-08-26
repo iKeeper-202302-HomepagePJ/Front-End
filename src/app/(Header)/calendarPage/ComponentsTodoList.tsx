@@ -115,7 +115,7 @@ function Todo({ calData, clear, checkedFunction }: { calData: calObject, clear: 
   }
   //let modifyTodo = writeTodoBox(calData.day.slice(0, 4), calData.day.slice(5, 7), calData.day.slice(8, 10), calData = calData);
   return (
-    <div className=''>
+    <div className='w-full'>
       {!isModify && <div className={`${todoBox} text-skyblue text-orange text-green`}>
         {setFieldDesign(calData.field.id, clear)}
         <div className="text-white ml-[20px]">
@@ -175,7 +175,7 @@ function TodoList(calData: calObject[], setDay?: number, todoCheckList?:Function
   let clearTodo = /*setDay ? calData.filter((e: { check: boolean; day:string}) => (e.check && (Number(e.day.slice(8, 10)) == setDay))).map((key: calObject) => (<div id={`${key.id}`}><ClearTodo calData={key} /></div>)) : */calData.filter((e: { check: boolean; }) => (e.check)).map((key: calObject) => (<div id={`todoComponent${key.id}`}><Todo calData={key} clear={true} checkedFunction={setCheckTodoList} /></div>));
   //console.log(todo);
   return (
-    <div className='flex-col items-center justify-between'>
+    <div className='w-full flex-col items-center justify-between'>
       {todo}
       {clearTodo}
     </div>
