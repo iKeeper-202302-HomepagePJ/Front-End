@@ -8,8 +8,13 @@ import { useEffect, useState } from 'react';
 const header = "w-full h-[130px] mt-[10px] flex flex-row items-end mb-[80px]"
 let shortCutList:any[] = []
 
+interface linkObject {
+    name : string;
+    url : string;
+} 
+
 export default function Header() {
-    const [linkList, setLinkList] = useState([])
+    const [linkList, setLinkList] = useState<linkObject[]>([])
     useEffect(()=> {
         getShortcutList()
         
