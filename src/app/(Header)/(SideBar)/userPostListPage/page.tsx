@@ -5,6 +5,8 @@ import Header from "../../../ComponentsHeader";
 import { PostItem, PostListHeading } from "../../../ComponentPostList";
 import UserPostList from "./ComponentUserPostListPage";
 import axios from 'axios';
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from '../../../redux/store';
 interface userDataObject {
     user_id: string
     user_name: string;
@@ -55,25 +57,26 @@ const postData: postDataObject[] = [
     }
 ]
 export default async function Page() {
-        try {
-            const respon = await axios.get('http://3.35.239.36:8080/api/members/mypage', {
-                headers: {
-                    Authorization: `Bearer ${userToken}`
-                }
-            }).then(res => {
-                return res;
-                console.log('유저 정보 성공:', res.data.data);
-            });
-        } catch (error) {
-            console.error('마이페이지 정보 실패:', error);
-            throw error; // 에러를 다시 throw하여 에러 처리 가능하도록 함
-        }
+    const userToken = useSelector((state: RootState) => state.user.token);
+
+    try {
+        const respon = await axios.get('http://3.35.239.36:8080/api/members/mypage', {
+            headers: {
+                Authorization: `Bearer ${userToken}`
+            }
+        }).then(res => {
+            return res;
+            console.log('유저 정보 성공:', res.data.data);
+        });
+    } catch (error) {
+        console.error('마이페이지 정보 실패:', error);
+        throw error; // 에러를 다시 throw하여 에러 처리 가능하도록 함
     }
     return (
         <main className="flex min-h-screen w-full bg-black flex-col">
             <div className="flex flex-col  flex-grow">
                 {UserInformation(userData)}
-                <UserPostList postData={}/>
+                <UserPostList postData={postData}/>
             </div>
         </main>
     );
