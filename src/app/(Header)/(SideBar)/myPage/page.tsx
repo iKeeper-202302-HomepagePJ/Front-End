@@ -1,5 +1,5 @@
 import MyPage from "./ComponentMyPage";
-import axios from "axios";
+import { api } from "@/lib/axios";
 interface userDataObject {
     studentId: string
     name: string;
@@ -42,7 +42,7 @@ const gradeList = [{id:0, name:"1학년 / 1학차"}, {id:1, name:"1학년 / 2학
 const dlatlcnftjrwjscprotn = 5 /*******임시 출석 개수**** */
 async function getMajorData() {
     try {
-        //majorData = (await axios.post('https://4a26c935-10b4-4195-a293-2e78b6965b48.mock.pstmn.io/api/test')).data;
+        //majorData = (await api.post('https://4a26c935-10b4-4195-a293-2e78b6965b48.mock.pstmn.io/api/test')).data;
         console.log(majorData)
         return majorData;
     } catch (error) {

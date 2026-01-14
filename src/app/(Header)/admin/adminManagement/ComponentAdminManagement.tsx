@@ -3,7 +3,7 @@
 import PathMovement from "@/app/ComponentPathMovement"
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/store';
-import axios from "axios";
+import { api } from "@/lib/axios";
 import { useState, useEffect } from "react";
 interface adminDataObject {
     "studentId": string,
@@ -31,7 +31,7 @@ export default function AdminList() {
     const [checkFirst, setCheckFirst] = useState(false)
     const getAdminList = async () => {
         try {
-            const response = (await axios.get('http://3.35.239.36:8080/api/members/role/admin')).data.data;
+            const response = (await api.get('/api/members/role/admin')).data.data;
             console.log('관리자 목록:', response);
             const requests = response.map((i: { studentId: string }) => settingList(i.studentId));
         } catch (error) {
@@ -40,7 +40,7 @@ export default function AdminList() {
     };
     const getStudentData = async () => {
         try {
-            const response = (await axios.get(`http://3.35.239.36:8080/api/members/${findStudent}`, {
+            const response = (await api.get(`/api/members/${findStudent}`, {
                 headers: {
                     Authorization: `Bearer ${userToken}`
                 }
@@ -59,7 +59,7 @@ export default function AdminList() {
     }
     const settingList = async (id: string) => {
         try {
-            const response: adminDataObject = (await axios.get(`http://3.35.239.36:8080/api/members/${id}`, {
+            const response: adminDataObject = (await api.get(`/api/members/${id}`, {
                 headers: {
                     Authorization: `Bearer ${userToken}`
                 }
@@ -71,7 +71,7 @@ export default function AdminList() {
     }
     const SetNewAdmin = async (id: string) => {
         try {
-            const response = (await axios.patch(`http://3.35.239.36:8080/api/members/role/admin/${id}`, {
+            const response = (await api.patch(`/api/members/role/admin/${id}`, {
                 headers: {
                     Authorization: `Bearer ${userToken}`
                 }
@@ -83,7 +83,7 @@ export default function AdminList() {
     }
     const deletAdmin = async(id:string) => {
         try {
-            const response = (await axios.patch(`http://3.35.239.36:8080/api/members/role/user/${id}`, {
+            const response = (await api.patch(`/api/members/role/user/${id}`, {
                 headers: {
                     Authorization: `Bearer ${userToken}`
                 }

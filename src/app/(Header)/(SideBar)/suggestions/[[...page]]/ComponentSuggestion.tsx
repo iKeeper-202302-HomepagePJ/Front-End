@@ -1,7 +1,7 @@
 "use client"
 
 import { PostItem, PostListHeading } from "@/app/ComponentPostList";
-import axios from "axios";
+import { api } from "@/lib/axios";
 import { useState, useEffect, useCallback } from "react";
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../redux/store';
@@ -28,7 +28,7 @@ export default function Suggestion({ page }: { page: number }) {
     const route = useRouter();
     const getSuggestionData = useCallback(async () => {
         try {
-            const response = await axios.get(`http://3.35.239.36:8080/api/posts/category/2?page=${realPage}`);
+            const response = await api.get(`/api/posts/category/2?page=${realPage}`);
             setLastPage(response.data.data.totalPages);
             if (response.data.data.totalPages < realPage) {
                 if (response.data.data.totalPages) {

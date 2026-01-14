@@ -4,7 +4,7 @@ import { UserInformation } from "../../../ComponentInUserWritingPost";
 import Header from "../../../ComponentsHeader";
 import { PostItem, PostListHeading } from "../../../ComponentPostList";
 import UserPostList from "./ComponentUserPostListPage";
-import axios from 'axios';
+import { api } from "@/lib/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from '../../../redux/store';
 interface userDataObject {
@@ -60,7 +60,7 @@ export default async function Page() {
     const userToken = useSelector((state: RootState) => state.user.token);
 
     try {
-        const respon = await axios.get('http://3.35.239.36:8080/api/members/mypage', {
+        const respon = await api.get('/api/members/mypage', {
             headers: {
                 Authorization: `Bearer ${userToken}`
             }

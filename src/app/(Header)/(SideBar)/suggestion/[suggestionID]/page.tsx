@@ -4,7 +4,7 @@ import Header from "../../../../ComponentsHeader";
 import SideBar from "../../../../ComponentSideBar";
 import Footer from "../../../../ComponentFooter";
 import Suggestion from "./ComponentPost";
-import axios from "axios";
+import { api } from "@/lib/axios";
 import { useSelector } from "react-redux";
 import { RootState } from '../../../../redux/store';
 import { useState, useEffect } from "react";
@@ -30,7 +30,7 @@ export default function ({ params }: { params: { postID: Number } }) {         /
     const userToken = useSelector((state: RootState) => state.user.token);
     const getPostData = async () => {
         try {
-            const response = await axios.get(`http://3.35.239.36:8080/api/posts/${params.postID}`, {
+            const response = await api.get(`/api/posts/${params.postID}`, {
                 headers: {
                     Authorization: `Bearer ${userToken}`
                 }

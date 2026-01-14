@@ -1,9 +1,9 @@
-import axios from "axios";
+import { api } from "@/lib/axios";
 import { useRouter } from 'next/navigation';
 import { clearToken } from "./redux/userSlice";
 async function getUserData() {
     try {
-        let userData = (await axios.get('https://4a26c935-10b4-4195-a293-2e78b6965b48.mock.pstmn.io/api/userdata')).data;
+        let userData = (await api.get('https://4a26c935-10b4-4195-a293-2e78b6965b48.mock.pstmn.io/api/userdata')).data;
         //console.log(userData)
         return userData;
     } catch (error) {

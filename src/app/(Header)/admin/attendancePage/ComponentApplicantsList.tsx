@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useEffect, useState } from "react";
-import axios from 'axios';
+import { api } from "@/lib/axios";
 import { IconCheck } from '../../../SvgIcons';
 interface userDataObject {
     name: string;
@@ -37,7 +37,7 @@ export default function ApplicantsList() {
     const [studentID, setStudentID] = useState("")
     const getApplicatsList = async () => {
         try {
-          const response = (await axios.get('http://3.35.239.36:8080/api/members')).data.data;
+          const response = (await api.get('/api/members')).data.data;
           console.log('응답 데이터:', response);
           setApplicatsData(response);
         } catch (error) {

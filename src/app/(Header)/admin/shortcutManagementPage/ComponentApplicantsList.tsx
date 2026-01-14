@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useEffect, useState } from "react";
-import axios from 'axios';
+import { api } from "@/lib/axios";
 import { IconCheck, iconPencil } from '@/app/SvgIcons';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
@@ -14,7 +14,7 @@ export default function ApplicantsList() {
     const userToken = useSelector((state:RootState) => state.user.token);
     const getShortcutList = async () => {
         try {
-          const response = (await axios.get('http://3.35.239.36:8080/api/introduces/hyperlink')).data.data;
+          const response = (await api.get('/api/introduces/hyperlink')).data.data;
           console.log('응답 데이터:', response);
           setShortcutData(response);
           setShortcutLength(response.length)
@@ -25,7 +25,7 @@ export default function ApplicantsList() {
     const postShortcutList = async () => {
         try {
             // 서버로 로그인 요청 보내기
-            const response = await axios.post(`http://3.35.239.36:8080/api/introduces/hyperlink`, {name:name, url:link, img:"adsfasdf"},
+            const response = await api.post(`/api/introduces/hyperlink`, {name:name, url:link, img:"adsfasdf"},
             { headers: 
               { 
                 Authorization: `Bearer ${userToken}`
@@ -40,7 +40,7 @@ export default function ApplicantsList() {
     };
     const deleteShortcut = async (id:number) => {
       try {
-        const response = await axios.delete(`http://3.35.239.36:8080/api/introduces/hyperlink/${id}`,).then(res => {
+        const response = await api.delete(`/api/introduces/hyperlink/${id}`,).then(res => {
             console.log('하이퍼링크 삭제 성공', res.data);
             getShortcutList(); 
           })

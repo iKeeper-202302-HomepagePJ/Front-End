@@ -2,7 +2,7 @@
 import { IconWarining } from '../../../SvgIcons'
 import { use, useEffect, useState } from "react"
 import { RootState } from '../../../redux/store';
-import axios from "axios";
+import { api } from "@/lib/axios";
 import { useDispatch, useSelector } from "react-redux";
 import { clearToken } from '../../../redux/userSlice';
 const userDetailBox = "w-full h-[35px] text-[16px] font-semibold text-white flex items-center justify-start"
@@ -69,7 +69,7 @@ export default function MyPage() {
     console.log("저장잘되냐?", useSelector((state: RootState) => state.user))
     const getUserData = async () => {
         try {
-            const respon = await axios.get('http://3.35.239.36:8080/api/members/mypage', {
+            const respon = await api.get('/api/members/mypage', {
                 headers: {
                     Authorization: `Bearer ${userToken}`
                 }
@@ -90,7 +90,7 @@ export default function MyPage() {
     }
     const getMajorList = async () => {
         try {
-          const response = (await axios.get('http://3.35.239.36:8080/api/members/major')).data.data;
+          const response = (await api.get('/api/members/major')).data.data;
           console.log('응답 데이터:', response);
           if (Array.isArray(response)) {
             const names = response.map((item: any) => item.name); // "name" 값을 추출하여 새로운 배열 생성
@@ -105,7 +105,7 @@ export default function MyPage() {
       };
       const getStateList = async () => {
         try {
-          const response = (await axios.get('http://3.35.239.36:8080/api/members/status')).data.data;
+          const response = (await api.get('/api/members/status')).data.data;
           console.log('응답 데이터:', response);
           if (Array.isArray(response)) {
             const names = response.map((item: any) => item.name); // "name" 값을 추출하여 새로운 배열 생성
@@ -120,7 +120,7 @@ export default function MyPage() {
       };
       const getGradeList = async () => {
         try {
-          const response = (await axios.get('http://3.35.239.36:8080/api/members/grade')).data.data;
+          const response = (await api.get('/api/members/grade')).data.data;
           console.log('응답 데이터:', response);
           if (Array.isArray(response)) {
             const names = response.map((item: any) => item.name); // "name" 값을 추출하여 새로운 배열 생성
@@ -189,7 +189,7 @@ export default function MyPage() {
             setOpenModal("leaveIKeeper");
             try {
                 // 서버로 로그인 요청 보내기
-                const response = await axios.delete('http://3.35.239.36:8080/api/members/mypage', { headers: 
+                const response = await api.delete('/api/members/mypage', { headers: 
                 { 
                   Authorization: `Bearer ${userToken}`
                 }
@@ -236,7 +236,7 @@ export default function MyPage() {
             try {
                 // 서버로 로그인 요청 보내기
                 console.log("asdf");
-                const response = await axios.patch(`http://3.35.239.36:8080/api/members/mypage`, updateUserData,
+                const response = await api.patch(`/api/members/mypage`, updateUserData,
                 { headers: 
                   { 
                     Authorization: `Bearer ${userToken}`

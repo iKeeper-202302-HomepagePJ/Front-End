@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation'
 import { useSelector } from "react-redux";
 import { RootState } from '../../../redux/store';
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { api } from "@/lib/axios";
 import {GetCategoryListAndSideBar} from "../../../ComponentSideBarCategoryList";
 interface postDataObject {                     // json으로 받는 객체 타입 정의
     id: number;
@@ -82,7 +82,7 @@ export default function ({ params }: { params: { category: string[] } }) {      
     const getPostListData = async () => {
         try {
             console.log("나대체뭘보낸거야", urlpage-1)
-            const response = await axios.get(`http://3.35.239.36:8080/api/posts/?page=${urlpage}`).then(res => {
+            const response = await api.get(`/api/posts/?page=${urlpage}`).then(res => {
                 setPostList(res.data.data.content);
                 console.log("게시글 목록 정보 불러오기 성공", res.data.data);
                 console.log("나대체뭘보낸거야", urlpage-1)

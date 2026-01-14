@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import InputBox from './InputBox';
 import Dropdown from './Dropdown';
 import { useRouter } from 'next/navigation';
-import axios from 'axios'; // Axios를 사용하여 서버 API 호출
+import { api } from "@/lib/axios";
 
 interface formDataObject {
   name:string;
@@ -93,7 +93,7 @@ const SignupPage: React.FC = () => {
 
   const getMajorList = async () => {
     try {
-      const response = (await axios.get('http://3.35.239.36:8080/api/members/major')).data.data;
+      const response = (await api.get('/api/members/major')).data.data;
       console.log('응답 데이터:', response);
       if (Array.isArray(response)) {
         setMajorList(response);
@@ -111,7 +111,7 @@ const SignupPage: React.FC = () => {
   };
   const getStateList = async () => {
     try {
-      const response = (await axios.get('http://3.35.239.36:8080/api/members/status')).data.data;
+      const response = (await api.get('/api/members/status')).data.data;
       console.log('응답 데이터:', response);
       if (Array.isArray(response)) {
         setStatusList(response); // 추출된 "name" 값을 전공 목록으로 설정
@@ -124,7 +124,7 @@ const SignupPage: React.FC = () => {
   };
   const getGradeList = async () => {
     try {
-      const response = (await axios.get('http://3.35.239.36:8080/api/members/grade')).data.data;
+      const response = (await api.get('/api/members/grade')).data.data;
       console.log('응답 데이터:', response);
       if (Array.isArray(response)) {
         setGradeList(response); // 추출된 "name" 값을 전공 목록으로 설정
@@ -224,7 +224,7 @@ const SignupPage: React.FC = () => {
       let signupUserData = formData;
       delete signupUserData.passwordConfirm;
       console.log("어.... 이게 전송될꺼야 아마...? ",{formData});
-      const response = await axios.post('http://3.35.239.36:8080/api/auths/join', formData);
+      const response = await api.post('/api/auths/join', formData);
       console.log('회원가입 성공:', response.data);
       // 회원가입 성공 시에만 라우팅 수행
       router.push('/');

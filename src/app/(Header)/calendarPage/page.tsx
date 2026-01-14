@@ -4,7 +4,7 @@ import { Calendar } from './ComponentsCalendar';
 import CalData from "../../test.json";
 import Footer from "../../ComponentFooter"
 import Link from 'next/link';
-import axios from 'axios';
+import { api } from "@/lib/axios";
 import { Suspense } from 'react';
 //let calendarData = JSON.parse(JSON.stringify(CalData)); // 로컬 json **수정**
 interface calObject {                     // json으로 받는 객체 타입 정의
@@ -28,7 +28,7 @@ interface responseData {
 let calendarData:any;
 async function getCalenderData() {
   try {
-    calendarData = (await axios.get('http://3.35.239.36:8080/api/calendars'));
+    calendarData = (await api.get('/api/calendars'));
     calendarData = calendarData.data;
     console.log(calendarData)
     return calendarData;
@@ -40,7 +40,7 @@ async function getCalenderData() {
 
 /*
 
-const response = (await axios.post('https://4a26c935-10b4-4195-a293-2e78b6965b48.mock.pstmn.io/api/calendars')).data;
+const response = (await api.post('https://4a26c935-10b4-4195-a293-2e78b6965b48.mock.pstmn.io/api/calendars')).data;
     calendarData = response.data.map
 let test;
 */
@@ -48,7 +48,7 @@ let test;
 const adminPower = true;           //***************************관리자 권한용 나중에 수정************************* */
 //let c = calenderData[0];
 /*export async function getCalenderData() {
-  return await axios.get();
+  return await api.get();
 }*/
 export default async function Page() {
   await getCalenderData();

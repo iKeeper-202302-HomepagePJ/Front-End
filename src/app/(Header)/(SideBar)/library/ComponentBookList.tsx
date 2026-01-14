@@ -1,6 +1,6 @@
 "use client"
 
-import axios from "axios";
+import { api } from "@/lib/axios";
 import { useState, useEffect } from "react";
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/store';
@@ -34,7 +34,7 @@ export default function BookList() {
     const userToken = useSelector((state: RootState) => state.user.token);
     const getBookListData = async () => {
         try {
-            const response = (await axios.get('http://3.35.239.36:8080/api/books')).data.data;
+            const response = (await api.get('/api/books')).data.data;
             console.log('응답 데이터:', response);
             setBookList(response);
         } catch (error) {
@@ -47,7 +47,7 @@ export default function BookList() {
         })
         try {
             // 서버로 로그인 요청 보내기
-            const response = await axios.post('http://3.35.239.36:8080/api/books', {
+            const response = await api.post('/api/books', {
                 name: bookName
 
             }, {
@@ -63,7 +63,7 @@ export default function BookList() {
     };
     const modifyBook = async (book:bookObject) => {
         try {
-            const response = await axios.patch(`http://3.35.239.36:8080/api/books/${book.id}`, {
+            const response = await api.patch(`/api/books/${book.id}`, {
                 name:book.name,
                 borrower : modifyBorrower,
                 retalDay : modifyRentalDay,

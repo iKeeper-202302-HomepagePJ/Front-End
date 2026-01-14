@@ -2,7 +2,7 @@
 
 import PathMovement from "@/app/ComponentPathMovement"
 import { IconCheck, iconPencil } from "@/app/SvgIcons";
-import axios from "axios";
+import { api } from "@/lib/axios";
 import { useState, useEffect } from "react";
 interface smallCategoryDataObject {
     id: number;
@@ -22,7 +22,7 @@ export default function CategoryList() {
     const [categoryNameLength, setCategoryNameLength] = useState<number>(0)
     const getCategoryList = async () => {
         try {
-          const response = (await axios.get('http://3.35.239.36:8080/api/posts/category')).data.data;
+          const response = (await api.get('/api/posts/category')).data.data;
           console.log('응답 데이터:', response);
           setCategoryData(response);
         } catch (error) {
@@ -31,7 +31,7 @@ export default function CategoryList() {
     };
     const postCategory = async (parentId : number) => {
         try {
-          const response = await axios.post(`http://3.35.239.36:8080/api/posts/category`, {name:categoryName, parent : parentId}).then(res => {
+          const response = await api.post(`/api/posts/category`, {name:categoryName, parent : parentId}).then(res => {
               console.log('카테고리 추가 성공', res.data);
               getCategoryList();
               setShowAdd(0)
@@ -43,7 +43,7 @@ export default function CategoryList() {
     };
     const deleteCategory = async (id:number) => {
         try {
-          const response = await axios.delete(`http://3.35.239.36:8080/api/posts/category/${id}`,).then(res => {
+          const response = await api.delete(`/api/posts/category/${id}`,).then(res => {
               console.log('카테고리 삭제 성공', res.data);
               getCategoryList(); 
             })

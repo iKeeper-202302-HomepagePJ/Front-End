@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image';
 import { useEffect, useState } from "react";
-import axios from 'axios';
+import { api } from "@/lib/axios";
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/store';
 interface formDataObject {
@@ -31,7 +31,7 @@ export default function ApplicantsList() {
     const userToken = useSelector((state: RootState) => state.user.token);
     const getApplicatsList = async () => {
         try {
-            const response = (await axios.get('http://3.35.239.36:8080/api/members/role/guest')).data.data;
+            const response = (await api.get('/api/members/role/guest')).data.data;
             console.log('관리자 목록:', response);
             setApplicatsData(response)
         } catch (error) {
@@ -40,7 +40,7 @@ export default function ApplicantsList() {
     };
     const SetNewUser = async (id: string) => {
         try {
-            const response = (await axios.patch(`http://3.35.239.36:8080/api/members/role/user/${id}`, {
+            const response = (await api.patch(`/api/members/role/user/${id}`, {
                 headers: {
                     Authorization: `Bearer ${userToken}`
                 }

@@ -6,7 +6,7 @@ import CalData from "../../test.json";
 import Footer from "../../ComponentFooter"
 import SideBar from '../../ComponentSideBar';
 import Link from 'next/link';
-import axios from 'axios'; //로컬 json **수정**
+import { api } from "@/lib/axios"; //로컬 json **수정**
 import { Calendar, TodayCalendar, setCalendar } from '../calendarPage/ComponentsCalendar';
 import PostList from '../postListPage/[...category]/ComponentPostList';
 import { IconLoudSpeaker } from '@/app/SvgIcons';
@@ -26,7 +26,7 @@ interface fieldInterface {
 /*let calendarData:calObject[];
 async function getCalenderData() {
   try {
-    calendarData = (await axios.get('/read')).data;
+    calendarData = (await api.get('/read')).data;
     console.log("성공!!");
     return calendarData;
 } catch (error) {
@@ -37,12 +37,12 @@ async function getCalenderData() {
 //export const calendarData = getCalenderData();
 //let c = calenderData[0];
 /*export async function getCalenderData() {
-  return await axios.get();
+  return await api.get();
 }*/
 let calendarData:any;
 async function getCalenderData() {
   try {
-    calendarData = (await axios.get('http://3.35.239.36:8080/api/calendars'));
+    calendarData = (await api.get('/api/calendars'));
     calendarData = calendarData.data;
     console.log(calendarData)
     return calendarData;
@@ -54,7 +54,7 @@ async function getCalenderData() {
 let postData:any;
 const getPostListData = async () => {
   try {
-      const response = await axios.get(`http://3.35.239.36:8080/api/posts/?page=1`).then(res => {
+      const response = await api.get(`/api/posts/?page=1`).then(res => {
           postData = res.data.data
       });
   } catch (error) {

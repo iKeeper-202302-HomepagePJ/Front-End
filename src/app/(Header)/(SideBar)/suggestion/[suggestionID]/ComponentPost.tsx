@@ -1,7 +1,7 @@
 "use client"
 import { useRef, useState, useEffect } from "react";
 import { iconPencil } from "@/app/SvgIcons"
-import axios from "axios";
+import { api } from "@/lib/axios";
 import { useSelector } from "react-redux";
 import { RootState } from '../../../../redux/store';
 import { EditorProvider, useEditor, EditorContent } from '@tiptap/react';
@@ -68,7 +68,7 @@ export default function Suggestion({post}:{post:postDataObject}) {
     const uploadComment = async() =>{
         console.log(postData.id, comment);
         try {
-            const response = await axios.post(`http://3.35.239.36:8080/api/posts/comment`, {post:postData.id, content:comment}, {
+            const response = await api.post(`/api/posts/comment`, {post:postData.id, content:comment}, {
                 headers: {
                     Authorization: `Bearer ${userToken}`
                 }
@@ -76,7 +76,7 @@ export default function Suggestion({post}:{post:postDataObject}) {
                 console.log("댓글 업로드 성공", res.data.data);
                 setComment("");
                 try {
-                    const response = axios.get(`http://3.35.239.36:8080/api/posts/${postData.id}`, {
+                    const response = api.get(`/api/posts/${postData.id}`, {
                         headers: {
                             Authorization: `Bearer ${userToken}`
                         }

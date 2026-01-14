@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import "../../css/todo.css";
-import axios from 'axios';
+import { api } from "@/lib/axios";
 import { useEffect, useState } from 'react';
 
 const header = "w-full h-[130px] mt-[10px] flex flex-row items-end mb-[80px]"
@@ -21,7 +21,7 @@ export default function Header() {
     }, [])
     const getShortcutList = async () => {
         try {
-          const response = (await axios.get('http://3.35.239.36:8080/api/introduces/hyperlink')).data.data;
+          const response = (await api.get('/api/introduces/hyperlink')).data.data;
           console.log('하이퍼링크 :', response);
           setLinkList(response)
         } catch (error) {

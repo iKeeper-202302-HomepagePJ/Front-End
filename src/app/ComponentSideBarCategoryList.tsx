@@ -1,5 +1,5 @@
 "use client"
-import axios from "axios";
+import { api } from "@/lib/axios";
 import { useEffect, useState } from "react";
 import pro, { ProfileShortcut } from "./ComponentSideBar";
 interface categoryDataObject {
@@ -13,7 +13,7 @@ interface smallCategoryObject {
 }
 export const getCategoryData = async (setCategoryList:Function, setData?:Function) => {
     try {
-        const respon = await axios.get('http://3.35.239.36:8080/api/posts/category').then(res => {
+        const respon = await api.get('/api/posts/category').then(res => {
             console.log('대분류 카테고리 목록 호출 성공:', res.data.data);
             setCategoryList(res.data.data);
             if(setData) setData(res.data.data);

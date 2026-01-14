@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { api } from "@/lib/axios";
 import { useRouter } from 'next/navigation'; // useRouter 를 import 합니다.
 import { setToken, clearToken } from './redux/userSlice';
 
@@ -9,7 +9,7 @@ const handleSignUp = () => {
 };
 
 const tryLogin = async (id:string, password:string) => {
-    const response = await axios.post('https://f8595853-a026-42f2-a444-0fcbd28602b0.mock.pstmn.io/api/login', { id, password });
+    const response = await api.post('https://f8595853-a026-42f2-a444-0fcbd28602b0.mock.pstmn.io/api/login', { id, password });
     console.log('로그인 성공:', response.data);
     return (response.data)
 }

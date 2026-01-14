@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from './redux/store';
 import { clearToken } from "./redux/userSlice";
 import { useRouter } from 'next/navigation';
-import axios from "axios";
+import { api } from "@/lib/axios";
 import ProfileInformation from "./ComponentProfile";
 import { useEffect, useState } from "react";
 const user = {
@@ -33,7 +33,7 @@ export function ProfileShortcut() {
         try {
             // 서버로 로그인 요청 보내기
             console.log(userToken);
-            const response = await axios.get('http://3.35.239.36:8080/api/members/summary', {
+            const response = await api.get('/api/members/summary', {
                 headers: {
                     Authorization: `Bearer ${userToken}`
                 }

@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from 'react';
-import axios from 'axios';
+import { api } from "@/lib/axios";
 import { useRouter } from 'next/navigation'; // useRouter 를 import 합니다.
 import { useDispatch, useSelector } from "react-redux";
 import { setToken, clearToken, setInfo,} from './redux/userSlice';
@@ -27,7 +27,7 @@ const LoginPage: React.FC = () => {
 
         try {
             // 서버로 로그인 요청 보내기
-            const response = await axios.post('http://3.35.239.36:8080/api/auths/login', { studentId:id, password:password }).then(res => {
+            const response = await api.post('/api/auths/login', { studentId:id, password:password }).then(res => {
                 dispatch(setToken(res.data.data.accessToken));
                 const payload = (res.data.data?.accessToken || "").split('.')[1];
                 dispatch(setInfo(JSON.parse(decode(payload))));

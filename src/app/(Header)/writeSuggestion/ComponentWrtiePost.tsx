@@ -8,7 +8,7 @@ import { TextEditor } from '../../ComponentTextEditor'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../redux/store';
 import FormData from 'form-data';
-import axios from 'axios'
+import { api } from "@/lib/axios";
 interface categoryDataObject {
     id: number;
     name: string;
@@ -40,7 +40,7 @@ export default function WritePost(urlInCategory: { urlInCategory: string[] }) {
     const [post, setPost] = useState("");
     const getToggleData = async () => {
         try {
-            const respon = await axios.get('http://3.35.239.36:8080/api/posts/headline').then(res => {
+            const respon = await api.get('/api/posts/headline').then(res => {
                 console.log('헤드라인 목록 성공:', res.data.data);
                 setHeadlineList(res.data.data)
             })
@@ -98,7 +98,7 @@ export default function WritePost(urlInCategory: { urlInCategory: string[] }) {
             const formData = new FormData();
             formData.append('files', new File([new Blob([], { type: 'application/octet-stream' })], 'empty.txt', { type: 'text/plain' }));
             formData.append('post', JSON.stringify(uploadPostData));
-            const response = await axios.post(`http://3.35.239.36:8080/api/posts`, 
+            const response = await api.post(`/api/posts`, 
             formData
             ,
                 {

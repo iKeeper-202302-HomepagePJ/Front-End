@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 import ReactDOM from 'react-dom';
 import Header from "../../app/ComponentsHeader";
 import { setFieldDesign, } from '../(Header)/calendarPage/ComponentsTodoList'
-import axios from 'axios';
+import { api } from "@/lib/axios";
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 
@@ -70,7 +70,7 @@ export function writeTodoBox(year: string, month: string, day: string, calData: 
         console.log(calData.id);
         transferTodoData.check = todoCheck;
         console.log("asdf");
-        const response = await axios.patch(`http://3.35.239.36:8080/api/calendars/${calData.id}`, transferTodoData,
+        const response = await api.patch(`/api/calendars/${calData.id}`, transferTodoData,
         { headers: 
           { 
             Authorization: `Bearer ${userToken}`
@@ -86,7 +86,7 @@ export function writeTodoBox(year: string, month: string, day: string, calData: 
     else {
     try {
       // 서버로 로그인 요청 보내기
-      const response = await axios.post(`http://3.35.239.36:8080/api/calendars`, transferTodoData,
+      const response = await api.post(`/api/calendars`, transferTodoData,
       { headers: 
         { 
           Authorization: `Bearer ${userToken}`

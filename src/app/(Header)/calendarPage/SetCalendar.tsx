@@ -1,8 +1,8 @@
-import axios from 'axios';
+import { api } from "@/lib/axios";
 
 export default async function getCalenderData() {
     try {
-      const calendarData = (await axios.get('/read')).data;
+      const calendarData = (await api.get('/read')).data;
       console.log("성공!!");
       return calendarData;
   } catch (error) {
