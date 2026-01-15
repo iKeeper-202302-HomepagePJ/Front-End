@@ -5,12 +5,18 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import ReactDOM from 'react-dom';
 import Header from "../../app/ComponentsHeader";
-import { writeTodoBox } from './writeTodo';
+import { WriteTodoBox } from './writeTodo';
 import { useRouter } from 'next/router';
 //import WriteTodoPopup from '../writeTodoPopup';
+interface fieldInterface {
+  id: number;
+  name:string;
+}
 interface calObject {                     // json으로 받는 객체 타입 정의
   id?: number;
-  field: number;
+  field: {
+    id:number,    
+  };
   title: string;
   place: string;
   day: string;
@@ -23,9 +29,10 @@ export default function page() {
   const dataYear : string = (data.get('year'))!
   const dataMonth : string = (data.get('month'))!
   let dataDay : string =  (data.get('day'))!
-  console.log(dataDay)
   let dataCalData: calObject = {
-    field: 0,
+    field: {
+      id:1
+    },
     title: '',
     place: '',
     day: '',
@@ -44,7 +51,7 @@ export default function page() {
     return (
       <main className="flex min-h-screen bg-black flex-col items-center justify-between">
         <div className="w-3/4 h-auto mr-100/4">
-          {writeTodoBox(dataYear, dataMonth, dataDay, dataCalData)}
+          <WriteTodoBox year={dataYear} month={dataMonth} day={dataDay} calData={dataCalData}/>
         </div>
       </main>
     );
@@ -52,7 +59,7 @@ export default function page() {
   return (
     <main className="flex min-h-screen bg-black flex-col items-center justify-between">
       <div className="w-3/4 h-auto mr-100/4">
-        {writeTodoBox(dataYear, dataMonth, dataDay, dataCalData)}
+        <WriteTodoBox year={dataYear} month={dataMonth} day={dataDay} calData={dataCalData}/>
       </div>
     </main>
   );

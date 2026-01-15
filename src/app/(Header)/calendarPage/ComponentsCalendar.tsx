@@ -2,12 +2,12 @@
 import axios, { all } from 'axios';
 
 import { useState, useEffect } from "react";
-import { calendarData, adminPower } from "./page";
-import { ComponentTodoList } from "./ComponentsTodoList";
+import { adminPower } from "./page";
+import { ComponentTodoList, TodayComponentTodoList } from "./ComponentsTodoList";
 
 interface calObject {                     // json으로 받는 객체 타입 정의
     id: number;
-    field: number;
+    field: fieldInterface;
     title: string;
     place: string;
     day: string;
@@ -18,6 +18,12 @@ interface fieldInterface {
     id: number;
     name: string;
 }
+type setCalendarProps = {
+    calData: calObject[];
+    month: number;
+    year: number;
+    onClickEventFuntion?: Function;
+}
 const calendarDayBox = "h-[100px] bg-deepBlue flex-col items-center justify-between mr-[5px] mb-[5px] rounded border-2 border-deepBlue font-medium"
 const dayOfWeekBox = "bg-deepBlue justify-between mr-[5px] text-center text-white text-[16ypx] rounded-md"
 const today = new Date();
@@ -26,10 +32,10 @@ const todayMonth = today.getMonth() + 1;
 const todayDay = today.getDate();
 function setMontCalendarData(calData: calObject[], month: number, year: number) {
     let todo = calData.filter((e: { day: string; }) => (Number(e.day.slice(5, 7)) == month) && (Number(e.day.slice(0, 4)) == year) && (Number(e.day.slice(8, 10)) == 1));
-    let calendardata = todo.sort((a, b) => Number(a.time.slice(6, 8)) - Number(b.time.slice(6, 8)) || Number(a.time.slice(0, 2)) - Number(b.time.slice(0, 2)) || Number(a.time.slice(3, 5)) - Number(b.time.slice(3, 5)) || a.field - b.field);
+    let calendardata = todo.sort((a, b) => Number(a.time.slice(6, 8)) - Number(b.time.slice(6, 8)) || Number(a.time.slice(0, 2)) - Number(b.time.slice(0, 2)) || Number(a.time.slice(3, 5)) - Number(b.time.slice(3, 5)) || a.field.id - b.field.id);
     for (let i = 2; i <= 31; i++) {
         todo = calData.filter((e: { day: string; }) => (Number(e.day.slice(5, 7)) == month) && (Number(e.day.slice(0, 4)) == year) && (Number(e.day.slice(8, 10)) == i));
-        todo.sort((a, b) => Number(a.time.slice(6, 8)) - Number(b.time.slice(6, 8)) || Number(a.time.slice(0, 2)) - Number(b.time.slice(0, 2)) || Number(a.time.slice(3, 5)) - Number(b.time.slice(3, 5)) || a.field - b.field);
+        todo.sort((a, b) => Number(a.time.slice(6, 8)) - Number(b.time.slice(6, 8)) || Number(a.time.slice(0, 2)) - Number(b.time.slice(0, 2)) || Number(a.time.slice(3, 5)) - Number(b.time.slice(3, 5)) || a.field.id - b.field.id);
         calendardata = calendardata.concat(todo);
     }
     return calendardata;
@@ -75,7 +81,7 @@ function showTodoInCalendar(lastOrNext:boolean, day:number, month:number, year:n
         </button>
     )
 }*/
-function setCalendar(calData: calObject[], month: number, year: number, onClickEventFuntion: Function) {
+export function SetCalendar({calData, month, year, onClickEventFuntion} : setCalendarProps) {
     const lastMonth = moveMonth(false, year, month);
     const afterMonth = moveMonth(true, year, month);
     const firstDayOfWeek = new Date(year, month - 1, 1).getDay();
@@ -90,23 +96,23 @@ function setCalendar(calData: calObject[], month: number, year: number, onClickE
     const selectDayBox = "border-2 border-white"
     const todayBox = "text-deepBlue bg-white border-2 border-white"
     for (let beforeDay = lastDayOfLastMonth - firstDayOfWeek + 1; beforeDay <= lastDayOfLastMonth; beforeDay++) {
-        let countByCondition = calendarData.reduce((data: any, lastMonthData: calObject) => {
+        let countByCondition = calData.reduce((data: any, lastMonthData: calObject) => {
             if (Number(lastMonthData.day.slice(5, 7)) == lastMonth[1] && Number(lastMonthData.day.slice(0, 4)) == lastMonth[0] && (Number(lastMonthData.day.slice(8, 10)) == beforeDay)) {
                 console.log(calData)
-                if (lastMonthData.field == 1) {
+                if (lastMonthData.field.id == 1) {
                     data.allCount += 1;
-                } else if (lastMonthData.field == 2) {
+                } else if (lastMonthData.field.id == 2) {
                     data.certCount += 1;
-                } else if (lastMonthData.field == 3) {
+                } else if (lastMonthData.field.id == 3) {
                     data.devCount += 1;
                 }
             }
             return data;
         }, { allCount: 0, certCount: 0, devCount: 0 });
         itemOfCalendar.push(
-            <button className={`${todayDay == beforeDay && todayMonth == lastMonth[1] && todayYear == lastMonth[2] && todayBox} ${selectDay == (`${beforeDay}${lastMonth[1]}`) && `${selectDayBox}`} ${calendarDayBox} opacity-50`} onClick={() => { onClickEventFuntion(true, beforeDay, lastMonth[1], lastMonth[0]); setSelectDayHandle(`${beforeDay}${lastMonth[1]}`) }}>
+            <button disabled={onClickEventFuntion ? false : true} className={`${todayDay == beforeDay && todayMonth == lastMonth[1] && todayYear == lastMonth[2] && todayBox} ${selectDay == (`${beforeDay}${lastMonth[1]}`) && `${selectDayBox}`} ${calendarDayBox} opacity-50`} onClick={() => { onClickEventFuntion && onClickEventFuntion(true, beforeDay, lastMonth[1], lastMonth[0]); setSelectDayHandle(`${beforeDay}${lastMonth[1]}`) }}>
                 <div className={`w-6 h-6 mt-1`}>{beforeDay}</div>
-                <div className="flex justify-center font-bold items-center">
+                <div className="flex h-full  justify-center font-bold items-center">
                     <div className="flex flex-row space-x-[10px]">
                         {Boolean(countByCondition.allCount) && <div className="text-orange">A</div>}
                         {Boolean(countByCondition.certCount) && <div className="text-skyblue">C</div>}
@@ -122,7 +128,7 @@ function setCalendar(calData: calObject[], month: number, year: number, onClickE
     let searchCalData = 0;
     for (let day = 1; day <= lastDay; day++) {
         while (calData.length != searchCalData && Number(calData[searchCalData].day.slice(8, 10)) == day) {
-            switch (calData[searchCalData++].field) {
+            switch (calData[searchCalData++].field.id) {
                 case 1:
                     allCount++;
                     break;
@@ -134,7 +140,7 @@ function setCalendar(calData: calObject[], month: number, year: number, onClickE
             }
         }
         itemOfCalendar.push(
-            <button className={`${todayDay == day && todayMonth == month && todayYear == year && todayBox} ${selectDay == (`${day}${month}`) && `${selectDayBox}`} ${calendarDayBox}`} onClick={() => { onClickEventFuntion(false, day, month, year); setSelectDayHandle(`${day}${month}`) }}>
+            <button disabled={onClickEventFuntion ? false : true} className={`${todayDay == day && todayMonth == month && todayYear == year && todayBox} ${selectDay == (`${day}${month}`) && `${selectDayBox}`} ${calendarDayBox}`} onClick={() => { onClickEventFuntion && onClickEventFuntion(false, day, month, year); setSelectDayHandle(`${day}${month}`) }}>
                 <div className={`w-6 h-6 mt-1`}>{day}</div>
                 <div className={`w-full h-full flex justify-center font-bold`}>
                     <div className="flex flex-row space-x-[10px]">
@@ -150,23 +156,23 @@ function setCalendar(calData: calObject[], month: number, year: number, onClickE
     }
 
     for (let afterDay = 1; lastDayOfWeek++ < 6; afterDay++) {
-        let countByCondition = calendarData.reduce((data: any, lastMonthData: calObject) => {
+        let countByCondition = calData.reduce((data: any, lastMonthData: calObject) => {
             if (Number(lastMonthData.day.slice(5, 7)) == afterMonth[1] && Number(lastMonthData.day.slice(0, 4)) == afterMonth[0] && (Number(lastMonthData.day.slice(8, 10)) == afterDay)) {
                 console.log(calData)
-                if (lastMonthData.field == 1) {
+                if (lastMonthData.field.id == 1) {
                     data.allCount += 1;
-                } else if (lastMonthData.field == 2) {
+                } else if (lastMonthData.field.id == 2) {
                     data.certCount += 1;
-                } else if (lastMonthData.field == 3) {
+                } else if (lastMonthData.field.id == 3) {
                     data.devCount += 1;
                 }
             }
             return data;
         }, { allCount: 0, certCount: 0, devCount: 0 });
         itemOfCalendar.push(
-            <button className={`${todayDay == afterDay && todayMonth == afterMonth[1] && todayYear == afterMonth[0] && todayBox} ${selectDay == (`${afterDay}${afterMonth[1]}`) && `${selectDayBox}`} ${calendarDayBox} opacity-50`} onClick={() => { onClickEventFuntion(true, afterDay, afterMonth[1], afterMonth[0]); setSelectDayHandle(`${afterDay}${afterMonth[1]}`) }}>
+            <button disabled={onClickEventFuntion ? false : true} className={`${todayDay == afterDay && todayMonth == afterMonth[1] && todayYear == afterMonth[0] && todayBox} ${selectDay == (`${afterDay}${afterMonth[1]}`) && `${selectDayBox}`} ${calendarDayBox} opacity-50`} onClick={() => { onClickEventFuntion && onClickEventFuntion(true, afterDay, afterMonth[1], afterMonth[0]); setSelectDayHandle(`${afterDay}${afterMonth[1]}`) }}>
                 <div className={`w-6 h-6 mt-1`}>{afterDay}</div>
-                <div className="flex justify-center font-bold">
+                <div className="h-full flex justify-center font-bold">
                     <div className="flex flex-row space-x-[10px]">
                         {Boolean(countByCondition.allCount) && <div className="text-orange">A</div>}
                         {Boolean(countByCondition.certCount) && <div className="text-skyblue">C</div>}
@@ -177,7 +183,7 @@ function setCalendar(calData: calObject[], month: number, year: number, onClickE
     }
     return (
         <div className="flex-col items-center justify-between rounded-md">
-            <div className="h-[25px] mb-[10px] grid grid-cols-7">
+            <div className="h-[25px] mb-[10px] grid grid-cols-7 font-semibold text-[16px]">
                 <div className={`${dayOfWeekBox}`}>일</div>
                 <div className={`${dayOfWeekBox}`}>월</div>
                 <div className={`${dayOfWeekBox}`}>화</div>
@@ -192,7 +198,7 @@ function setCalendar(calData: calObject[], month: number, year: number, onClickE
         </div>
     )
 }
-export function Calendar(/*calendarData:calObject[]*/): JSX.Element {
+export function Calendar({calendarData} : {calendarData:calObject[]}): JSX.Element {
     let [monthOrDay, setMonthOfDay] = useState(true);    // true = month, false = day
     let [month, setMonth] = useState(todayMonth);
     let [year, setYear] = useState(todayYear);
@@ -237,7 +243,10 @@ export function Calendar(/*calendarData:calObject[]*/): JSX.Element {
         return (
             <div>
                 <div className='w-screen h-screen bg-deepBlue opacity-80 fixed top-0 left-0 right-0' onClick={() => setDontMove(false)}></div>
-                <div className='w-[700px] h-[100px] rounded-lg bg-white text-deepBlue text-[20px] fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center'>현재 날짜의 12개월 전 또는 6개월 후는 표시되지않습니다</div>
+                <div className='w-[700px] h-[100px] rounded-lg bg-black text-[20px] fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center'>
+                현재 날짜의 12개월 전 또는 6개월 후는 표시되지않습니다
+                <div className='w-[50px] h-[30px] bg-blue'>X</div>
+                </div>
             </div>
         )
     }
@@ -249,18 +258,36 @@ export function Calendar(/*calendarData:calObject[]*/): JSX.Element {
             <div className="flex-auto h-auto mr-[24px]">
                 <div className="flex-auto flex items-center justify-end space-x-[10px] mb-[15px]">
                     <button className="w-[30px] h-[30px] bg-deepBlue rounded-[10px]" onClick={() => monthHandle(false)}>
-                        <img src="/arrowRight.svg" alt="설명" />
+                        <img src="/arrowRight.svg" alt="이전달로이동" />
                     </button>
                     <div className="w-[180px] text-[26px] text-white text-center">{year}년 {month}월</div>
                     <button className="w-[30px] h-[30px] bg-deepBlue rounded-[10px]" onClick={() => monthHandle(true)}>
-                        <img src="/arrowRight.svg" alt="설명" className="rotate-180" />
+                        <img src="/arrowRight.svg" alt="다음달로이동" className="rotate-180" />
                     </button>
                 </div>
-                {setCalendar(monthCalendarData, month, year, selectDayHandle)}
+                {<SetCalendar calData = {monthCalendarData} month={month} year={year} onClickEventFuntion={selectDayHandle}/>}
             </div>
             {Boolean(!selectDay) && ComponentTodoList(year, month, 0, monthCalendarData)}
             {Boolean(selectDay) && ComponentTodoList(selectYear, selectMonth, selectDay, dayCalendarData)}
             {dontMove && dontMoveModal()}
+        </div>
+    )
+}
+
+export function TodayCalendar({calendarData} : {calendarData:calObject[]}): JSX.Element {
+    let [monthCalendarData, setCalendarData] = useState<calObject[]>(setMontCalendarData(calendarData, todayMonth, todayYear));
+    let [dayCalendarData, setDayData] = useState<calObject[]>([]);
+    useEffect(() => {
+        setCalendarData(setMontCalendarData(calendarData, todayMonth, todayYear))
+        
+    }, []);
+    console.log("맹구", todayMonth)
+    return (
+        <div className="w-full flex py-[20px] justify-normal">
+            <div className="w-full h-auto mr-[24px]">
+                {<SetCalendar calData={monthCalendarData}  month={todayMonth} year={todayYear}/>}
+            </div>
+            {TodayComponentTodoList(monthCalendarData.filter((e: { day: string; }) => (Number(e.day.slice(8, 10)) == todayDay)).map((key: any) => key))}
         </div>
     )
 }

@@ -4,6 +4,9 @@ import { UserInformation } from "../../../ComponentInUserWritingPost";
 import Header from "../../../ComponentsHeader";
 import { PostItem, PostListHeading } from "../../../ComponentPostList";
 import UserPostList from "./ComponentUserPostListPage";
+import { api } from "@/lib/axios";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from '../../../redux/store';
 interface userDataObject {
     user_id: string
     user_name: string;
@@ -24,12 +27,12 @@ interface postDataObject {                     // json으로 받는 객체 타�
     subCategory?: string;
 }
 const userData: userDataObject = {                   /***********이거 나중에 api로 수정*************** */
-    'user_id': '22113966',
+    'user_id': '22113455',
     'user_name': '신세미',
     'user_profile_picture': "/LOGO_Black.svg",
     'field_id': 3,
     'userComment': 3,
-    userPost: 3
+    userPost: 2
 }
 const postData: postDataObject[] = [
     {
@@ -39,8 +42,8 @@ const postData: postDataObject[] = [
         headline: '최대이십글자더라가나다라마바다사아다바마',
         timestamp: "2024-02-13T13:00:00+09:00",
         postComment: 1,
-        majorCategory: "개발세미나",
-        subCategory: "2024-1"
+        majorCategory: "세미나",
+        subCategory: "개발세미나"
     },
     {
         id: 2,
@@ -49,16 +52,31 @@ const postData: postDataObject[] = [
         headline: "2회차",
         timestamp: "2024-02-13T13:00:00+09:00",
         postComment: 3,
-        majorCategory: "개발세미나",
-        subCategory: "2024-2"
+        majorCategory: "세미나",
+        subCategory: "중간세미나"
     }
 ]
 export default async function Page() {
+    const userToken = useSelector((state: RootState) => state.user.token);
+
+    try {
+        const respon = await api.get('/api/members/mypage', {
+            headers: {
+                Authorization: `Bearer ${userToken}`
+            }
+        }).then(res => {
+            return res;
+            console.log('유저 정보 성공:', res.data.data);
+        });
+    } catch (error) {
+        console.error('마이페이지 정보 실패:', error);
+        throw error; // 에러를 다시 throw하여 에러 처리 가능하도록 함
+    }
     return (
         <main className="flex min-h-screen w-full bg-black flex-col">
             <div className="flex flex-col  flex-grow">
                 {UserInformation(userData)}
-                <UserPostList />
+                <UserPostList postData={postData}/>
             </div>
         </main>
     );
