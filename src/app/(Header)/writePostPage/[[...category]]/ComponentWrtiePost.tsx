@@ -59,7 +59,7 @@ export default function WritePost(urlInCategory : {urlInCategory:string[]}) {
             
         }
     }
-    }, [categoryList]);
+    }, [categoryList, urlInCategory.urlInCategory]);
     const savePost = async (post: string) => {
         setPost(post);
         const formData = new FormData();

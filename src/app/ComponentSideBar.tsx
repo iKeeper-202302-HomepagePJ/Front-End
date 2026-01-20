@@ -29,7 +29,9 @@ export function ProfileShortcut() {
             <LoginPage />
         )
     }
-    const getUserInfomation = async () => {
+    
+    useEffect(() => {
+        const getUserInfomation = async () => {
         try {
             // 서버로 로그인 요청 보내기
             console.log(userToken);
@@ -45,10 +47,9 @@ export function ProfileShortcut() {
             console.error('유저정보 호출 실패:', error);
         }
     }
-    useEffect(() => {
         getUserInfomation()
         console.log("됐당");
-    }, [isLogin]);
+    }, [isLogin, userToken]);
     const Profile = () => {
         return (
             <div className="w-full h-full p-[30px] flex flex-col justify-between">

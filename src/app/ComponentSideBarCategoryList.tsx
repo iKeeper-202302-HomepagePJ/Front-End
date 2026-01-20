@@ -46,7 +46,7 @@ export const GetCategoryListAndSideBar = (setData:Function) => {
     const [categoryData, setCategoryData] = useState([]);
     useEffect(() => {
         getCategoryData(setCategoryData, setData);
-    }, []);
+    }, [setData]);
     return(
     <div className="w-[317px] flex-none w-min-0 h-auto ml-[50px] mt-[50px]">
         {ProfileShortcut()}
@@ -59,7 +59,7 @@ export const GetCategoryListAndSideBar = (setData:Function) => {
                 </div>
             </div>))}
         </div>
-        </div>
+    </div>
     )
 }
 

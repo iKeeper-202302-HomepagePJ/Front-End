@@ -7,7 +7,7 @@ import PostList from "./ComponentPostList";
 import { useRouter } from 'next/navigation'
 import { useSelector } from "react-redux";
 import { RootState } from '../../../redux/store';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { api } from "@/lib/axios";
 import {GetCategoryListAndSideBar} from "../../../ComponentSideBarCategoryList";
 interface postDataObject {                     // json으로 받는 객체 타입 정의
@@ -79,7 +79,7 @@ export default function ({ params }: { params: { category: string[] } }) {      
     const userToken = useSelector((state: RootState) => state.user.token);
     let baseUrl = params.category;
     const urlpage = Number(params.category[params.category.length-1]);
-    const getPostListData = async () => {
+    const getPostListData = useCallback(async () => {
         try {
             console.log("나대체뭘보낸거야", urlpage-1)
             const response = await api.get(`/api/posts/?page=${urlpage}`).then(res => {
@@ -95,10 +95,10 @@ export default function ({ params }: { params: { category: string[] } }) {      
             console.error('게시글 목록 정보 실패:', error);
             throw error;
         }
-    }
+    }, [urlpage])
     useEffect(() => {
         getPostListData();
-    }, []);
+    }, [getPostListData]);
     if (postListData == null) return null;
     return (
         <main className="flex min-h-screen bg-black w-full">

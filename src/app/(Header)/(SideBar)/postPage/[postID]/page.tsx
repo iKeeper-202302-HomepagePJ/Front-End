@@ -7,7 +7,7 @@ import Post from "./ComponentPost";
 import { api } from "@/lib/axios";
 import { useSelector } from "react-redux";
 import { RootState } from '../../../../redux/store';
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 interface postDataObject {                     // json으로 받는 객체 타입 정의
     id: number;
     postUser: string;
@@ -43,7 +43,7 @@ interface categoryDataObject {
 export default function ({ params }: { params: { postID: Number } }) {         // 수정 : string에서 number로. 경로를 카테고리 번호로 변경
     const [postData, setPostData] = useState<postDataObject | null>();
     const userToken = useSelector((state: RootState) => state.user.token);
-    const getPostData = async () => {
+    const getPostData = useCallback(async () => {
         try {
             const response = await api.get(`/api/posts/${params.postID}`, {
                 headers: {
@@ -57,10 +57,10 @@ export default function ({ params }: { params: { postID: Number } }) {         /
             console.error('게시글 정보 실패:', error);
             throw error;
         }
-    }
+    }, [userToken, params.postID])
     useEffect(() => {
         getPostData();
-    }, []);
+    }, [getPostData]);
     return (
         <div className="w-full flex flex-row mt-[50px]">
             <div className="grow">

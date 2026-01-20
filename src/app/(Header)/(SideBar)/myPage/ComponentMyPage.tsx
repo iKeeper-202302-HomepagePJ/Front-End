@@ -1,6 +1,6 @@
 'use client';
 import { IconWarining } from '../../../SvgIcons'
-import { use, useEffect, useState } from "react"
+import { use, useCallback, useEffect, useState } from "react"
 import { RootState } from '../../../redux/store';
 import { api } from "@/lib/axios";
 import { useDispatch, useSelector } from "react-redux";
@@ -67,7 +67,7 @@ export default function MyPage() {
     const [statusList, setStatusList] = useState<any[]>([])
     const [gradeList, setGradeList] = useState<any[]>([])
     console.log("저장잘되냐?", useSelector((state: RootState) => state.user))
-    const getUserData = async () => {
+    const getUserData = useCallback(async () => {
         try {
             const respon = await api.get('/api/members/mypage', {
                 headers: {
@@ -87,7 +87,7 @@ export default function MyPage() {
             console.error('마이페이지 정보 실패:', error);
             throw error; // 에러를 다시 throw하여 에러 처리 가능하도록 함
         }
-    }
+    }, [userToken]);
     const getMajorList = async () => {
         try {
           const response = (await api.get('/api/members/major')).data.data;
@@ -134,12 +134,14 @@ export default function MyPage() {
         }
       };
     useEffect(() => {
-        getUserData();
         getMajorList();
         getGradeList();
         getStateList();
         console.log("됐ㅇ당");
     }, []);
+    useEffect(() => {
+        getUserData();
+    }, [getUserData]);
     const UserInformationAndActivityStatus = () => {
         const userField: string[] = SetUserField(userData!.field.id)!;
         return (

@@ -4,7 +4,7 @@ import PathMovement from "@/app/ComponentPathMovement"
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/store';
 import { api } from "@/lib/axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 interface adminDataObject {
     "studentId": string,
     "name": string,
@@ -29,15 +29,6 @@ export default function AdminList() {
     const userToken = useSelector((state: RootState) => state.user.token);
     const [addAdminData, setAddAdminData] = useState<null | adminDataObject>(null)
     const [checkFirst, setCheckFirst] = useState(false)
-    const getAdminList = async () => {
-        try {
-            const response = (await api.get('/api/members/role/admin')).data.data;
-            console.log('관리자 목록:', response);
-            const requests = response.map((i: { studentId: string }) => settingList(i.studentId));
-        } catch (error) {
-            console.error('Failed to fetch dropdown options:', error);
-        }
-    };
     const getStudentData = async () => {
         try {
             const response = (await api.get(`/api/members/${findStudent}`, {
@@ -57,7 +48,7 @@ export default function AdminList() {
             console.error('검색안됨', error);
         }
     }
-    const settingList = async (id: string) => {
+    const settingList = useCallback(async (id: string) => {
         try {
             const response: adminDataObject = (await api.get(`/api/members/${id}`, {
                 headers: {
@@ -68,7 +59,16 @@ export default function AdminList() {
         } catch (error) {
             console.error('검색안됨', error);
         }
-    }
+    }, [userToken])
+    const getAdminList = useCallback(async () => {
+        try {
+            const response = (await api.get('/api/members/role/admin')).data.data;
+            console.log('관리자 목록:', response);
+            const requests = response.map((i: { studentId: string }) => settingList(i.studentId));
+        } catch (error) {
+            console.error('Failed to fetch dropdown options:', error);
+        }
+    }, [settingList]);
     const SetNewAdmin = async (id: string) => {
         try {
             const response = (await api.patch(`/api/members/role/admin/${id}`, {
@@ -98,7 +98,7 @@ export default function AdminList() {
     }, []);
     useEffect(() => {
         if (checkFirst) getAdminList();
-    }, [checkFirst]);
+    }, [checkFirst, getAdminList]);
     return (
         <div className="w-full h-auto">
             <div className="flex text-[20px] text-pink font-bold items-center w-full h-[30px] mb-[20px]">

@@ -252,7 +252,7 @@ export function Calendar({calendarData} : {calendarData:calObject[]}): JSX.Eleme
     }
     useEffect(() => {
         setCalendarData(setMontCalendarData(calendarData, month, year))
-    }, [month]);
+    }, [calendarData, year, month]);
     return (
         <div className="w-full flex py-[20px] justify-normal">
             <div className="flex-auto h-auto mr-[24px]">
@@ -279,8 +279,7 @@ export function TodayCalendar({calendarData} : {calendarData:calObject[]}): JSX.
     let [dayCalendarData, setDayData] = useState<calObject[]>([]);
     useEffect(() => {
         setCalendarData(setMontCalendarData(calendarData, todayMonth, todayYear))
-        
-    }, []);
+    }, [calendarData]);
     console.log("맹구", todayMonth)
     return (
         <div className="w-full flex py-[20px] justify-normal">

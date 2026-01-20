@@ -75,7 +75,7 @@ export default function WritePost(urlInCategory: { urlInCategory: string[] }) {
 
             }
         }
-    }, [categoryList]);
+    }, [categoryList, urlInCategory.urlInCategory]);
     const savePost = async (post: string) => {
         try {
             // 서버로 로그인 요청 보내기
