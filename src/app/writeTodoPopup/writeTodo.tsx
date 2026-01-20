@@ -47,8 +47,8 @@ export function WriteTodoBox({year, month, day, calData} : writeTodoBoxProps) { 
   const [todoDayDay, setTodoDay] = useState(Number(day))
   const [todoField, setTodoField] = useState(calData.field.id)
   const [todoTimeCheck, setTodoTimeCheck] = useState(calData.time.slice(6, 8))
-  const [todoTimeHour, setTodoTimeHour] = todoTimeCheck == "01" ? useState("선택 안 함") : useState(calData.time.slice(0, 2))
-  const [todoTimeMinute, setTodoTimeMinute] = todoTimeCheck == "01" ? useState("") : useState(calData.time.slice(3, 5))
+  const [todoTimeHour, setTodoTimeHour] = useState(()=>todoTimeCheck == "01" ? "선택 안 함" : calData.time.slice(0, 2))
+  const [todoTimeMinute, setTodoTimeMinute] = useState(todoTimeCheck == "01" ? "" : calData.time.slice(3, 5))
   const [todoPlace, setTodoPlace] = useState(calData.place)
   const [todoCheck, setTodoCheck] = useState(calData.check)
   const lastDay = new Date(Number(year), Number(month), 0).getDate();
