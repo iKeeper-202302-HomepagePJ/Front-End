@@ -45,18 +45,18 @@ export default function ApplicantsList() {
         }
         
     };
-    const applicatsList = applicatsData.length ? applicatsData.map((key: userDataObject) => (<div id={`applicat${key.studentId}`} className='w-full h-auto text-wrap justify-center text-[16px] px-[10px] mb-[5px]'>
+    const applicatsList = applicatsData.length ? applicatsData.map((user: userDataObject) => (<div key={user.studentId} id={`applicat${user.studentId}`} className='w-full h-auto text-wrap justify-center text-[16px] px-[10px] mb-[5px]'>
         <hr className="w-full h-[2px] bg-blue border-0 mb-[5px]"/>
         <div className='w-full py-[5px] h-auto flex flex-row justify-between'>
-            <div className='w-[100px] h-full text-center content-center'>{key.name}</div>
-            <div className='w-[50px] h-full text-center content-center'>{key.field.id == 3 ? <div className='text-green'>CERT</div> : <div className='text-skyblue'>개발</div>}</div>
-            <div className='w-[100px] h-full text-center content-center'>{key.studentId}</div>
-            <div className='w-[200px] h-full text-center content-center'>{key.major1.name}</div>
-            <div className='w-[200px] h-full text-center content-center'>{key.major2.name}</div>
-            <div className='w-[200px] h-full text-center content-center'>{key.major3.name}</div>
-            <div className='w-[150px] h-full text-center content-center'>{key.grade.name}</div>
-            <button className='flex w-[80px] h-full justify-center content-center' onClick={()=>setStudentID(key.studentId)}>
-                {IconCheck("w-[20px] h-auto", `${studentID == key.studentId ? 'gray' : 'green'}`)}
+            <div className='w-[100px] h-full text-center content-center'>{user.name}</div>
+            <div className='w-[50px] h-full text-center content-center'>{user.field.id == 3 ? <div className='text-green'>CERT</div> : <div className='text-skyblue'>개발</div>}</div>
+            <div className='w-[100px] h-full text-center content-center'>{user.studentId}</div>
+            <div className='w-[200px] h-full text-center content-center'>{user.major1.name}</div>
+            <div className='w-[200px] h-full text-center content-center'>{user.major2.name}</div>
+            <div className='w-[200px] h-full text-center content-center'>{user.major3.name}</div>
+            <div className='w-[150px] h-full text-center content-center'>{user.grade.name}</div>
+            <button className='flex w-[80px] h-full justify-center content-center' onClick={()=>setStudentID(user.studentId)}>
+                {IconCheck("w-[20px] h-auto", `${studentID == user.studentId ? 'gray' : 'green'}`)}
             </button>
             <div className='w-[100px] h-full text-center content-center'>100%(1/1)</div>
 

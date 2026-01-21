@@ -25,7 +25,7 @@ export default function UserCommentList() {
                 {PostListHeading(true, true)}
             </div>
             <hr className="h-1 bg-blue border-0 mt-[5px]"></hr>
-            {postData.map((key:postDataObject)=> (<div>{PostItem(true, true, key, ShowCategory)}<hr className="h-[3px] bg-blue border-0 mt-[5px]"></hr></div>))}
+            {postData.map((post:postDataObject)=> (<div key={post.id}>{PostItem(true, true, post, ShowCategory)}<hr className="h-[3px] bg-blue border-0 mt-[5px]"></hr></div>))}
         </div>
     )
 }

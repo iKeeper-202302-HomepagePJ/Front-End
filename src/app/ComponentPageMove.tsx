@@ -10,7 +10,7 @@ function PageMove(page: number, lastPostListPage: number, setPage: string) {
         <div className="w-fit h-auto text-[20px] font-bold flex space-x-[10px]">
             {startPage != 1 && <a className={`w-[70px] ${pageButtonBox}`} href={`${setPage}/${startPage-10}`}>{`<이전`}</a>}
             {Array.from({ length: page - startPage }, (_, i) => (
-                <a className={`w-[30px] ${pageButtonBox}`} href={`${setPage}/${i + startPage}`}>
+                <a key={i} className={`w-[30px] ${pageButtonBox}`} href={`${setPage}/${i + startPage}`}>
                     {i + startPage}
                 </a>
             ))}
@@ -18,7 +18,7 @@ function PageMove(page: number, lastPostListPage: number, setPage: string) {
                 {page}
             </a>
             {Array.from({ length: lastPage - page }, (_, i) => (
-                <a className={`w-[30px] ${pageButtonBox}`} href={`${setPage}/${i + page + 1}`}>
+                <a key={i} className={`w-[30px] ${pageButtonBox}`} href={`${setPage}/${i + page + 1}`}>
                     {i + page + 1}
                 </a>
             ))}

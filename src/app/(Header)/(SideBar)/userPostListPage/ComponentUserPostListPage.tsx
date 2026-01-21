@@ -29,7 +29,7 @@ export default function UserPostList({postData} : postDatasObject) {
                 {PostListHeading(true, false)}
             </div>
             <hr className="h-1 bg-blue border-0 mt-[5px]"></hr>
-            {postData.map((key:postDataObject)=> (<div>{PostItem(true, false, key, ShowCategory)}<hr className="h-[3px] bg-blue border-0 mt-[5px]"></hr></div>))}
+            {postData.map((post:postDataObject)=> (<div key={post.id}>{PostItem(true, false, post, ShowCategory)}<hr className="h-[3px] bg-blue border-0 mt-[5px]"></hr></div>))}
         </div>
     )
 }

@@ -130,15 +130,15 @@ export default function AdminList() {
             </div>
             <div className={`w-full h-auto flex flex-col justify-items-center`}>
             <div className="font-semibold test-[16px] my-[20px]">• 관리자 목록</div>
-                {adminData.length ? adminData.map((key: adminDataObject, index: number) => (
-                    <div className="font-semibold w-[870px] h-[75px] justify-between flex items-center bg-deepBlue text-[16px] rounded-lg mb-[20px]">
-                        <div />
-                        <div className="text-center w-[50px]">{key.name}</div>
-                        <div>{key.studentId}</div>
-                        <div className={`w-[50px] text-${key.field.id == 2 ? `green` : `skyblue`}`}>{key.field.id == 2 ? `개발` : `CERT`}</div>
-                        <div className="text-center w-[200px]">{key.major1.name}</div>
-                        <div className="text-center w-[150px]">{key.grade.name}</div>
-                        <button className="h-[28px]"><img className="h-full" src="/BTNDelete.svg" onClick={() => {setAdminData(adminData.splice(index - 1, 1)); deletAdmin(key.studentId)}} /></button>
+                {adminData.length ? adminData.map((admin: adminDataObject, index: number) => (
+                    <div key={admin.studentId} className="font-semibold w-[870px] h-[75px] justify-between flex items-center bg-deepBlue text-[16px] rounded-lg mb-[20px]">
+                        <div /> {/* TODO: member/role/admin 조회 후 id 있는지 확인 */}
+                        <div className="text-center w-[50px]">{admin.name}</div>
+                        <div>{admin.studentId}</div>
+                        <div className={`w-[50px] text-${admin.field.id == 2 ? `green` : `skyblue`}`}>{admin.field.id == 2 ? `개발` : `CERT`}</div>
+                        <div className="text-center w-[200px]">{admin.major1.name}</div>
+                        <div className="text-center w-[150px]">{admin.grade.name}</div>
+                        <button className="h-[28px]"><img className="h-full" src="/BTNDelete.svg" onClick={() => {setAdminData(adminData.splice(index - 1, 1)); deletAdmin(admin.studentId)}} /></button>
                         <div />
                     </div>
                 )) : <div>관리자 없다 다 망했다</div>}

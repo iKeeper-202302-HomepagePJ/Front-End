@@ -171,8 +171,8 @@ function TodoList(calData: calObject[], setDay?: number, todoCheckList?:Function
   let clearTodo = calData.filter((e: { check: boolean; }) => (e.check)).map((key: calObject) => ClearTodo(key));
   setFieldString(1);*/
   //todo.push(calData.map((row: calObject[]) => row.filter((e: {check: boolean;}) => (!e.check)).map((key: calObject) => (key))));
-  let todo = /*setDay ? calData.filter((e: { check: boolean; day: string }) => (!e.check && (Number(e.day.slice(8, 10)) == setDay))).map((key: calObject) => (<div id={`${key.id}`}><Todo calData={key} /></div>)) : */calData.filter((e: { check: boolean; }) => (!e.check)).map((key: calObject) => (<div id={`todoComponent${key.id}`}><Todo calData={key} clear={false} checkedFunction={setCheckTodoList}/></div>));
-  let clearTodo = /*setDay ? calData.filter((e: { check: boolean; day:string}) => (e.check && (Number(e.day.slice(8, 10)) == setDay))).map((key: calObject) => (<div id={`${key.id}`}><ClearTodo calData={key} /></div>)) : */calData.filter((e: { check: boolean; }) => (e.check)).map((key: calObject) => (<div id={`todoComponent${key.id}`}><Todo calData={key} clear={true} checkedFunction={setCheckTodoList} /></div>));
+  let todo = /*setDay ? calData.filter((e: { check: boolean; day: string }) => (!e.check && (Number(e.day.slice(8, 10)) == setDay))).map((key: calObject) => (<div id={`${key.id}`}><Todo calData={key} /></div>)) : */calData.filter((e: { check: boolean; }) => (!e.check)).map((todo: calObject) => (<div key={todo.id} id={`todoComponent${todo.id}`}><Todo calData={todo} clear={false} checkedFunction={setCheckTodoList}/></div>));
+  let clearTodo = /*setDay ? calData.filter((e: { check: boolean; day:string}) => (e.check && (Number(e.day.slice(8, 10)) == setDay))).map((key: calObject) => (<div id={`${key.id}`}><ClearTodo calData={key} /></div>)) : */calData.filter((e: { check: boolean; }) => (e.check)).map((todo: calObject) => (<div key={todo.id} id={`todoComponent${todo.id}`}><Todo calData={todo} clear={true} checkedFunction={setCheckTodoList} /></div>));
   //console.log(todo);
   return (
     <div className='w-full flex-col items-center justify-between'>

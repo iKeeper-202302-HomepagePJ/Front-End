@@ -51,19 +51,19 @@ export default function ApplicantsList() {
             console.error('검색안됨', error);
         }
     }
-    const applicatsList = applicatsData.map((key: formDataObject) => (<div id={`applicat${key.studentId}`} className='w-full h-auto text-wrap justify-center text-[16px] px-[10px] mb-[5px]'>
+    const applicatsList = applicatsData.map((user: formDataObject) => (<div key={user.studentId} id={`applicat${user.studentId}`} className='w-full h-auto text-wrap justify-center text-[16px] px-[10px] mb-[5px]'>
         <hr className="w-full h-[2px] bg-blue border-0 mb-[5px]"/>
         <div className='w-full py-[5px] h-[40px] flex flex-row justify-between'>
-            <div className='w-[100px] h-full text-center content-center'>{key.name}</div>
-            <div className='w-[100px] h-full text-center content-center'>{key.field.id == 3 ? <div className='text-skyblue'>CERT</div> : <div className='text-green'>개발</div>}</div>
-            <div className='w-[150px] h-full text-center content-center'>{key.pnumber}</div>
-            <div className='w-[150px] h-full text-center content-center'>{key.birth}</div>
-            <div className='w-[250px] h-full text-center content-center'>{key.email}</div>
-            <div className='w-[100px] h-full text-center content-center'>{key.studentId}</div>
-            <div className='w-[200px] h-full text-center content-center'>{key.major1.name}</div>
-            <div className='w-[150px] h-full text-center content-center'>{key.grade.name}</div>
+            <div className='w-[100px] h-full text-center content-center'>{user.name}</div>
+            <div className='w-[100px] h-full text-center content-center'>{user.field.id == 3 ? <div className='text-skyblue'>CERT</div> : <div className='text-green'>개발</div>}</div>
+            <div className='w-[150px] h-full text-center content-center'>{user.pnumber}</div>
+            <div className='w-[150px] h-full text-center content-center'>{user.birth}</div>
+            <div className='w-[250px] h-full text-center content-center'>{user.email}</div>
+            <div className='w-[100px] h-full text-center content-center'>{user.studentId}</div>
+            <div className='w-[200px] h-full text-center content-center'>{user.major1.name}</div>
+            <div className='w-[150px] h-full text-center content-center'>{user.grade.name}</div>
             <div className='flex flex-row w-[150px] h-full justify-center text-center content-center items-center font-black'>
-                <button className='text-green h-full mb-[1px]' onClick={() => SetNewUser(key.studentId)}>O</button>
+                <button className='text-green h-full mb-[1px]' onClick={() => SetNewUser(user.studentId)}>O</button>
                 <div className='w-[5px]'></div>
                 <button className='text-red h-full]'>X</button>
             </div>

@@ -5,7 +5,7 @@ export function toggleItemBox (toggleItemList: string[], toggleValue: string, se
                 <div id={`toggleValue`} className={className + 'w-full text-left content-center'}>{toggleValue}</div>
                 <img src='/IconToggle.svg' className='rotate-180'></img>
             </div>
-            {toggleItemList.map((key: string) => (<div id={`toggle${key}`} className={className + `w-fit min-w-full text-left whitespace-pre content-center`} onClick={() => { setShowToggle(""); setToggleValue(key); }}>{key}</div>))}
+            {toggleItemList.map((toggle: string, i) => (<div key={i} id={`toggle${toggle}`} className={className + `w-fit min-w-full text-left whitespace-pre content-center`} onClick={() => { setShowToggle(""); setToggleValue(toggle); }}>{toggle}</div>))}
         </button>
     )
 }
@@ -13,7 +13,7 @@ export function toggleItemBox (toggleItemList: string[], toggleValue: string, se
 export function toggleMoveBox (toggleItemList:any, className: string){
     return (
         <div className={className + "fixed absolute w-full h-auto rounded-lg"}>
-            {toggleItemList.map((key: string[]) => (<a id={`setPage${key[0]}`}></a>))}
+            {toggleItemList.map((toggle: string[], i:number) => (<a key={i} id={`setPage${toggle[0]}`}></a>))}
         </div>
     )
 }
@@ -25,7 +25,7 @@ export function toggleIdItemBox (toggleItemList: {id:number, name:string}[], tog
                 <div id={`toggleValue`} className={className + 'w-full text-left content-center'}>{(toggleItemList.find(obj => obj.id === toggleValue)!.name)}</div>
                 <img src='/IconToggle.svg' className='rotate-180'></img>
             </div>
-            {toggleItemList.map((key: {id:number; name:string;}) => (<div id={`toggle${key.name}`} className={className + `w-fit min-w-full text-left whitespace-pre content-center`} onClick={() => { setShowToggle(""); setToggleValue(key.id); }}>{key.name}</div>))}
+            {toggleItemList.map((toggle: {id:number; name:string;}) => (<div key={toggle.id} id={`toggle${toggle.name}`} className={className + `w-fit min-w-full text-left whitespace-pre content-center`} onClick={() => { setShowToggle(""); setToggleValue(toggle.id); }}>{toggle.name}</div>))}
         </button>
     )
 }

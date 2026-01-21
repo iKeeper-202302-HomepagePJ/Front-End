@@ -98,11 +98,11 @@ export default function BookList() {
                 <div className="w-[200px] text-ceter mb-[10px] text-center">대여 날짜</div>
                 </div>
                 <div className="h-1 w-full bg-blue"/>
-                {bookList.length ? bookList.map((key: bookObject) => (<div className="my-[10px]"><div className="flex items-ceter my-[5px] space-x-[15px]">
-                    <div className="min-w-[400px] w-full">{key.name}</div>
-                    <button className="w-[200px] flex justify-center" onClick={()=>setModify(key)}>{IconBook('w-[20px] h-[20px]', `${key.rental ? `green` : `blue`}`)}</button>
-                    <div className="w-[150px] justify-center">{Boolean(key.borrower) && key.borrower}</div>
-                    <div className="w-[200px] justify-center">{Boolean(key.rentalDay) && key.rentalDay}</div></div><div className="w-full h-[2px] bg-blue"/></div>)) : '책이 존재하지 않습니다.'}
+                {bookList.length ? bookList.map((book: bookObject) => (<div key={book.id} className="my-[10px]"><div className="flex items-ceter my-[5px] space-x-[15px]">
+                    <div className="min-w-[400px] w-full">{book.name}</div>
+                    <button className="w-[200px] flex justify-center" onClick={()=>setModify(book)}>{IconBook('w-[20px] h-[20px]', `${book.rental ? `green` : `blue`}`)}</button>
+                    <div className="w-[150px] justify-center">{Boolean(book.borrower) && book.borrower}</div>
+                    <div className="w-[200px] justify-center">{Boolean(book.rentalDay) && book.rentalDay}</div></div><div className="w-full h-[2px] bg-blue"/></div>)) : '책이 존재하지 않습니다.'}
                 {addBook &&
                     <div>
                         <div className="fixed w-screen h-screen bg-black left-0 top-0 opacity-50" onClick={() => setAddBook(false)} />

@@ -59,7 +59,7 @@ export default function ApplicantsList() {
         console.log(f.target.value);
       };
     const shortcutBox = (Array.from({ length: 6 }, (_, i) => (
-        <div className={`w-full h-[120px] bg-deepBlue rounded-lg py-[20px] px-[30px] flex font-bold text-[16px] content-center items-center ${shortcutLength < i && `opacity-30`}`}>
+        <div key={i} className={`w-full h-[120px] bg-deepBlue rounded-lg py-[20px] px-[30px] flex font-bold text-[16px] content-center items-center ${shortcutLength < i && `opacity-30`}`}>
             
             {`Name`}
             <input disabled={shortcutLength >= i ? false : true}  defaultValue={Boolean(shortcutData.length) ? shortcutLength > i ? shortcutData[i].name : "" : ""} className='bg-blue ml-[10px] mr-[15px] rounded-lg h-[50px] w-[100px] px-[10px]' onChange={(e) => { setName(e.target.value) }}/>

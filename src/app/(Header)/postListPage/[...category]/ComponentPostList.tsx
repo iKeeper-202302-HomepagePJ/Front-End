@@ -136,7 +136,7 @@ export default function PostList({ page, baseUrl, postListData }: { page: {lastP
                 </div>
                 <hr className="h-1 bg-blue border-0 mt-[5px]"></hr>
                 <div className="flex flex-col-reverse">
-                {postListData.map((key: postObject, index: number) => (<div><a href={`http://localhost:3000/postPage/${key.id}`} className='flex items-center' id={`postListItemComponent${key.id}`}>{PostItem(true, true, key, addPostListComponent, index, false)}</a><hr className="h-[3px] bg-blue border-0 mt-[5px]"></hr></div>))}
+                {postListData.map((post: postObject, index: number) => (<div key={post.id}><a href={`http://localhost:3000/postPage/${post.id}`} className='flex items-center' id={`postListItemComponent${post.id}`}>{PostItem(true, true, post, addPostListComponent, index, false)}</a><hr className="h-[3px] bg-blue border-0 mt-[5px]"></hr></div>))}
                 </div>
             </div>
             {openModal && Modal("w-fit h-fit", canNotWriting, setOpenModal)}</div>}

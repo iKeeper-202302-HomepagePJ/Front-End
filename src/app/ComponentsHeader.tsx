@@ -35,7 +35,8 @@ export default function Header() {
             </a>
             <div className='flex flex-col justify-between w-full h-full'>
                 <div className='flex h-1/3 mb-[5px] justify-end'>
-                    {Boolean(linkList.length) && linkList.map((key) => (<a className='max-h-full h-100 aspect-square bg-blue rounded-lg font-semibold content-center text-center ml-[10px]' href={key.url}>{key.name}</a>))}
+                    {Boolean(linkList.length) && linkList.map((link, i) => (<a key={`${i}-${link.url}`} className='max-h-full h-100 aspect-square bg-blue rounded-lg font-semibold content-center text-center ml-[10px]' href={link.url}>{link.name}</a>))}
+                    {/* TODO: hyperlink 목록에 id 있으면 key 값 id로 바꾸기 */}
                 </div>
                 <div className="flex-1 mt-[5px] bg-deepBlue flex items-center justify-between px-[50px] rounded-lg">
                     <div className={`group relative dropdown text-[26px] cursor-pointer flex justify-center`}>

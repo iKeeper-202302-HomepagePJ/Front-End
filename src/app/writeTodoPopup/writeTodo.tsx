@@ -151,17 +151,17 @@ return (
             <div className="group-hover:block dropdown-menu absolute hidden z-10">
               <ul className="mt-[20px] rounded-[10px] px-[10px] bg-blue shadow lefx-col items-center justify-between z-10">
                 {todoDayYear == todayYear - 1 && Array.from({ length: 13 - todayMonth }, (_, i) => (
-                  <div className="block hover:bg-black cursor-pointer" onClick={() => setTodoMonth(i + todayMonth)}>
+                  <div key={i} className="block hover:bg-black cursor-pointer" onClick={() => setTodoMonth(i + todayMonth)}>
                     {i + todayMonth}
                   </div>
                 ))}
                 {todoDayYear == todayYear && Array.from({ length: todayMonth < 7 ? todayMonth + 6 : 12 }, (_, i) => (
-                  <div className="block hover:bg-black cursor-pointer" onClick={() => setTodoMonth(i + 1)}>
+                  <div key={i} className="block hover:bg-black cursor-pointer" onClick={() => setTodoMonth(i + 1)}>
                     {i + 1}
                   </div>
                 ))}
                 {todoDayYear == todayYear + 1 && Array.from({ length: todayMonth - 6 }, (_, i) => (
-                  <div className="block hover:bg-black cursor-pointer" onClick={() => setTodoMonth(i + 1)}>
+                  <div key={i} className="block hover:bg-black cursor-pointer" onClick={() => setTodoMonth(i + 1)}>
                     {i + 1}
                   </div>
                 ))}
@@ -173,7 +173,7 @@ return (
             <div className="group-hover:block dropdown-menu absolute hidden z-10">
               <ul className="mt-[20px] rounded-[10px] px-[10px] bg-blue shadow lefx-col items-center justify-between">
                 {Array.from({ length: new Date(todoDayYear, todoDayMonth, 0).getDate() }, (_, i) => (
-                  <div className="block hover:bg-black cursor-pointer" onClick={() => setTodoDay(i + 1)}>
+                  <div key={i} className="block hover:bg-black cursor-pointer" onClick={() => setTodoDay(i + 1)}>
                     {i + 1}
                   </div>
                 ))}
@@ -189,7 +189,7 @@ return (
               <ul className="mt-[20px] mr-[50px] rounded-[10px] px-[10px] bg-blue shadow lefx-col items-center justify-between">
                 <div className="w-auto whitespace-pre block hover:bg-black cursor-pointer" onClick={() => noSelectTime()}>선택 안 함</div>
                 {Array.from({ length: 24 }, (_, i) => (
-                  <div className="block hover:bg-black cursor-pointer" onClick={() => { setTodoTimeHour(i < 10 ? "0" + i : "" + i); setTodoTimeCheck("00"); { todoTimeMinute == "" && setTodoTimeMinute("00") } }}>
+                  <div key={i} className="block hover:bg-black cursor-pointer" onClick={() => { setTodoTimeHour(i < 10 ? "0" + i : "" + i); setTodoTimeCheck("00"); { todoTimeMinute == "" && setTodoTimeMinute("00") } }}>
                     {i < 10 ? "0" + i : "" + i}
                   </div>
                 ))}
@@ -202,7 +202,7 @@ return (
             <div className="group-hover:block dropdown-menu absolute hidden">
               <ul className="mt-[20px] rounded-[10px] px-[10px] bg-blue shadow lefx-col items-center justify-between">
                 {Array.from({ length: 60 }, (_, i) => (
-                  <div className="block hover:bg-black cursor-pointer" onClick={() => setTodoTimeMinute(i < 10 ? "0" + i : "" + i)}>
+                  <div key={i} className="block hover:bg-black cursor-pointer" onClick={() => setTodoTimeMinute(i < 10 ? "0" + i : "" + i)}>
                     {i < 10 ? "0" + i : "" + i}
                   </div>
                 ))}

@@ -257,7 +257,7 @@ export default function MyPage() {
                         <div id={`toggleValue`} className='w-full h-[30px] text-left'>{toggleValue}</div>
                         <img src='/IconToggle.svg' className='rotate-180'></img>
                     </div>
-                    {toggleItemList.map((key: string, index:number) => (<div id={`toggle${key}`} className='w-full h-[30px] text-left' onClick={() => { setShowToggle(""); setToggleValue(index); }}>{key}</div>))}
+                    {toggleItemList.map((key: string, index:number) => (<div key={`toggle${key}`} className='w-full h-[30px] text-left' onClick={() => { setShowToggle(""); setToggleValue(index); }}>{key}</div>))}
                 </button>
             )
         }

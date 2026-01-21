@@ -27,6 +27,14 @@ const TextAreaComponent = () => {
         />
     );
 };
+interface commentObject { // TODO: /post 조회 후 comments에 id 있는지 확인
+    id: number;
+    post: number;
+    commentStudentId: string;
+    commentUser: string;
+    content: string;
+    commentTime: string;
+}
 interface postDataObject {                     // json으로 받는 객체 타입 정의
     id: number;
     postUser: string;
@@ -155,7 +163,7 @@ export default function Suggestion({post}:{post:postDataObject}) {
                 </div>
             </div>
             <div className="flex flex-col-reverse">
-                {postData.comments.map(((key: any)=>(<div className="rounded-lg bg-deepBlue w-full h-auto min-h-[50px] p-[10px] my-[10px]"><div className="flex"><div className="text-pink text-[16px]">{key.commentUser}</div><div className="ml-[10px] text-[14px] text-gray-400 flex items-end">{`${key.commentTime.slice(0, 4)}.${key.commentTime.slice(5, 7)}.${key.commentTime.slice(8, 10)} ${key.commentTime.slice(11, 16)}`}</div></div><div className="text-[16px]">{key.content}</div></div>)))}
+                {postData.comments.map(((comment: commentObject)=>(<div key={comment.id} className="rounded-lg bg-deepBlue w-full h-auto min-h-[50px] p-[10px] my-[10px]"><div className="flex"><div className="text-pink text-[16px]">{comment.commentUser}</div><div className="ml-[10px] text-[14px] text-gray-400 flex items-end">{`${comment.commentTime.slice(0, 4)}.${comment.commentTime.slice(5, 7)}.${comment.commentTime.slice(8, 10)} ${comment.commentTime.slice(11, 16)}`}</div></div><div className="text-[16px]">{comment.content}</div></div>)))}
             </div>
             <div className="flex h-[30px] w-full justify-end mt-[20px] text-center">
                 <a className="h-full w-[50px] bg-deepBlue text-white text-[16px] font-bold rounded-lg content-center">{`<이전`}</a>

@@ -74,7 +74,7 @@ export default function NoticeList({ page, baseUrl, isSmallCategory }: { page: n
                     {PostListHeading(isSmallCategory, true, postHeadingList)}
                 </div>
                 <hr className="h-1 bg-blue border-0 mt-[5px]"></hr>
-                {postData.map((key: postDataObject, index: number) => (<div><div className='flex items-center' id={`postListItemComponent${key.id}`}>{PostItem(isSmallCategory, true, key, addPostListComponent, index, key.bookmark)}</div><hr className="h-[3px] bg-blue border-0 mt-[5px]"></hr></div>))}
+                {postData.map((key: postDataObject, index: number) => (<div key={key.id}><div className='flex items-center' id={`postListItemComponent${key.id}`}>{PostItem(isSmallCategory, true, key, addPostListComponent, index, key.bookmark)}</div><hr className="h-[3px] bg-blue border-0 mt-[5px]"></hr></div>))}
             </div>
             <div className="w-full h-[30px] flex justify-between mt-[20px]"><div></div>{PageMove(page, lastPostListPage, `/postListPage/${baseUrl}`)}
                 <div className="flex h-[30px] justify-self-end">

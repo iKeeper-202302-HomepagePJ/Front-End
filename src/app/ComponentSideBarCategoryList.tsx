@@ -31,7 +31,7 @@ export const CategoryList = () => {
     return(
         <div className="flex-col space-y-[10px]">
             <a href={`/postListPage/1`} className="text-[20px] font-bold text-pink flex items-center mb-[5px]"><img src="/IconFile.svg"/>전체 게시물</a>
-            {categoryData.length != 0 && categoryData.map((key:categoryDataObject) => (<div className="flex flex-col">
+            {categoryData.length != 0 && categoryData.map((key:categoryDataObject) => (<div key={key.id} className="flex flex-col">
                 <a href={`${key.id == 3 ? `/suggestions`:`/postListPage/${key.name}/${key.id}/1`}`} className="text-[20px] font-bold text-pink flex items-center mb-[5px]"><img src="/IconFile.svg"/>{key.name}</a>
                 <div className="flex flex-col px-[10px]">
                     {Boolean(key.categories.length) && key.categories.map((item : {id : number; name : string}) => (<a key={`${item.id}ShorCut`} href={`/postListPage/${key.name}/${key.id}/${item.name}/${item.id}/1`} className="text-[16px] font-semibold text-green flex items-center"><img src="/IconArrow.svg"/>{item.name}</a>))}
@@ -52,7 +52,7 @@ export const GetCategoryListAndSideBar = (setData:Function) => {
         {ProfileShortcut()}
         <div className="w-full h-auto bg-deepBlue rounded-[10px] p-[20px] flex-col space-y-[10px]">
             <a href={`/postListPage/1`} className="text-[20px] font-bold text-pink flex items-center mb-[5px]"><img src="/IconFile.svg"/>전체 게시물</a>
-            {categoryData.length != 0 && categoryData.map((key:categoryDataObject) => (<div className="flex flex-col">
+            {categoryData.length != 0 && categoryData.map((key:categoryDataObject) => (<div key={key.id} className="flex flex-col">
                 <a href={`/postListPage/${key.name}/${key.id}/1`} className="text-[20px] font-bold text-pink flex items-center mb-[5px]"><img src="/IconFile.svg"/>{key.name}</a>
                 <div className="flex flex-col px-[10px]">
                     {Boolean(key.categories.length) && key.categories.map((item : {id : number; name : string}) => (<a key={`${item.id}ShorCut`} href={`/postListPage/${key.name}/${key.id}/${item.name}/${item.id}/1`} className="text-[16px] font-semibold text-green flex items-center"><img src="/IconArrow.svg"/>{item.name}</a>))}

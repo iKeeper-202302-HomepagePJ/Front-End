@@ -59,33 +59,33 @@ export default function UserList() {
           console.error('Failed to fetch dropdown options:', error);
         }
     };
-    const applicatsList = userData.map((key: formDataObject) => (<div id={`applicat${key.studentId}`} className='relative w-full h-auto text-wrap justify-center text-[16px] px-[10px] my-[8px]'>
+    const applicatsList = userData.map((user: formDataObject) => (<div id={`applicat${user.studentId}`} key={user.studentId} className='relative w-full h-auto text-wrap justify-center text-[16px] px-[10px] my-[8px]'>
         <hr className="w-full h-[2px] bg-blue border-0" />
-        { key.studentId==showModify && <div className='absolute left-0 top-0 w-full h-[40px] py-[5px] mt-[3px] flex flex-row justify-between px-[10px] bg-deepBlue space-x-[10px]'>
-            <input name={`${key.studentId}`} className={`w-[95px] h-full focus:outline-none bg-blue rounded-lg`} type="text" defaultValue={key.name} onChange={(e) => { setModifyName(e.target.value) }} />
-            <div className='w-[95px] h-full text-center content-center bg-deepBlue'>{key.field.id == 3 ? <div className='text-skyblue'>CERT</div> : <div className='text-green'>개발</div>}</div>
-            <input name={`${key.studentId}`} className={`w-[145px] h-full focus:outline-none bg-blue rounded-lg`} type="text" defaultValue={key.pnumber} onChange={(e) => { setModifyName(e.target.value) }} />
-            <input name={`${key.studentId}`} className={`w-[145px] h-full focus:outline-none bg-blue rounded-lg`} type="text" defaultValue={key.birth} onChange={(e) => { setModifyName(e.target.value) }} />
-            <input name={`${key.studentId}`} className={`w-[245px] h-full focus:outline-none bg-blue rounded-lg`} type="text" defaultValue={key.email} onChange={(e) => { setModifyName(e.target.value) }} />
-            <input name={`${key.studentId}`} className={`w-[95px] h-full focus:outline-none bg-blue rounded-lg`} type="text" defaultValue={key.studentId} onChange={(e) => { setModifyName(e.target.value) }} />
-            <div className='w-[195px] h-full text-center content-center bg-deepBlue'>{key.major1.name}</div>
-            <div className='w-[145px] h-full text-center content-center bg-deepBlue'>{key.grade.name}</div>
-            <div className='w-[145px] h-full text-center content-center bg-deepBlue'>{key.status.name}</div>
-            <button className='w-[45px] h-full text-center content-center bg-deepBlue'>{IconWarining('w-[30px], h-[30px]', `${key!.warning ? 'orange' : 'blue'}`)}</button>
+        { user.studentId==showModify && <div className='absolute left-0 top-0 w-full h-[40px] py-[5px] mt-[3px] flex flex-row justify-between px-[10px] bg-deepBlue space-x-[10px]'>
+            <input name={`${user.studentId}`} className={`w-[95px] h-full focus:outline-none bg-blue rounded-lg`} type="text" defaultValue={user.name} onChange={(e) => { setModifyName(e.target.value) }} />
+            <div className='w-[95px] h-full text-center content-center bg-deepBlue'>{user.field.id == 3 ? <div className='text-skyblue'>CERT</div> : <div className='text-green'>개발</div>}</div>
+            <input name={`${user.studentId}`} className={`w-[145px] h-full focus:outline-none bg-blue rounded-lg`} type="text" defaultValue={user.pnumber} onChange={(e) => { setModifyName(e.target.value) }} />
+            <input name={`${user.studentId}`} className={`w-[145px] h-full focus:outline-none bg-blue rounded-lg`} type="text" defaultValue={user.birth} onChange={(e) => { setModifyName(e.target.value) }} />
+            <input name={`${user.studentId}`} className={`w-[245px] h-full focus:outline-none bg-blue rounded-lg`} type="text" defaultValue={user.email} onChange={(e) => { setModifyName(e.target.value) }} />
+            <input name={`${user.studentId}`} className={`w-[95px] h-full focus:outline-none bg-blue rounded-lg`} type="text" defaultValue={user.studentId} onChange={(e) => { setModifyName(e.target.value) }} />
+            <div className='w-[195px] h-full text-center content-center bg-deepBlue'>{user.major1.name}</div>
+            <div className='w-[145px] h-full text-center content-center bg-deepBlue'>{user.grade.name}</div>
+            <div className='w-[145px] h-full text-center content-center bg-deepBlue'>{user.status.name}</div>
+            <button className='w-[45px] h-full text-center content-center bg-deepBlue'>{IconWarining('w-[30px], h-[30px]', `${user!.warning ? 'orange' : 'blue'}`)}</button>
             <button className='w-[45px] h-full text-center content-center bg-deepBlue'>{IconCheck('w-[18px]', 'green')}</button>
         </div>}
         <div className='w-full h-auto flex flex-row justify-between items-center mt-[3px]'>
-            <div className='w-[100px] h-full text-center content-center'>{key.name}</div>
-            <div className='w-[100px] h-full text-center content-center'>{key.field.id == 3 ? <div className='text-skyblue'>CERT</div> : <div className='text-green'>개발</div>}</div>
-            <div className='w-[150px] h-full text-center content-center'>{key.pnumber}</div>
-            <div className='w-[150px] h-full text-center content-center'>{key.birth}</div>
-            <div className='w-[250px] h-full text-center content-center'>{key.email}</div>
-            <div className='w-[100px] h-full text-center content-center'>{key.studentId}</div>
-            <div className='w-[200px] h-full text-center content-center'>{key.major1.name}</div>
-            <div className='w-[150px] h-full text-center content-center'>{key.grade.name}</div>
-            <div className='w-[150px] h-full text-center content-center'>{key.status.name}</div>
-            <div className='w-[50px] h-full text-center content-center'>{IconWarining('w-[30px], h-[30px]', `${key!.warning ? 'orange' : 'blue'}`)}</div>
-            <button className='w-[50px] h-full justify-cente items-center' onClick={()=>(setShowModify(key.studentId))}>
+            <div className='w-[100px] h-full text-center content-center'>{user.name}</div>
+            <div className='w-[100px] h-full text-center content-center'>{user.field.id == 3 ? <div className='text-skyblue'>CERT</div> : <div className='text-green'>개발</div>}</div>
+            <div className='w-[150px] h-full text-center content-center'>{user.pnumber}</div>
+            <div className='w-[150px] h-full text-center content-center'>{user.birth}</div>
+            <div className='w-[250px] h-full text-center content-center'>{user.email}</div>
+            <div className='w-[100px] h-full text-center content-center'>{user.studentId}</div>
+            <div className='w-[200px] h-full text-center content-center'>{user.major1.name}</div>
+            <div className='w-[150px] h-full text-center content-center'>{user.grade.name}</div>
+            <div className='w-[150px] h-full text-center content-center'>{user.status.name}</div>
+            <div className='w-[50px] h-full text-center content-center'>{IconWarining('w-[30px], h-[30px]', `${user!.warning ? 'orange' : 'blue'}`)}</div>
+            <button className='w-[50px] h-full justify-cente items-center' onClick={()=>(setShowModify(user.studentId))}>
                 {iconPencil('w-[18px]', 'green')}
             </button>
         </div>
