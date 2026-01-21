@@ -332,8 +332,8 @@ export default function MyPage() {
                     {openModal == "leaveModal" && <div>
                         <div className='w-screen h-screen bg-deepBlue opacity-80 fixed top-0 left-0 right-0 z-40' onClick={() => setOpenModal("")}></div>
                         <div className='w-[500px] h-[300px] rounded-lg bg-black text-white text-[20px] fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40 content-center text-center '>
-                            <p>'탈퇴'버튼을 누르면 탈퇴가 진행됩니다.</p>
-                            <p>'정말로 탈퇴하시겠습니까?</p>
+                            <p>&apos;탈퇴&apos;버튼을 누르면 탈퇴가 진행됩니다.</p>
+                            <p>정말로 탈퇴하시겠습니까?</p>
                             <div className='w-[200px] h-[40px] flex justify-between ml-[150px] mt-[15px]'>
                                 <button className='w-[70px] h-[40px] bg-skyblue rounded-lg font-bold text-black' onClick={() => { setOpenModal("") }}>취소</button>
                                 <button className='w-[70px] h-[40px] bg-red rounded-lg font-bold text-black' onClick={() => { setOpenModal(""); leaveIKeeper() }}>탈퇴</button>
