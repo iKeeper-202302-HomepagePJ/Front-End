@@ -72,7 +72,7 @@ const postData: postDataObject[] = [
 ]
 const postHeadingList = ['1회차', '2회차', '최대이십글자더라가나다라마바다사아다바마'];
 const adminPower = false;
-export default function ({ params }: { params: { category: string[] } }) {         // 수정 : string에서 number로. 경로를 카테고리 번호로 변경
+export default function PostPage ({ params }: { params: { category: string[] } }) {         // 수정 : string에서 number로. 경로를 카테고리 번호로 변경
     const [postListData, setPostList] = useState<any>([]);
     const [page, setPage] = useState<{lastPostListPage:number, page:number}>({lastPostListPage:0, page:0});
     const [categoryList, getCategoryList] = useState<any[]>([])

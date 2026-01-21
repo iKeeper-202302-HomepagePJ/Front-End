@@ -25,7 +25,7 @@ interface categoryDataObject {
     id: number;
     name: string;
 }
-export default function ({ params }: { params: { postID: Number } }) {         // 수정 : string에서 number로. 경로를 카테고리 번호로 변경
+export default function  SuggestionPage ({ params }: { params: { postID: Number } }) {         // 수정 : string에서 number로. 경로를 카테고리 번호로 변경
     const [postData, setPostData] = useState<postDataObject | null>();
     const userToken = useSelector((state: RootState) => state.user.token);
     const getPostData = async () => {

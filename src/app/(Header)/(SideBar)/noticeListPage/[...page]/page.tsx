@@ -40,7 +40,7 @@ const userWritingToday = 3;     /*****이거 유저 당일 게시물 작성 횟�
 const lastPostListPage = 39; /*********이거 최대 페이지 수정****** */
 const postHeadingList = ['1회차', '2회차', '최대이십글자더라가나다라마바다사아다바마'];
 const adminPower = false;
-export default function ({ params }: { params: { page: string[] } }) {         // 수정 : string에서 number로. 경로를 카테고리 번호로 변경
+export default function NoticePage ({ params }: { params: { page: string[] } }) {         // 수정 : string에서 number로. 경로를 카테고리 번호로 변경
     let baseUrl = params.page;
     let page = Number(baseUrl.pop());
     page = page > lastPostListPage ? lastPostListPage : page;
