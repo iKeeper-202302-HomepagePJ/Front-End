@@ -12,6 +12,21 @@ interface postDataObject {                     // json으로 받는 객체 타�
     id: number;
     postUser: string;
     title: string;
+    headline: {
+        id:number;
+        name:string;
+    };
+    category:{
+        categoryLarge:{
+            id:number;
+            name:string;
+        };
+        categorySmall:{
+            id:number;
+            name:string;
+        };
+        id:number;
+    }
     postTime: string;
     comments: any[];
     commentWhether:boolean;
@@ -19,7 +34,7 @@ interface postDataObject {                     // json으로 받는 객체 타�
     fix:boolean;
     postStudentId:string;
     updateCheck:boolean;
-    content:string;
+    content:any;
 }
 interface categoryDataObject {
     id: number;
@@ -48,7 +63,7 @@ export default function  SuggestionPage ({ params }: { params: { postID: Number 
     return (
         <div className="w-full flex flex-row mt-[50px]">
             <div className="grow">
-                {postData!=null && <Post post={postData}/>}
+                {postData!=null && <Suggestion post={postData}/>}
             </div>
         </div>
     );
