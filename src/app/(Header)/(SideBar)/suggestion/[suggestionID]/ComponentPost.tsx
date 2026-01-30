@@ -7,7 +7,6 @@ import { RootState } from '../../../../redux/store';
 import { EditorProvider, useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useRouter } from 'next/navigation';
-import { postHeadingList } from "../../noticeListPage/[...page]/page";
 
 const TextAreaComponent = () => {
     const [text, setText] = useState('');

@@ -1,8 +1,11 @@
+"use client"
 import Header from "../../../../ComponentsHeader";
 import SideBar from "../../../../ComponentSideBar";
 import Footer from "../../../../ComponentFooter";
 import NoticeList from "./ComponentNotice";
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import { api } from "@/lib/axios";
+import { useCallback, useState } from "react";
 interface postDataObject {                     // json으로 받는 객체 타입 정의
     id: number;
     user: string;
@@ -16,40 +19,68 @@ interface categoryDataObject {
     id: number;
     name: string;
 }
-const postData: postDataObject[] = [
-    {
-        id: 1,
-        user: "김가글",
-        title: "글자수가오십자인것에한번최대한길게해보려는건에대하여글자수가오십자인것에한번최대한길게해보려는건에대하",
-        headline: '최대이십글자더라가나다라마바다사아다바마',
-        timestamp: "2024-02-13T13:00:00+09:00",
-        postComment: 1,
-        bookmark: true
-    },
-    {
-        id: 2,
-        user: "김나다",
-        title: "가나다",
-        headline: "2회차",
-        timestamp: "2024-02-13T13:00:00+09:00",
-        postComment: 3,
-        bookmark: false
+
+interface postList {
+    "paging": {
+      "content": [],
+      "pageable": {
+        "sort": {
+          "empty": boolean,
+          "sorted": boolean,
+          "unsorted": boolean
+        },
+        "offset": number,
+        "pageNumber": number,
+        "pageSize": number,
+        "paged": boolean,
+        "unpaged": boolean
+      },
+      "totalPages": number,
+      "totalElements": number,
+      "last": boolean,
+      "size": number,
+      "number": number,
+      "sort": {
+        "empty": boolean,
+        "sorted": boolean,
+        "unsorted": boolean
+      },
+      "numberOfElements": number,
+      "first": boolean,
+      "empty": boolean
     }
-]
-const userWritingToday = 3;     /*****이거 유저 당일 게시물 작성 횟수 수정***** */
-const lastPostListPage = 39; /*********이거 최대 페이지 수정****** */
-const postHeadingList = ['1회차', '2회차', '최대이십글자더라가나다라마바다사아다바마'];
-const adminPower = false;
+}
+interface headlineObject {
+    id: number;
+    name: string;
+}
 export default function NoticePage ({ params }: { params: { page: string[] } }) {         // 수정 : string에서 number로. 경로를 카테고리 번호로 변경
-    let baseUrl = params.page;
-    let page = Number(baseUrl.pop());
-    page = page > lastPostListPage ? lastPostListPage : page;
+    const [postList, setPostList] = useState<postDataObject[]>([]);
+    const [page, setPage] = useState(Number(params.page.pop()));
+    const [lastPage, setLastPage] = useState(1);
+    const [headlineList, setHeadlineList] = useState<headlineObject[]>([]);
+    const getPostListData = useCallback(async () => {
+            try {
+                console.log("나대체뭘보낸거야", page-1)
+                const response = await api.get(`/api/posts/?page=${page}`).then(res => {
+                    setPostList(res.data.data.content);
+                    console.log("게시글 목록 정보 불러오기 성공", res.data.data);
+                    setLastPage(res.data.data.totalPage);
+                    setPage(page > res.data.data.totalPages ? res.data.data.totalPages : page<1 ? 1 : page);
+                });
+                const res = await api.get('/api/posts/headline');
+                setHeadlineList(res.data);
+            } catch (error) {
+                console.error('게시글 목록 정보 실패:', error);
+                throw error;
+            }
+        }, [page])
     return (
         <main className="flex min-h-screen bg-black flex-col w-full">
             <div className="flex text-[20px] text-pink font-bold items-center">
                 <img src="/IconFile.svg" className="mr-[5px]" />{params.page[0] ? <div>{decodeURI(params.page[0])} {params.page[2] && `> ${decodeURI(params.page[2])}`}</div> : "전체 공지"}
             </div>
-            <NoticeList page={page} baseUrl={baseUrl.join('/')} isSmallCategory={baseUrl.length == 4 ? true : false} />
+            <NoticeList page={page} baseUrl={params.page.join('/')} isSmallCategory={params.page.length == 4 ? true : false} postData={postList} lastPostListPage={lastPage} postHeadingList={headlineList}/>
         </main>
     );
 };
@@ -69,4 +100,3 @@ export default function ({ params }: { params: { category?: number[] } }) {
     );
 };
 */
-export { postHeadingList, postData, lastPostListPage, userWritingToday, adminPower };

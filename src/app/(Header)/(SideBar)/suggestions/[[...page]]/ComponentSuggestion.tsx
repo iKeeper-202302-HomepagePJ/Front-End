@@ -23,7 +23,7 @@ export default function Suggestion({ page }: { page: number }) {
     const [realPage, setPage] = useState(page);
     const [lastPage, setLastPage] = useState(1);
     const [checkList, setCheck] = useState(Array(15).fill(false));
-    const userAuth = useSelector((state: RootState) => state.user.auth) === "UER_ADMIN";
+    const userAuth = useSelector((state: RootState) => state.user.auth) === "USER_ADMIN";
     const [bookMarkList, setBookMark] = useState<number[]>([]);
     const route = useRouter();
     const getSuggestionData = useCallback(async () => {

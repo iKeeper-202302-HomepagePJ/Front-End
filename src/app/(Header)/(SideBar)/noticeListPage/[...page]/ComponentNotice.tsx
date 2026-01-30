@@ -1,12 +1,13 @@
 "use client"
 import { useState } from "react";
 import { PostListHeading, PostItem } from "../../../../ComponentPostList";
-import { postHeadingList, postData, lastPostListPage, userWritingToday, adminPower } from './page';
 import { IconLoudSpeaker, iconPencil } from "../../../../SvgIcons";
 import { PageMove } from "../../../../ComponentPageMove";
 import { useRouter } from 'next/navigation';
 import { Modal } from "../../../../ComponentModal";
 import { CheckBox, HeadCheckBox } from "../../../../ComponentCheckBox";
+import { useSelector } from "react-redux";
+import { RootState } from '../../../../redux/store';
 
 interface postDataObject {                     // json으로 받는 객체 타입 정의
     id: number;
@@ -17,12 +18,18 @@ interface postDataObject {                     // json으로 받는 객체 타�
     postComment: number;
     bookmark: boolean
 }
-
-export default function NoticeList({ page, baseUrl, isSmallCategory }: { page: number, baseUrl: string, isSmallCategory: boolean }) {
+interface headlineObject {
+    id: number;
+    name: string;
+}
+const userWritingToday = 3;     /*****이거 유저 당일 게시물 작성 횟수 수정***** */
+export default function NoticeList({ page, baseUrl, isSmallCategory, postData, lastPostListPage, postHeadingList }: { page: number, baseUrl: string, isSmallCategory: boolean, postData: postDataObject[], lastPostListPage: number, postHeadingList: headlineObject[]}) {
+    const auth = useSelector((state: RootState) => state.user.auth);
     const [bookMarkList, setBookMark] = useState<number[]>([]);
     const [checkList, setCheck] = useState(Array(15).fill(0));
     const [openModal, setOpenModal] = useState(false)
     const route = useRouter();
+    const adminPower = auth == "ROLE_ADMIN" ? true : false;
     const setBookMarkHandle = (id: number) => {
         if (bookMarkList.includes(id)) {
             const bookMark = bookMarkList.filter((e: number) => (e != id));
@@ -71,7 +78,7 @@ export default function NoticeList({ page, baseUrl, isSmallCategory }: { page: n
                 <div className='flex items-center'>
                     {adminPower && HeadCheckBox('PostListCheckBox', setAllCheckHandle)}
                     <button onClick={() => (allPostBookMarkList())}>{IconLoudSpeaker("w-[20px] h-[20px] mx-[20px]", "blue")}</button>
-                    {PostListHeading(isSmallCategory, true, postHeadingList)}
+                    {PostListHeading(isSmallCategory, true, postHeadingList.map(headline=>headline.name))}
                 </div>
                 <hr className="h-1 bg-blue border-0 mt-[5px]"></hr>
                 {postData.map((key: postDataObject, index: number) => (<div key={key.id}><div className='flex items-center' id={`postListItemComponent${key.id}`}>{PostItem(isSmallCategory, true, key, addPostListComponent, index, key.bookmark)}</div><hr className="h-[3px] bg-blue border-0 mt-[5px]"></hr></div>))}
