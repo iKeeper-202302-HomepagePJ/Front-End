@@ -45,7 +45,6 @@ const response = (await api.post('https://4a26c935-10b4-4195-a293-2e78b6965b48.m
 let test;
 */
 //export const calendarData = getCalenderData();    
-const adminPower = true;           //***************************관리자 권한용 나중에 수정************************* */
 //let c = calenderData[0];
 /*export async function getCalenderData() {
   return await api.get();
@@ -71,5 +70,3 @@ export default async function Page() {
   );
 };
  */
-
-export {adminPower, calendarData}

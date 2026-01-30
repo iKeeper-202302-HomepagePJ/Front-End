@@ -1,8 +1,6 @@
 'use client';
 import axios, { all } from 'axios';
-
 import { useState, useEffect } from "react";
-import { adminPower } from "./page";
 import { ComponentTodoList, TodayComponentTodoList } from "./ComponentsTodoList";
 
 interface calObject {                     // json으로 받는 객체 타입 정의

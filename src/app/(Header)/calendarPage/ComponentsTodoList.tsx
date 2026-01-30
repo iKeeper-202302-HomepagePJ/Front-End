@@ -1,8 +1,9 @@
 'use client';
 import Image from 'next/image';
-import { adminPower } from "./page";
 import { closeSync } from 'fs';
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from '../../redux/store';
 import { createPortal } from "react-dom";
 import ReactDOM from 'react-dom';
 import { moveMonth } from './ComponentsCalendar'
@@ -182,8 +183,10 @@ function TodoList(calData: calObject[], setDay?: number, todoCheckList?:Function
   );
 }
 export function ComponentTodoList(year: number, month: number, day: number, calendarData: calObject[]) {
+  const auth = useSelector((state: RootState) => state.user.auth);
   const [showNewTodo, setVisible] = useState(false);
   const [checkTodoList, setCheckTodoList] = useState<Number[]>([]);
+  const adminPower = auth == "ROLE_ADMIN" ? true : false;
   const setCheckTodoListHandler = (id:number) => {
     !checkTodoList.includes(id) && setCheckTodoList(checkTodoList.concat([id]))
   }
