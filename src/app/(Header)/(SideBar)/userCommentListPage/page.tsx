@@ -58,10 +58,8 @@ export default async function Page() {
         <main className="flex min-h-screen bg-black flex-col w-full">
             <div className="flex flex-col  flex-grow">
                 {UserInformation(userData)}
-                <UserCommentList />
+                <UserCommentList postData={postData}/>
             </div>
         </main>
     );
 };
-
-export { postData }

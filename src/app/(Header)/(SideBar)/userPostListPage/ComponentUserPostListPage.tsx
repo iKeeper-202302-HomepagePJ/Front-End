@@ -1,5 +1,4 @@
 "use client"
-import { postData } from "./page";
 import { PostItem, PostListHeading } from "../../../ComponentPostList";
 import { ShowCategory } from "../../../ComponentInUserWritingPost";
 interface postDataObject {                     // json으로 받는 객체 타입 정의
