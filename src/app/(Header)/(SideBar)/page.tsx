@@ -7,7 +7,7 @@ import Footer from "../../ComponentFooter"
 import SideBar from '../../ComponentSideBar';
 import Link from 'next/link';
 import { api } from "@/lib/axios"; //로컬 json **수정**
-import { Calendar, TodayCalendar, setCalendar } from '../calendarPage/ComponentsCalendar';
+import { Calendar, TodayCalendar } from '../calendarPage/ComponentsCalendar';
 import PostList from '../postListPage/[...category]/ComponentPostList';
 import { IconLoudSpeaker } from '@/app/SvgIcons';
 interface calObject {                // json으로 받는 객체 타입 정의
