@@ -123,7 +123,7 @@ export default function BookList() {
                         <div className="opacity-100 w-[500px] h-[700px] bg-deepBlue rounded-lg text-white text-[16px] fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40 text-center place-content-center p-[20px]">
                             <button className="text-[50px] font-thin w-[30px] h-[30px]" onClick={() => setAddBook(false)}>×</button>
                             <div className="flex">
-                                책 제목 : {modify.name}
+                                책 제목 : {modify?.name}
                             </div>
                             <div className="flex">
                                 대여자 :

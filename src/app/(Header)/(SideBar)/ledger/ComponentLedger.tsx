@@ -120,12 +120,12 @@ export default function BookList() {
                             <div className="rounded-lg mt-[20px] w-[100px] bg-green text-black" onClick={() => uploadNewBook()}>추가</div>
                         </div>
                     </div>}
-                    {Boolean(modify) && <div>
+                    {modify && <div>
                         <div className="fixed w-screen h-screen bg-black left-0 top-0 opacity-50" onClick={() => setModify(null)} />
                         <div className="opacity-100 w-[500px] h-[700px] bg-deepBlue rounded-lg text-white text-[16px] fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40 text-center place-content-center p-[20px]">
                             <button className="text-[50px] font-thin w-[30px] h-[30px]" onClick={() => setAddBook(false)}>×</button>
                             <div className="flex">
-                                책 제목 : {modify.name}
+                                책 제목 : {modify?.name}
                             </div>
                             <div className="flex">
                                 대여자 :
@@ -141,7 +141,7 @@ export default function BookList() {
                                     <div className="bg-blue w-full h-[1px]" />
                                 </div>
                             </div>
-                            <div className="rounded-lg mt-[20px] w-[100px] bg-green text-black" onClick={() => {modify && modifyBook(modify)}}>대여</div>
+                            <div className="rounded-lg mt-[20px] w-[100px] bg-green text-black" onClick={() => modifyBook(modify)}>대여</div>
                         </div>
                     </div>
                     }
