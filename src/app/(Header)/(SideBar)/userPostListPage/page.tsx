@@ -1,3 +1,4 @@
+'use client';
 import Footer from "../../../ComponentFooter";
 import SideBar from "../../../ComponentSideBar";
 import { UserInformation } from "../../../ComponentInUserWritingPost";
