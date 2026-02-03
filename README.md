@@ -3,7 +3,7 @@
 이 프로젝트는 **동아리 운영을 위한 웹 기반 관리 시스템**입니다.
 동아리 일정 관리, 게시물 작성 및 회원 관리를 효율적으로 할 수 있도록 설계되었습니다.
 
-Next.js 기반으로, TypeScript와 Tailwind CSS가 사용했습니다.
+Next.js 기반으로, TypeScript와 Tailwind CSS를 사용했습니다.
 
 ---
 
