@@ -8,6 +8,7 @@ import { TextEditor } from '../../../ComponentTextEditor'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/store';
 import axios from 'axios'
+import { api } from '@/lib/axios'
 interface categoryDataObject {
     id : number;
     name : string;
@@ -63,8 +64,8 @@ export default function WritePost(urlInCategory : {urlInCategory:string[]}) {
     const savePost = async (post: string) => {
         setPost(post);
         const formData = new FormData();
-    formData.append('files', file);
-    formData.append('post', JSON.stringify(post));
+    if(file)formData.append('files', file);
+    formData.append('post', new Blob([JSON.stringify(post)], { type: "application/json" }));
         const uploadPostData = {
             post : {
                 category: {
@@ -85,23 +86,28 @@ export default function WritePost(urlInCategory : {urlInCategory:string[]}) {
             return (<div className='w-full h-[50px] bg-red'> 야 이 이거 나오냐??</div>)
         }
         else {
-            try {
-                // 서버로 로그인 요청 보내기
+            try {/*
                 const response = await fetch('http://3.35.239.36:8080//api/posts', {
                     method: 'POST',
                     headers: {
                       'Authorization': `Bearer ${userToken}`,
                       "Content-Type": "multipart/form-data"
                     },
-                    data: uploadPostData,
+                    body: uploadPostData,
                   })
-                  axios({
+                 axios({
                     method:'post',
                     url:'http://3.35.239.36:8080//api/posts',
                     data: formData,
                   }).then(res => {
                     console.log("게시물 등록 완료", res)
-                })
+                })*/
+                 const res = await api.post('/api/posts', uploadPostData, {
+                    headers: {
+                        Authorization: `Bearer ${userToken}`,
+                    }
+                });
+                 
             } catch (error) {
                 console.error('게시물 등록 실패:', error);
             }
